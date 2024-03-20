@@ -1,5 +1,5 @@
-import { Box, Button, Container, Drawer, DrawerBody, DrawerCloseButton, DrawerContent, DrawerFooter, DrawerHeader, DrawerOverlay, IconButton, Input, Menu, MenuButton, useDisclosure } from '@chakra-ui/react'
-import { HamburgerIcon } from '@chakra-ui/icons'
+import { Box, Button, Container, Divider, Drawer, DrawerBody, DrawerCloseButton, DrawerContent, DrawerFooter, DrawerHeader, DrawerOverlay, IconButton, Input, List, ListIcon, ListItem, Menu, MenuButton, MenuDivider, MenuItem, MenuList, Stack, useDisclosure } from '@chakra-ui/react'
+import { HamburgerIcon, SunIcon } from '@chakra-ui/icons'
 import { useRef } from 'react'
 
 export const Navbar = () => {
@@ -9,43 +9,55 @@ export const Navbar = () => {
     return (
         <>
             <Box as="nav" role="navigation" bg="bg.accent.default">
-                <Container flex="1">
-                    <Box display="flex" alignItems="center" justifyContent="space-between">
-                        <Menu>
-                            <MenuButton
-                                as={IconButton}
-                                aria-label='Options'
-                                icon={<HamburgerIcon />}
-                                variant='outline'
-                                onClick={onOpen}
-                                colorScheme='teal'
-                                ref={btnRef}
-                            />
-                        </Menu>
-                    </Box>
-
-                </Container>
+                <Box display="flex" alignItems="center" justifyContent="space-between">
+                    <Menu>
+                        <MenuButton
+                            as={IconButton}
+                            aria-label='Options'
+                            icon={<HamburgerIcon />}
+                            variant='outline'
+                            onClick={onOpen}
+                            colorScheme='teal'
+                            ref={btnRef}
+                        />
+                    </Menu>
+                </Box>
             </Box>
             <Drawer
                 isOpen={isOpen}
                 placement='left'
                 onClose={onClose}
-                finalFocusRef={btnRef}
             >
                 <DrawerOverlay />
                 <DrawerContent>
                     <DrawerCloseButton />
-                    <DrawerHeader>Create your account</DrawerHeader>
+                    <DrawerHeader>メニュー</DrawerHeader>
 
                     <DrawerBody>
-                        <Input placeholder='Type here...' />
+                        <Stack spacing='24px'>
+                            <Box minH='100%' minW='250px'>
+                                <List minH="inherit">
+                                    <ListItem minH="50px">
+                                        <ListIcon as={SunIcon} color="red.300" />
+                                        テスト1
+                                    </ListItem>
+                                    <ListItem minH="50px">
+                                        <ListIcon as={SunIcon} color="red.300" />
+                                        テスト2
+                                    </ListItem>
+                                    <ListItem minH="50px">
+                                        <ListIcon as={SunIcon} color="red.300"/>
+                                        テスト3
+                                    </ListItem>
+                                </List>
+                            </Box>
+                        </Stack>
                     </DrawerBody>
 
-                    <DrawerFooter>
+                    <DrawerFooter borderTopWidth='1px'>
                         <Button variant='outline' mr={3} onClick={onClose}>
                             Cancel
                         </Button>
-                        <Button colorScheme='blue'>Save</Button>
                     </DrawerFooter>
                 </DrawerContent>
             </Drawer>
