@@ -1,1 +1,21 @@
-export default {}
+const config = {
+    clearMocks: true,
+    collectCoverage: false,
+    coverageDirectory: "coverage",
+    moduleFileExtensions: ["js", "jsx", "ts", "tsx"],
+    testEnvironment: "jest-environment-jsdom",
+    transform: { ".+\\.(ts|tsx)$": "ts-jest" },
+    setupFilesAfterEnv: ["./jest.setup.ts"],
+    reporters: [
+        "default",
+        [
+            "jest-html-reporters",
+            {
+                publicPath: '__reports__',
+                filename: "jest.html",
+            },
+        ],
+    ],
+};
+
+export default config
