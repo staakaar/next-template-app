@@ -50,6 +50,27 @@ function mockAPI(input: TestInput, status = 200) {
 
 ```
 
+### APIデータオブジェクト
+`fixtures`でデータオブジェクトを設定
+```typescript
+export const httpError: HttpError = {
+    err: { message: "internal server error"},
+};
+```
+
+### API層の処理
+`api`で各種APIの実装、HTTP通信周りの処理を記載
+```typescript
+```
+
+### テストで使用する型定義
+`types`で設定を実施する
+```typescript
+export type HttpError = {
+  err: { message: string };
+};
+```
+
 ### APIテストデータ
 #### APIファクトリー関数
 
@@ -62,6 +83,39 @@ function testFactory(input?: Partial<Test>): TestInput {
     };
 }
 ```
+
+#### フォームデータのセット
+`utils`を作成してユーザーイベントとセットで記載
+```typescript
+//　ロールを取得するための共通処理
+export function getGroupByName(name: string) {
+  return screen.getByRole("group", { name });
+}
+
+// 入力フォームにデータを入力する
+export async function inputContactNumber(
+  inputValues = {
+    name: "田中 太郎",
+    phoneNumber: "000-0000-0000",
+  }
+) {
+  await user.type(
+    screen.getByRole("textbox", { name: "電話番号" }),
+    inputValues.phoneNumber
+  );
+  await user.type(
+    screen.getByRole("textbox", { name: "お名前" }),
+    inputValues.name
+  );
+  return inputValues;
+}
+```
+
+#### バリデーション
+`validation`でバリデーション作成
+
+
+
 #### セットアップ関数
 
 ```typescript
@@ -90,7 +144,35 @@ describe("テストの結果", () => {
  */
 ```
 
+#### クエリー優先順位
+
+- 一般的なクエリー
+    - getByRole
+    - getByLabelText
+    - getByPlaceholderText
+    - getByText
+    - getByDisplayValue
+- セマンティッククエリー
+    - getByAltText
+    - getByTitle
+- テストID
+    - getByTestId
+
+#### アクセシブルネームの生成
+
+```typescript
+import { userId } from 'react';
+
+export const Test = () => {
+    const headingId = useId(); // 一意のID生成
+}
+```
+
 ## UIコンポーネントテスト
+
+### UIコンポーネントテストにおける注意点
+- やみくもに<div>タグなどを使用するのはNG `理由`ロールを持たないためアクセシビリティツリー上でひとまとまりのグループとして識別できないため
+
 
 ### 要素テスト
 
@@ -159,3 +241,21 @@ test("属性のテスト", () => {
 });
 ```
 
+### ユーザーイベント
+
+```typescript
+const user = userEvent.setup();
+user.click() // チェックボックスなど要素をクリック時に使用
+```
+
+## スナップショットテスト
+
+### スナップショットの撮り方
+```typescript
+const { container } = render(<Form />);
+expect(container).toMatchSnapshot();
+```
+
+```shell
+npx jest --updateSnapshot
+```
