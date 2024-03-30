@@ -158,8 +158,41 @@ describe("テストの結果", () => {
 - テストID
     - getByTestId
 
-#### アクセシブルネームの生成
+#### ロールとアクセシブルネーム
 
+##### ロール
+
+- 要素とロールが同じ場合 Buttonなど
+- 要素とロールが同じでない場合
+```typescript
+<input type="text" />
+<input type="checkbox" />
+<input type="radio" />
+<input type="number" />
+```
+- h1~h6の場合
+```typescript
+// 明示的か暗黙的かの違い
+<h1 role="heading">見出し</h1>
+<h1>見出し</h1>
+
+getByRole("heading", { level: 1 });
+<h1>見出し</h1>
+<div role="heading" aria-level="1">見出し</div>
+```
+##### ロールとアクセシブルネームの確認
+```typescript
+test("", () => {
+    const { container } = render(<Form />);
+    logRoles(container);
+});
+```
+##### 参照
+[Accessible Rich Internet Applications (WAI-ARIA)](https://www.w3.org/TR/wai-aria-1.2/)
+[WAI-ARIAロール](https://developer.mozilla.org/ja/docs/Web/Accessibility/ARIA/Roles)
+[暗黙のロール対応表](https://www.npmjs.com/package/aria-query)
+
+##### アクセシブルネームの生成
 ```typescript
 import { userId } from 'react';
 
@@ -172,7 +205,6 @@ export const Test = () => {
 
 ### UIコンポーネントテストにおける注意点
 - やみくもに<div>タグなどを使用するのはNG `理由`ロールを持たないためアクセシビリティツリー上でひとまとまりのグループとして識別できないため
-
 
 ### 要素テスト
 
@@ -259,3 +291,45 @@ expect(container).toMatchSnapshot();
 ```shell
 npx jest --updateSnapshot
 ```
+
+## カバレッジ
+
+### カバレッジレポート出力
+
+```shell
+npx jest --coverage
+```
+
+### カバレッジレポート
+
+|File|Stmts|Branch|Funcs|Lines|Uncovered Line|
+|:------:|:------|:------|:------|:------|:------|
+|ファイル名称|命令網羅率|分岐網羅率|関数網羅率|行網羅率|網羅されていない行|
+
+`ファイル名称`・・・テスト対象のファイル名
+`命令網羅率`・・・テスト対象ファイルに含まれる「すべてのステートメント」が少なくとも一回実行されたかを示す
+`分岐網羅率`・・・「すべての分岐条件」が少なくとも一回通過したか
+`関数網羅率`・・・「すべての関数」が少なくとも一回は呼び出されたか
+`行網羅率`・・・「すべての行」を少なくとも一回通過したか
+`網羅されていない行`・・・
+
+### 特定のテストを実行しない
+xを先頭に付与した場合はテストが実行されない
+カバレッジ内訳において赤く塗りつぶされる
+
+```typescript
+import { greetByTime } from "./greetByTime";
+
+describe("test", () => {
+    beforeEach(() => {
+        jest.useFakeTimes();
+    });
+    afterEach(() => {
+        jest.useRealTimers();
+    });
+    test("test1", () => {});
+    xtest("test2", () => {});
+});
+```
+
+### カスタムレポーター
