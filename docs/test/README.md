@@ -333,3 +333,152 @@ describe("test", () => {
 ```
 
 ### カスタムレポーター
+
+# Nextjsテスト
+## コンテキスト結合テスト
+
+### コンポーネントテスト
+
+```typescript
+test("UIコンポーネントテスト", async () => {
+    const message = "test";
+    render (
+        <ToastProvider>
+            <TestComponent message={message} />
+        </ToastProvider>
+    )
+    expect(screen.queryByRole("alert")).not.toBeInTheDocument();
+    await user.click(screen.getByRole("button"));
+    expect(screen.getByRole("alert")).toHaveTextContent(message);
+});
+```
+
+## Routerテスト (PagesRouter)
+### next-router-mock
+jestでNextjsのrouterに関するテストを実施できるようにするモックライブラリ
+```shell
+npm install --save-dev next-router-mock
+```
+### 実例
+
+```typescript
+import mockRouter from "next-router-mock";
+
+test("Routerテスト", () => {
+    mockRouter.setCurrentUrl("/my/posts");
+    render(<Nav onCloseMenu={() => {}} />);
+    const link = screen.getByRole("link", { name: "My Posts" });
+    expect(link).toHaveAttribute("aria-current", "page");
+});
+```
+
+### test.each
+同じテストをパラメーターだけを変更して反復したい時に利用
+
+## Routerテスト (AppRouter)
+
+## 操作結合テスト
+### 検索フォームテスト
+
+```typescript
+import { render, screen } from "@testing-library/react";
+import mockRouter from "next-router-mock";
+
+const user = userEvent.setup();
+
+function setup(url = "post/test") {
+    mockRouter.setCurrentUrl(url);
+    render(<Header />);
+    const combobox = screen.getByRole("combobox", { name: "公開ステータス"　});
+    // セレクトボックスから要素選択
+    async function selectOption(label: string) {
+        await user.selectOptions(conbobox, label);
+    }
+    return { conbobox, selectOption };
+}
+
+test("検索フォームテスト", async () => {
+    const { combobox } = setup();
+    expect(combobox).toHaveDisplayValue("すべて");
+});
+
+test("", async () => {
+    const { selectOption } = setup();
+    expect(mockRouter).toMatchObject({ query: { page: "1" } });
+    await selectOption("");
+    expect(mockRouter).toMatchObject({ query: { page: "1", status: "private" } });
+    await selectOption("");
+    expect(mockRouter).toMatchObject({ query: { page: "1", status: "private" } });
+});
+```
+
+### 参考
+[ネストを避けたテストコード](!https://kentcdodds.com/blog/avoid-nesting-when-youre-testing#apply-aha-avoid-hasty-abstractions)
+
+## ReactHookFormテスト
+
+```typescript
+function setup() {
+  const onClickSave = jest.fn();
+  const onValid = jest.fn();
+  const onInvalid = jest.fn();
+  render(
+    <FormComponet
+        onClickSave={onClickSave}
+        onValid={onValid}
+        onInvalid={onInvalid}
+    />
+  );
+
+  // ユーザーイベントを関数化
+  async function typeTitle(title: string) {
+    const textbox = screen.getByRole("textbox", { name: "記事タイトル" });
+    await user.type(textbox, title);
+  }
+  async function saveAsPublished() {
+    await user.click(screen.getByRole("switch", { name: "公開ステータス" }));
+    await user.click(screen.getByRole("button", { name: "記事を公開する" }));
+  }
+  async function saveAsDraft() {
+    await user.click(screen.getByRole("button", { name: "下書き保存する" }));
+  }
+
+  return {
+    typeTitle,
+    saveAsDraft,
+    saveAsPublished,
+    onClickSave,
+    onValid,
+    onInvalid,
+  };
+}
+
+test("バリデーションエラーテスト", async () => {
+  // spyOnモックを呼び出すこともある
+  const { saveAsDraft } = setup();
+  await saveAsDraft();
+  // リトライのために用意した関数
+  await waitFor(() =>
+    expect(
+      screen.getByRole("textbox", { name: "記事タイトル" })
+    ).toHaveErrorMessage("1文字以上入力してください")
+  );
+});
+```
+
+## WebAPIモックMSW
+WebAPIリクエストをインターセプトしてレスポンスを任意の値に置き換えることができるモック
+
+- リクエストハンドラー
+```typescript
+import { setupWorker, rest } from "msw";
+const worker = setupWorker(
+    rest.post("/login", async (req, res, ctx) => {
+        const { username } = await req.json();
+        return res(
+            ctx.json({ username, firstName: "John" })
+        );
+    })
+);
+worker.start();
+```
