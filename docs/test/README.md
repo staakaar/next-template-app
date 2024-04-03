@@ -482,3 +482,54 @@ const worker = setupWorker(
 );
 worker.start();
 ```
+
+## 結合テスト
+
+- 一般的にHooksにまとめていることが多いため、Hook関数内で画像URL状態管理とfetch関数の呼び出し制御
+- 画像選択のモック
+```typescript
+import userEvent from "@testing-library/user-event";
+
+export function selectImageFile(inputTestId = "file", fileName = "hello.png", content = "hello") {
+    // userEventを初期化
+    const user = userEvent.setup();
+    // ダミーの画像ファイルを作成
+    const filePath = [`C:\\fakepath\\${fileName}`];
+    const file = new File([content], fileName, { type: "image/png" });
+    // renderしたコンポーネントに含まれるdata-testid="file"相当のinput要素を取得
+    const fileInput = screen.getByTestId(inputTestId);
+    // この関数を実行すると、画像選択が再現
+    const selectImage = () => user.upload(fileInput, file);
+    return { fileInput, filePath, selectImage };
+}
+```
+
+- 画像アップロードAPIモック
+```typescript
+import { ErrorStatus, HttpError } from "@/lib/error";
+import * as UploadImage from "../fetcher";
+import { uploadImageData } from "./fixture";
+
+jest.mock("../fetcher");
+
+export function mockUploadImage(status?: ErrorStatus) {
+    if (status && status > 299) {
+        return jest.spyOn(UploadImage, "uploadImage").mockRejectedValueOnce(new HttpError(status).serialize());
+    }
+
+    return jest.spyOn(UploadImage, "uploadImage").mockResolvedValueOnce(uploadImageData);
+}
+```
+
+- アップロードに成功するテスト
+```typescript
+test("アップロード成功", async () => {
+    mockUploadImage();
+    render(<TestComponent />);
+    expect(screen.getByRole("img").getAttribute("src")).toBeFalsy();
+    const { selectImage } = selectImageFile();
+    await selectImage();
+    await waitFor(() => expect(screen.getByRole("img").getAttribute("src")).toBeTruthy());
+    await waitFor(() => expect(screen.getByRole("alert")).toHaveTextContent("画像のアップロードに失敗しました"));
+});
+```
