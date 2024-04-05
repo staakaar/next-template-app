@@ -7,7 +7,10 @@ const config: StorybookConfig = {
     "@storybook/addon-essentials",
     "@storybook/addon-onboarding",
     "@storybook/addon-interactions",
-    "@chakra-ui/storybook-addon"
+    "@chakra-ui/storybook-addon",
+    "storybook-addon-next-router",
+    "@storybook/addon-interactions",
+    "@storybook/addon-a11y"
   ],
   framework: {
     name: "@storybook/nextjs",
@@ -18,6 +21,8 @@ const config: StorybookConfig = {
   },
   features: {
     // emotionAlias: false,
+    interactionsDebugger: true,
   },
+  staticDirs: ["../public"]
 };
 export default config;
