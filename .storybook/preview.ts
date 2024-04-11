@@ -28,7 +28,7 @@ const preview: Preview = {
     },
     nextRouter: {
       Provider: AppRouterContext.Provider
-    }
+    },
   },
 };
 
