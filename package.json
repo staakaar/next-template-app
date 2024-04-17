@@ -10,6 +10,7 @@
     "test:watch": "jest --watch",
     "lint": "next lint",
     "storybook": "storybook dev -p 6006",
+    "test:storybook": "test-storybook",
     "build-storybook": "storybook build"
   },
   "dependencies": {
@@ -21,12 +22,15 @@
     "@reduxjs/toolkit": "^2.2.1",
     "@storybook/addon-a11y": "^8.0.6",
     "@storybook/jest": "^0.2.3",
+    "@storybook/test-runner": "^0.17.0",
     "@storybook/testing-library": "^0.2.2",
+    "@storybook/testing-react": "^2.0.1",
     "@testing-library/react": "^14.2.2",
     "@testing-library/user-event": "^14.5.2",
     "@types/jest": "^29.5.12",
     "@typescript-eslint/eslint-plugin": "^7.1.1",
     "@typescript-eslint/parser": "^7.1.1",
+    "axe-playwright": "^2.0.1",
     "eslint-config-prettier": "^9.1.0",
     "eslint-plugin-import": "^2.29.1",
     "eslint-plugin-prettier": "^5.1.3",
