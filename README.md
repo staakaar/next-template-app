@@ -61,8 +61,18 @@
 
 ### デザインツール
 
-![Storybook](https://img.shields.io/badge/Storybook-FF4785?style=for-the-badge&logo=storybook&logoColor=white)
-![Figma](https://img.shields.io/badge/Figma-F24E1E?style=for-the-badge&logo=figma&logoColor=white)
+[![Storybook](https://img.shields.io/badge/Storybook-FF4785?style=for-the-badge&logo=storybook&logoColor=white)]()
+[![Figma](https://img.shields.io/badge/Figma-F24E1E?style=for-the-badge&logo=figma&logoColor=white)](https://www.figma.com/ja-jp/)
+
+### パフォーマンス
+
+![Web Vitals](https://img.shields.io/badge/Web_Vitals-4B32C3?style=for-the-badge&logo=web-vitals&logoColor=white)
+
+### OpenTelemetry
+
+![Vercel Otel](https://img.shields.io/badge/Vercel_Otel-000000?style=for-the-badge&logo=vercel&logoColor=white)
+
+
 
 ### セットアップ
 
