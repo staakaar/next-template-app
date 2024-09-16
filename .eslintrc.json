@@ -1,3 +1,18 @@
 {
-  "extends": "next/core-web-vitals"
+    "extends": [
+        "eslint:recommended",
+        "plugin:react/recommended",
+        "next/core-web-vitals",
+        "prettier"
+    ],
+    "settings": {
+        "react": {
+            "version": "detect" // Reactのバージョンを自動検出
+        }
+    },
+    "plugins": ["react", "prettier"],
+    "rules": {
+        "prettier/prettier": "off",
+        "react/react-in-jsx-scope": "off"
+    }
 }
