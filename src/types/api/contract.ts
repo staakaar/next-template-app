@@ -1,3 +1,4 @@
+// You can use a Zod schema here if you want.
 export type Contract = {
     contractCode: string;
     contractName: string;

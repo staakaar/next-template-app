@@ -12,14 +12,6 @@ import {
 } from "@tanstack/react-table";
 /** typesから参照 */
 import { useState } from "react";
-import { Input } from "@/components/ui/input";
-import {
-    Select,
-    SelectContent,
-    SelectItem,
-    SelectTrigger,
-    SelectValue,
-} from "@/components/ui/select";
 import {
     Table,
     TableBody,
@@ -34,29 +26,8 @@ import {
     TooltipProvider,
     TooltipTrigger,
 } from "@/components/ui/tooltip";
-import {
-    Pagination,
-    PaginationContent,
-    PaginationEllipsis,
-    PaginationItem,
-    PaginationLink,
-    PaginationNext,
-    PaginationPrevious,
-} from "@/components/ui/pagination";
 
-import { Button } from "@/components/ui/button";
-import {
-    Box,
-    Flex,
-    IconButton,
-    Stack,
-    Text,
-    TableContainer,
-    Collapse,
-} from "@chakra-ui/react";
-import ContractStatusTab from "@/components/common/ContractStatusTab";
-import { ChevronLeftIcon, ChevronRightIcon } from "@chakra-ui/icons";
-import { SearchIcon } from "lucide-react";
+import { Box, TableContainer } from "@chakra-ui/react";
 
 /** 保存時はserver componentで処理 */
 
@@ -115,7 +86,7 @@ const ContractListTablePresentational = <TData, TValue>({
 
     return (
         <Box minW={{ base: "100%" }}>
-            <Flex justifyContent="space-between" alignItems="center" mb={2}>
+            {/* <Flex justifyContent="space-between" alignItems="center" mb={2}>
                 <Box
                     flex="1"
                     textAlign="center"
@@ -146,28 +117,12 @@ const ContractListTablePresentational = <TData, TValue>({
                 <Box className="flex justify-end">
                     <Button className="">新規作成</Button>
                 </Box>
-            </Flex>
+            </Flex> */}
             {/* ステータスタブを表示 // */}
 
-            <ContractStatusTab />
+            {/* <ContractStatusTab /> */}
             {/* contractSearchコンポーネントを配置 */}
-            <Collapse in={isOpen} animateOpacity>
-                <Box
-                    bg="whiteAlpha.100"
-                    rounded="md"
-                    shadow="md"
-                    width="100%"
-                    height={{
-                        base: "800px",
-                        sm: "300px",
-                        md: "500px",
-                        lg: "800px",
-                        "2xl": "1000px",
-                    }}
-                >
-                    <div>検索エリア</div>
-                </Box>
-            </Collapse>
+
             <TableContainer
                 h={{ base: "300px", md: "500px", lg: "700px" }}
                 overflowY="auto"
@@ -292,7 +247,7 @@ const ContractListTablePresentational = <TData, TValue>({
                     >
                         Next
                     </Button> */}
-                <Pagination className="flex justify-end">
+                {/* <Pagination className="flex justify-end">
                     <Select
                         value={`${table.getState().pagination.pageSize}`}
                         onValueChange={(value) => {
@@ -350,7 +305,7 @@ const ContractListTablePresentational = <TData, TValue>({
                     <Text ml={4} mt={2} mr={8}>
                         全 {totalCount} 件
                     </Text>
-                </Pagination>
+                </Pagination> */}
             </div>
         </Box>
     );

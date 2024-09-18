@@ -13,7 +13,7 @@ import {
     PaginationPrevTrigger,
     PaginationRoot,
 } from "@/components/ui/pagination";
-import useFetchContracts from "@/lib/contract/api";
+import { onContractBasicSubmit as useFetchContracts } from "@/lib/contract/api";
 import { useState } from "react";
 import React from "react";
 import { HStack } from "@chakra-ui/react";

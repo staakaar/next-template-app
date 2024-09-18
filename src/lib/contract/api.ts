@@ -1,7 +1,10 @@
 /** fetch server actions */
+"use server";
 import { ApiContext } from "@/types/api";
 import { ContractResponse } from "@/types/api/contract";
+import { redirect } from "next/navigation";
 import useSWR from "swr";
+import { z } from "zod";
 
 export type QueryParams = {};
 
@@ -9,7 +12,7 @@ export type QueryParams = {};
 const fetcher = (url: string): Promise<ContractResponse[] | undefined> =>
     fetch(url).then((res) => res.json());
 
-export default function useFetchContracts(
+export default async function useFetchContracts(
     page: number,
     pageSize: number,
     search: string
@@ -34,4 +37,17 @@ export default function useFetchContracts(
         isLoading: !error && !data,
         isError: error,
     };
+}
+
+const formSchema = z.object({
+    username: z.string().min(2, {
+        message: "ユーザー名は必須です。",
+    }),
+});
+
+export async function onContractBasicSubmit(
+    values: z.infer<typeof formSchema>
+) {
+    console.log(values.username);
+    redirect("/contract-all");
 }

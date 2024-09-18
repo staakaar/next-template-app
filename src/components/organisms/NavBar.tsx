@@ -27,7 +27,7 @@ export const Navbar = () => {
 
     return (
         <>
-            <Box as="nav" role="navigation" bg="bg.accent.default">
+            <Box as="nav" role="navigation" bg="">
                 <Box
                     display="flex"
                     alignItems="center"
@@ -40,7 +40,6 @@ export const Navbar = () => {
                             icon={<HamburgerIcon />}
                             variant="outline"
                             onClick={onOpen}
-                            colorScheme="gray"
                             ref={btnRef}
                         />
                     </Menu>

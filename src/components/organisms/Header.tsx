@@ -1,97 +1,82 @@
 "use client";
+import { Box, Menu, MenuButton, MenuItem, MenuList } from "@chakra-ui/react";
 import {
-    Box,
-    Button,
-    Container,
-    Flex,
-    HStack,
-    Menu,
-    MenuButton,
-    MenuItem,
-    MenuList,
-} from "@chakra-ui/react";
+    Menubar,
+    MenubarContent,
+    MenubarItem,
+    MenubarMenu,
+    MenubarSeparator,
+    MenubarTrigger,
+} from "@/components/ui/menubar";
 import { Navbar } from "./NavBar";
 import { IconButton } from "@chakra-ui/react";
-import { TriangleDownIcon } from "@chakra-ui/icons";
-import { ChevronDown, SearchIcon } from "lucide-react";
+import { QuestionOutlineIcon } from "@chakra-ui/icons";
+import { ChevronDownIcon } from "lucide-react";
 import Link from "next/link";
 
 const Header = () => {
     return (
-        <Container
-            minWidth="100vw"
-            minHeight="5vh"
-            p="4"
-            borderBottom={"solid"}
-            borderColor={"gray.100"}
-        >
-            {/* <HStack justifyContent={"space-between"}> */}
-            <Flex justifyContent="space-between">
-                <Flex as="header" justifyContent="flex-start">
-                    <Box>
-                        <Navbar></Navbar>
-                    </Box>
-                    <Box
-                        fontWeight="bold"
-                        fontSize="lg"
-                        marginLeft="20px"
-                        marginTop="6px"
-                    >
+        <Box className="border-b">
+            <Box className="flex h-16 items-center px-4 justify-between">
+                <Box className="flex items-center">
+                    <Navbar />
+                    <Box fontWeight="bold" fontSize="lg" marginLeft="20px">
                         サービス名
                     </Box>
-                    <Box marginLeft="100px" marginTop="6px">
-                        <Menu>
-                            <MenuButton
-                                as={Button}
-                                variant="link"
-                                leftIcon={<ChevronDown />}
-                                _hover={{ textDecoration: "none" }}
-                            >
-                                管理
-                            </MenuButton>
-                            <MenuList>
-                                <MenuItem>
-                                    <Link href="">契約書一覧</Link>
-                                </MenuItem>
-                                <MenuItem>
-                                    <Link href="">契約書一覧発行</Link>
-                                </MenuItem>
-                            </MenuList>
-                        </Menu>
-                        <Menu autoSelect>
-                            <MenuButton
-                                marginLeft="100px"
-                                as={Button}
-                                variant="link"
-                                leftIcon={<ChevronDown />}
-                                _hover={{ textDecoration: "none" }}
-                            >
-                                設定
-                            </MenuButton>
-                            <MenuList>
-                                <MenuItem>
-                                    <Link href="">契約書一覧</Link>
-                                </MenuItem>
-                                <MenuItem>
-                                    <Link href="">契約書一覧発行</Link>
-                                </MenuItem>
-                            </MenuList>
-                        </Menu>
+                    <Box
+                        as="nav"
+                        className="flex items-center space-x-4 lg:space-x-4 mx-6"
+                    >
+                        <Menubar className="space-x-4">
+                            <MenubarMenu>
+                                <MenubarTrigger>管理</MenubarTrigger>
+                                <MenubarContent>
+                                    <MenubarItem>
+                                        <Link href={""}>契約書一覧</Link>
+                                    </MenubarItem>
+                                    <MenubarItem>
+                                        <Link href={""}>契約書</Link>
+                                    </MenubarItem>
+                                    <MenubarSeparator />
+                                </MenubarContent>
+                            </MenubarMenu>
+                            <MenubarMenu>
+                                <MenubarTrigger>設定</MenubarTrigger>
+                                <MenubarContent>
+                                    <MenubarItem>
+                                        <Link href={"/contract-all"}>
+                                            契約書一覧
+                                        </Link>
+                                    </MenubarItem>
+                                    <MenubarItem>
+                                        <Link href={"/contract-all"}>
+                                            契約書
+                                        </Link>
+                                    </MenubarItem>
+                                    <MenubarSeparator />
+                                </MenubarContent>
+                            </MenubarMenu>
+                        </Menubar>
                     </Box>
-                </Flex>
-                <Flex as="header" justifyContent="flex-end">
-                    <Box>
-                        <HStack>
+                </Box>
+                <Box className="flex items-center">
+                    <Box className="flex items-center">
+                        <Box className="space-x-4">
                             <IconButton
-                                icon={<SearchIcon />}
                                 aria-label={"button"}
-                                bg={"none"}
+                                icon={<QuestionOutlineIcon />}
+                                bg={"white"}
                             />
+                        </Box>
+                        <Box className="space-x-4 ml-4">
+                            <p>会社名</p>
+                        </Box>
+                        <Box className="space-x-4 ml-4">
                             <Menu>
                                 <MenuButton
-                                    aria-label="user profile"
+                                    aria-label={"button"}
                                     as={IconButton}
-                                    icon={<TriangleDownIcon />}
+                                    icon={<ChevronDownIcon />}
                                     bg={"none"}
                                 ></MenuButton>
                                 <MenuList>
@@ -99,12 +84,11 @@ const Header = () => {
                                     <MenuItem>ヘルプ</MenuItem>
                                 </MenuList>
                             </Menu>
-                        </HStack>
+                        </Box>
                     </Box>
-                </Flex>
-            </Flex>
-            {/* </HStack> */}
-        </Container>
+                </Box>
+            </Box>
+        </Box>
     );
 };
 export default Header;

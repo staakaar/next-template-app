@@ -4,6 +4,7 @@ import { Providers } from "./providers";
 import { cn } from "@/lib/utils";
 import "./globals.css";
 import React from "react";
+import Header from "@/components/organisms/Header";
 
 const fontSans = FontSans({
     subsets: ["latin"],
@@ -28,6 +29,7 @@ export default function RootLayout({
                     fontSans.variable
                 )}
             >
+                <Header />
                 <Providers>{children}</Providers>
             </body>
         </html>
