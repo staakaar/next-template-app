@@ -5,6 +5,8 @@ import { cn } from "@/lib/utils";
 import "./globals.css";
 import React from "react";
 import Header from "@/components/organisms/Header";
+import { RecoilRootProvider } from "@/app/recoil";
+import { TooltipProvider } from "@/components/ui/tooltip";
 
 const fontSans = FontSans({
     subsets: ["latin"],
@@ -29,8 +31,12 @@ export default function RootLayout({
                     fontSans.variable
                 )}
             >
-                <Header />
-                <Providers>{children}</Providers>
+                <RecoilRootProvider>
+                    <TooltipProvider>
+                        <Header />
+                        <Providers>{children}</Providers>
+                    </TooltipProvider>
+                </RecoilRootProvider>
             </body>
         </html>
     );

@@ -4,14 +4,7 @@ import ContractListTableContainer from "./_components/ContractListTableContainer
 import { Box, Button } from "@chakra-ui/react";
 import Link from "next/link";
 
-// shadcn ui でテーブル作成は DataTableパクる
-// ステータスバーはhttps://ui.shadcn.com/examples/dashboard 参考にする項目数が多い場合は左右スライド可能
-// 見出しと新規作成ボタンも現状のサイドメニューも↑参考にする
-
-// 新規作成、詳細ページの画面は見出し、タブ、ボタンは↑と同様にする
-// もしくは https://ui.shadcn.com/examples/forms 参考にする
-
-const ContractList = () => {
+const ContractAllList = () => {
     return (
         <>
             {/* タブで管理メニューと設定メニューを表示 */}
@@ -39,12 +32,6 @@ const ContractList = () => {
                             <TabsTrigger value="password">却下</TabsTrigger>
                         </TabsList>
                     </Tabs>
-                    {/* <Container maxW={{ base: "100vw" }} mt={10}> */}
-                    {/* 検索窓の表示・検索項目のドロップダウン・新規追加ボタン // */}
-                    {/* <ContractSearchMenu /> */}
-                    {/* ContractListTableContainer ContractListTablePresentationalを作成 */}
-
-                    {/* </Container> */}
                 </Box>
                 <Box className="space-x-4 px-8">
                     <ContractListTableContainer />
@@ -54,4 +41,4 @@ const ContractList = () => {
         </>
     );
 };
-export default ContractList;
+export default ContractAllList;

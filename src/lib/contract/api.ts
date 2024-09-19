@@ -5,6 +5,7 @@ import { ContractResponse } from "@/types/api/contract";
 import { redirect } from "next/navigation";
 import useSWR from "swr";
 import { z } from "zod";
+import { contractBasicFormSchema, ContractBasicFormSchema } from "./schema";
 
 export type QueryParams = {};
 
@@ -39,6 +40,14 @@ export default async function useFetchContracts(
     };
 }
 
+export async function postContractBasic(formData: ContractBasicFormSchema) {
+    const validatedData = contractBasicFormSchema.parse(formData);
+
+    console.log("***", validatedData);
+    return { success: true, message: "基本情報の保存に成功しました" };
+}
+
+// 以下不要
 const formSchema = z.object({
     username: z.string().min(2, {
         message: "ユーザー名は必須です。",

@@ -1,3 +1,4 @@
+"use client";
 import {
     Box,
     Step,
@@ -26,26 +27,30 @@ const ContractStatusStepper = () => {
     });
 
     return (
-        <Stepper size="lg" index={activeStep}>
-            {ContractSteps.map((step, index) => (
-                <Step key={index}>
-                    <StepIndicator>
-                        <StepStatus
-                            complete={<StepIcon />}
-                            incomplete={<StepNumber />}
-                            active={<StepNumber />}
-                        />
-                    </StepIndicator>
+        <Box className="flex justify-center sm:w-min-full md:w-min-full lg:w-min-full">
+            <Stepper size="lg" index={activeStep} className="mt-2 mb-6">
+                {ContractSteps.map((step, index) => (
+                    <Step key={index}>
+                        <StepIndicator>
+                            <StepStatus
+                                complete={<StepIcon />}
+                                incomplete={<StepNumber />}
+                                active={<StepNumber />}
+                            />
+                        </StepIndicator>
 
-                    <Box flexShrink="0">
-                        <StepTitle>{step.title}</StepTitle>
-                        <StepDescription>{step.description}</StepDescription>
-                    </Box>
+                        <Box flexShrink="0" className="mx-6">
+                            <StepTitle>{step.title}</StepTitle>
+                            <StepDescription>
+                                {step.description}
+                            </StepDescription>
+                        </Box>
 
-                    <StepSeparator />
-                </Step>
-            ))}
-        </Stepper>
+                        <StepSeparator />
+                    </Step>
+                ))}
+            </Stepper>
+        </Box>
     );
 };
 

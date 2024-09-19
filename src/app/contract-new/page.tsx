@@ -4,7 +4,8 @@ import { Separator } from "@/components/ui/separator";
 
 import { Box, Button, Heading, VStack } from "@chakra-ui/react";
 import Link from "next/link";
-import ContractBasicForm from "@/components/common/ContractBasicForm";
+import ContractStatusStepper from "@/components/common/ContractStatusStepper";
+import ContractBasicContainer from "@/components/common/ContractBasicContainer";
 
 /** 新規作成ページ */
 const ContractNewPage = () => {
@@ -12,13 +13,16 @@ const ContractNewPage = () => {
         <>
             {/* 詳細タブ表示(各ドメイン) */}
             {/* タブに応じて新規作成ページを切り替える 契約書情報を一番最初に入力する必要あり */}
-            <Card className=" flex-1 space-y-4 p-8 pt-6">
+            <Card className="flex-1 space-y-4 p-8 pt-6">
                 <Box className="text-sm font-medium">
                     <Link href={"/contract-all"}>一覧へ戻る</Link>
                 </Box>
                 {/* TODO: プログレスバーを設置 */}
+                <ContractStatusStepper />
                 <Box className="flex items-center justify-between space-y-2 px-8">
-                    <h1>新規作成画面</h1>
+                    <Heading className="text-md font-bold">
+                        新規作成画面
+                    </Heading>
                     <Box className="flex items-center space-x-2">
                         {/* 基本情報を保存した瞬間に非表示 */}
                         <Button>キャンセル</Button>
@@ -30,7 +34,7 @@ const ContractNewPage = () => {
                         <Button>発行</Button>
                     </Box>
                 </Box>
-                <Box className="space-x-4 px-8">
+                {/* <Box className="space-x-4 px-8">
                     <Tabs defaultValue="basic" className="w-[400px]">
                         <TabsList className="inline-flex h-9 items-center justify-center rounded-lg bg-muted p-1 text-muted-foreground">
                             <TabsTrigger value="basic">基本情報</TabsTrigger>
@@ -54,16 +58,10 @@ const ContractNewPage = () => {
                             <TabsTrigger value="history">履歴</TabsTrigger>
                         </TabsList>
                     </Tabs>
-                    {/* <Container maxW={{ base: "100vw" }} mt={10}> */}
-                    {/* 検索窓の表示・検索項目のドロップダウン・新規追加ボタン // */}
-                    {/* <ContractSearchMenu /> */}
-                    {/* ContractListTableContainer ContractListTablePresentationalを作成 */}
-
-                    {/* </Container> */}
-                </Box>
+                </Box> */}
                 <Separator />
 
-                <Box className="flex flex-col space-y-8 lg:flex-row lg:space-x-12 lg:space-y-0 space-x-4 px-8">
+                <Box className="flex flex-col space-y-8 lg:flex-row lg:space-x-12 lg:space-y-0 space-x-4 px-8 lg:h-[900px]">
                     <Box as="aside" className="-mx-4 lg:w-1/5">
                         <VStack
                             as="nav"
@@ -141,7 +139,8 @@ const ContractNewPage = () => {
                             <Button>更新</Button>
                         </Box>
                         <Separator />
-                        <ContractBasicForm />
+                        {/* containerにする */}
+                        <ContractBasicContainer />
                         {/* <ContractFileForm />
                         <ContractDetailsForm />
                         <ContractSectionForm />

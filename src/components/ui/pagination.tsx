@@ -4,7 +4,7 @@ import { ChevronLeft, ChevronRight, MoreHorizontal } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { ButtonProps, buttonVariants } from "@/components/ui/button";
 import Link from "next/link";
-import { ArrowLeftIcon, ArrowRightIcon } from "@chakra-ui/icons";
+import { ArrowLeftIcon, ArrowRightIcon, Icon } from "@chakra-ui/icons";
 
 const Pagination = ({ className, ...props }: React.ComponentProps<"nav">) => (
     <nav
@@ -87,8 +87,7 @@ const PaginationSkipPrevious = ({
         className={cn("gap-1 pl-2.5", className)}
         {...props}
     >
-        <ArrowLeftIcon className="h-4 w-4" />
-        {/* <span>Previous</span> */}
+        <Icon as={ArrowLeftIcon} boxSize={2} className="h-4 w-4" />
     </PaginationLink>
 );
 PaginationSkipPrevious.displayName = "PaginationSkipPrevious";
@@ -103,7 +102,6 @@ const PaginationNext = ({
         className={cn("gap-1 pr-2.5", className)}
         {...props}
     >
-        {/* <span>Next</span> */}
         <ChevronRight className="h-4 w-4" />
     </PaginationLink>
 );
@@ -119,8 +117,7 @@ const PaginationSkipNext = ({
         className={cn("gap-1 pr-2.5", className)}
         {...props}
     >
-        {/* <span>Next</span> */}
-        <ArrowRightIcon className="h-4 w-4" />
+        <Icon as={ArrowRightIcon} boxSize={2} className="h-4 w-4" />
     </PaginationLink>
 );
 PaginationSkipNext.displayName = "PaginationSkipNext";
