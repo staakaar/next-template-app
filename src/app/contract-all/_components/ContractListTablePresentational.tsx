@@ -1,5 +1,6 @@
 "use client";
-
+import Image from "next/image";
+import { Button } from "@chakra-ui/react";
 import {
     ColumnDef,
     ColumnFiltersState,
@@ -9,9 +10,46 @@ import {
     getPaginationRowModel,
     getSortedRowModel,
     useReactTable,
+    VisibilityState,
 } from "@tanstack/react-table";
-/** typesから参照 */
-import { useState } from "react";
+import {
+    DoubleArrowLeftIcon,
+    DoubleArrowRightIcon,
+} from "@radix-ui/react-icons";
+import { ChevronLeftIcon, ChevronRightIcon } from "lucide-react";
+import {
+    Pagination,
+    PaginationContent,
+    PaginationItem,
+    PaginationNext,
+    PaginationPrevious,
+    PaginationSkipNext,
+    PaginationSkipPrevious,
+} from "@/components/ui/pagination";
+import {
+    Select,
+    SelectContent,
+    SelectItem,
+    SelectTrigger,
+    SelectValue,
+} from "@/components/ui/select";
+import { Badge } from "@/components/ui/badge";
+import {
+    Card,
+    CardContent,
+    CardFooter,
+    CardHeader,
+    CardTitle,
+} from "@/components/ui/card";
+import {
+    DropdownMenu,
+    DropdownMenuCheckboxItem,
+    DropdownMenuContent,
+    DropdownMenuItem,
+    DropdownMenuLabel,
+    DropdownMenuSeparator,
+    DropdownMenuTrigger,
+} from "@/components/ui/dropdown-menu";
 import {
     Table,
     TableBody,
@@ -20,6 +58,8 @@ import {
     TableHeader,
     TableRow,
 } from "@/components/ui/table";
+/** typesから参照 */
+import { useState } from "react";
 import {
     Tooltip,
     TooltipContent,
@@ -27,16 +67,17 @@ import {
     TooltipTrigger,
 } from "@/components/ui/tooltip";
 
-import { Box, TableContainer } from "@chakra-ui/react";
+import { Box } from "@chakra-ui/react";
+import { useRouter } from "next/navigation";
 
 /** 保存時はserver componentで処理 */
 
 export type ContractListTableProps<TData, TValue> = {
-    columns: ColumnDef<TData, TValue>[];
     data: TData[];
-    onPageChange: (newPage: number) => void;
-    onPageSizeChange: (newPageSize: number) => void;
-    onSearch: (keyword: string) => void;
+    columns: ColumnDef<TData, TValue>[];
+    // onPageChange?: (newPage: number) => void;
+    // onPageSizeChange?: (newPageSize: number) => void;
+    // onSearch?: (keyword: string) => void;
     totalCount: number;
 };
 
@@ -47,21 +88,21 @@ type ColumnSort = {
 };
 type SortingState = ColumnSort[];
 
-const ContractListTablePresentational = <TData, TValue>({
-    columns,
+const ContractListTablePresentation = <TData, TValue>({
     data,
-    onPageChange,
-    onPageSizeChange,
-    onSearch,
+    columns,
     totalCount,
 }: ContractListTableProps<TData, TValue>) => {
+    const router = useRouter();
     const [sorting, setSorting] = useState<SortingState>([]);
     const [columnFilters, setColumnFilters] = useState<ColumnFiltersState>([]);
+    const [columnVisibility, setColumnVisibility] = useState<VisibilityState>(
+        {}
+    );
     const [pagination, setPagination] = useState({
         pageIndex: 0,
         pageSize: 50,
     });
-    const [isOpen, setIsOpen] = useState(false);
 
     const table = useReactTable({
         data,
@@ -73,63 +114,32 @@ const ContractListTablePresentational = <TData, TValue>({
         onColumnFiltersChange: setColumnFilters,
         getFilteredRowModel: getFilteredRowModel(),
         onPaginationChange: setPagination,
+        onColumnVisibilityChange: setColumnVisibility,
         state: {
             sorting,
             columnFilters,
+            columnVisibility,
             pagination,
         },
         manualPagination: true,
         pageCount: Math.ceil(totalCount / pagination.pageSize),
     });
 
-    const toggleExpansion = () => setIsOpen(!isOpen);
+    console.log(table.getRowModel().rows.length);
+    console.log(columns.length);
+    console.log(table.getPageCount(), totalCount / pagination.pageSize);
+
+    const navigateToContractDetail = (rowData: TData) => {
+        console.log(rowData);
+        router.push(`/contract/${rowData.contractCode}`);
+    };
 
     return (
-        <Box minW={{ base: "100%" }}>
-            {/* <Flex justifyContent="space-between" alignItems="center" mb={2}>
-                <Box
-                    flex="1"
-                    textAlign="center"
-                    className="flex justify-center"
-                >
-                    <Input
-                        placeholder="キーワード検索"
-                        value={
-                            (table
-                                .getColumn("name")
-                                ?.getFilterValue() as string) ?? ""
-                        }
-                        onChange={(event) => {
-                            table
-                                .getColumn("name")
-                                ?.setFilterValue(event.target.value);
-                            onSearch(event.target.value);
-                        }}
-                        className="max-w-sm"
-                    />
-                    <IconButton
-                        bg="whiteAlpha.100"
-                        aria-label="Search"
-                        icon={<SearchIcon />}
-                        onClick={toggleExpansion}
-                    />
-                </Box>
-                <Box className="flex justify-end">
-                    <Button className="">新規作成</Button>
-                </Box>
-            </Flex> */}
-            {/* ステータスタブを表示 // */}
-
-            {/* <ContractStatusTab /> */}
-            {/* contractSearchコンポーネントを配置 */}
-
-            <TableContainer
-                h={{ base: "300px", md: "500px", lg: "700px" }}
-                overflowY="auto"
-                border="1px solid"
-                borderColor="gray.100"
-                borderRadius="md"
-            >
+        <Card x-chunk="dashboard-06-chunk-0">
+            <CardHeader>
+                <CardTitle>契約書一覧</CardTitle>
+            </CardHeader>
+            <CardContent>
                 <Table>
                     <TableHeader>
                         {table.getHeaderGroups().map((headerGroup) => (
@@ -149,6 +159,25 @@ const ContractListTablePresentational = <TData, TValue>({
                                 })}
                             </TableRow>
                         ))}
+                        {/* <TableRow>
+                            <TableHead className="hidden w-[100px] sm:table-cell">
+                                <span className="sr-only">Image</span>
+                            </TableHead>
+                            <TableHead>Name</TableHead>
+                            <TableHead>Status</TableHead>
+                            <TableHead className="hidden md:table-cell">
+                                Price
+                            </TableHead>
+                            <TableHead className="hidden md:table-cell">
+                                Total Sales
+                            </TableHead>
+                            <TableHead className="hidden md:table-cell">
+                                Created at
+                            </TableHead>
+                            <TableHead>
+                                <span className="sr-only">Actions</span>
+                            </TableHead>
+                        </TableRow> */}
                     </TableHeader>
                     <TableBody>
                         {table.getRowModel().rows?.length ? (
@@ -158,30 +187,16 @@ const ContractListTablePresentational = <TData, TValue>({
                                     data-state={
                                         row.getIsSelected() && "selected"
                                     }
+                                    onClick={() =>
+                                        navigateToContractDetail(row.original)
+                                    }
                                 >
                                     {row.getVisibleCells().map((cell) => (
                                         <TableCell key={cell.id}>
-                                            <TooltipProvider>
-                                                <Tooltip>
-                                                    <TooltipTrigger asChild>
-                                                        <div>
-                                                            {flexRender(
-                                                                cell.column
-                                                                    .columnDef
-                                                                    .cell,
-                                                                cell.getContext()
-                                                            )}
-                                                        </div>
-                                                    </TooltipTrigger>
-                                                    <TooltipContent>
-                                                        <p>
-                                                            {
-                                                                cell.getValue() as string
-                                                            }
-                                                        </p>
-                                                    </TooltipContent>
-                                                </Tooltip>
-                                            </TooltipProvider>
+                                            {flexRender(
+                                                cell.column.columnDef.cell,
+                                                cell.getContext()
+                                            )}
                                         </TableCell>
                                     ))}
                                 </TableRow>
@@ -192,123 +207,163 @@ const ContractListTablePresentational = <TData, TValue>({
                                     colSpan={columns.length}
                                     className="h-24 text-center"
                                 >
-                                    No results.
+                                    該当するデータが存在しません。
                                 </TableCell>
                             </TableRow>
                         )}
+                        {/* <TableCell>
+                                <DropdownMenu>
+                                    <DropdownMenuTrigger asChild>
+                                        <Button
+                                            aria-haspopup="true"
+                                            size="icon"
+                                            variant="ghost"
+                                        >
+                                            <MoreHorizontal className="h-4 w-4" />
+                                            <span className="sr-only">
+                                                Toggle menu
+                                            </span>
+                                        </Button>
+                                    </DropdownMenuTrigger>
+                                    <DropdownMenuContent align="end">
+                                        <DropdownMenuLabel>
+                                            Actions
+                                        </DropdownMenuLabel>
+                                        <DropdownMenuItem>
+                                            Edit
+                                        </DropdownMenuItem>
+                                        <DropdownMenuItem>
+                                            Delete
+                                        </DropdownMenuItem>
+                                    </DropdownMenuContent>
+                                </DropdownMenu>
+                            </TableCell>
+                        </TableRow> */}
                     </TableBody>
                 </Table>
-            </TableContainer>
-            <div className="flex items-center justify-end space-x-2 py-4">
-                {/* <Select
-                        value={`${table.getState().pagination.pageSize}`}
-                        onValueChange={(value) => {
-                            table.setPageSize(Number(value));
-                            onPageSizeChange(Number(value));
-                        }}
-                    >
-                        <SelectTrigger className="ml-4 w-[100px]">
-                            <SelectValue />
-                        </SelectTrigger>
-                        <SelectContent>
-                            {[50, 75, 100].map((pageSize) => (
-                                <SelectItem
-                                    key={pageSize}
-                                    value={`${pageSize}`}
+            </CardContent>
+            <CardFooter className="flex items-center justify-end">
+                <Box className="flex items-center justify-end px-2">
+                    {/* ページネーションコンポーネント */}
+                    <Box className="flex items-center justify-between px-2">
+                        <Box className="flex items-center space-x-6 lg:space-x-8">
+                            <Box className="flex items-center space-x-2">
+                                <Select
+                                    value={`${table.getState().pagination.pageSize}`}
+                                    onValueChange={(value) => {
+                                        table.setPageSize(Number(value));
+                                    }}
                                 >
-                                    {pageSize}
-                                </SelectItem>
-                            ))}
-                        </SelectContent>
-                    </Select> */}
-                {/* <Button
-                        variant="outline"
-                        size="sm"
-                        onClick={() => {
-                            table.previousPage();
-                            onPageChange(
-                                table.getState().pagination.pageIndex - 1
-                            );
-                        }}
-                        disabled={!table.getCanPreviousPage()}
-                    >
-                        Previous
-                    </Button>
-                    <Button
-                        variant="outline"
-                        size="sm"
-                        onClick={() => {
-                            table.nextPage();
-                            onPageChange(
-                                table.getState().pagination.pageIndex + 1
-                            );
-                        }}
-                        disabled={!table.getCanNextPage()}
-                    >
-                        Next
-                    </Button> */}
-                {/* <Pagination className="flex justify-end">
-                    <Select
-                        value={`${table.getState().pagination.pageSize}`}
-                        onValueChange={(value) => {
-                            table.setPageSize(Number(value));
-                            onPageSizeChange(Number(value));
-                        }}
-                    >
-                        <SelectTrigger className="ml-4 w-[100px]">
-                            <SelectValue />
-                        </SelectTrigger>
-                        <SelectContent>
-                            {[50, 75, 100].map((pageSize) => (
-                                <SelectItem
-                                    key={pageSize}
-                                    value={`${pageSize}`}
-                                >
-                                    {pageSize}
-                                </SelectItem>
-                            ))}
-                        </SelectContent>
-                    </Select>
-                    <PaginationContent>
-                        <PaginationItem>
-                            <PaginationPrevious href="#" />
-                        </PaginationItem>
-                        {Array.from(
-                            { length: table.getPageCount() },
-                            (_, i) => (
-                                <PaginationItem key={i}>
-                                    <PaginationLink
-                                        onClick={() =>
-                                            onPageChange(
+                                    <SelectTrigger className="h-8 w-[70px]">
+                                        <SelectValue
+                                            placeholder={
                                                 table.getState().pagination
-                                                    .pageIndex + 1
-                                            )
-                                        }
-                                        isActive={
-                                            table.getState().pagination
-                                                .pageIndex === i
-                                        }
-                                        href={""}
-                                    >
-                                        {i + 1}
-                                    </PaginationLink>
+                                                    .pageSize
+                                            }
+                                        />
+                                    </SelectTrigger>
+                                    <SelectContent side="top">
+                                        {[50, 75, 100].map((pageSize) => (
+                                            <SelectItem
+                                                key={pageSize}
+                                                value={`${pageSize}`}
+                                            >
+                                                {pageSize}
+                                            </SelectItem>
+                                        ))}
+                                    </SelectContent>
+                                </Select>
+                                <p className="text-sm font-medium">件</p>
+                            </Box>
+                            <Box className="flex w-[100px] items-center justify-center text-sm font-medium">
+                                {table.getState().pagination.pageIndex + 1}
+                                {" / "}
+                                {table.getPageCount()}
+                            </Box>
+                            <Box className="flex items-center space-x-2">
+                                <Button
+                                    size={"2"}
+                                    variant="outline"
+                                    className="hidden h-8 w-8 p-0 lg:flex"
+                                    onClick={() => table.setPageIndex(0)}
+                                    disabled={!table.getCanPreviousPage()}
+                                >
+                                    <span className="sr-only">
+                                        Go to first page
+                                    </span>
+                                    <DoubleArrowLeftIcon className="h-4 w-4" />
+                                </Button>
+                                <Button
+                                    size={"2"}
+                                    variant="outline"
+                                    className="h-8 w-8 p-0"
+                                    onClick={() => table.previousPage()}
+                                    disabled={!table.getCanPreviousPage()}
+                                >
+                                    <span className="sr-only">
+                                        Go to previous page
+                                    </span>
+                                    <ChevronLeftIcon className="h-4 w-4" />
+                                </Button>
+                                <Button
+                                    size={"2"}
+                                    variant="outline"
+                                    className="h-8 w-8 p-0"
+                                    onClick={() => table.nextPage()}
+                                    disabled={!table.getCanNextPage()}
+                                >
+                                    <span className="sr-only">
+                                        Go to next page
+                                    </span>
+                                    <ChevronRightIcon className="h-4 w-4" />
+                                </Button>
+                                <Button
+                                    size={"2"}
+                                    variant="outline"
+                                    className="hidden h-8 w-8 p-0 lg:flex"
+                                    onClick={() =>
+                                        table.setPageIndex(
+                                            table.getPageCount() - 1
+                                        )
+                                    }
+                                    disabled={!table.getCanNextPage()}
+                                >
+                                    <span className="sr-only">
+                                        Go to last page
+                                    </span>
+                                    <DoubleArrowRightIcon className="h-4 w-4" />
+                                </Button>
+                            </Box>
+                        </Box>
+                    </Box>
+                    {/* <Box className="flex items-center space-x-6 lg:space-x-8">
+                        <Pagination>
+                            <PaginationContent>
+                                <PaginationItem>
+                                    <PaginationSkipPrevious href="#" />
                                 </PaginationItem>
-                            )
-                        )}
-                        <PaginationItem>
-                            <PaginationEllipsis />
-                        </PaginationItem>
-                        <PaginationItem>
-                            <PaginationNext href="#" />
-                        </PaginationItem>
-                    </PaginationContent>
-                    <Text ml={4} mt={2} mr={8}>
-                        全 {totalCount} 件
-                    </Text>
-                </Pagination> */}
-            </div>
-        </Box>
+                                <PaginationItem
+                                    onClick={() => table.previousPage()}
+                                    aria-disabled={!table.getCanPreviousPage()}
+                                >
+                                    <PaginationPrevious href="#" />
+                                </PaginationItem>
+                                <PaginationItem
+                                    onClick={() => table.nextPage()}
+                                    aria-disabled={!table.getCanNextPage()}
+                                >
+                                    <PaginationNext href="#" />
+                                </PaginationItem>
+                                <PaginationItem>
+                                    <PaginationSkipNext href="#" />
+                                </PaginationItem>
+                            </PaginationContent>
+                        </Pagination>
+                    </Box> */}
+                </Box>
+            </CardFooter>
+        </Card>
     );
 };
 
-export default ContractListTablePresentational;
+export default ContractListTablePresentation;

@@ -1,13 +1,5 @@
 "use client";
-import {
-    Box,
-    Button,
-    Icon,
-    Menu,
-    MenuButton,
-    MenuItem,
-    MenuList,
-} from "@chakra-ui/react";
+import { Box, Button, Icon } from "@chakra-ui/react";
 import {
     DropdownMenu,
     DropdownMenuContent,
@@ -28,7 +20,7 @@ import {
 import { Navbar } from "./NavBar";
 import { IconButton } from "@chakra-ui/react";
 import { QuestionOutlineIcon, SettingsIcon } from "@chakra-ui/icons";
-import { ChevronDownIcon, CircleUser } from "lucide-react";
+import { CircleUser } from "lucide-react";
 import Link from "next/link";
 
 const Header = () => {
@@ -39,7 +31,7 @@ const Header = () => {
                 <Box className="flex items-center">
                     <Navbar />
                     <Box fontWeight="bold" fontSize="lg" marginLeft="20px">
-                        サービス名
+                        <Link href={"/contract-all"}>サービス名</Link>
                     </Box>
                     <Box
                         as="nav"
@@ -47,16 +39,23 @@ const Header = () => {
                     >
                         <Menubar className="ml-2 border-none focus:ring-0">
                             <MenubarMenu>
-                                <Icon as={SettingsIcon}></Icon>
+                                <Icon as={SettingsIcon} />
                                 <MenubarTrigger>管理メニュー</MenubarTrigger>
                                 <MenubarContent>
                                     <MenubarItem>
-                                        <Link href={"/contract-all"}>
+                                        <Icon as={SettingsIcon} />
+                                        <Link
+                                            href={"/contract-all"}
+                                            className="ml-2"
+                                        >
                                             契約書一覧
                                         </Link>
                                     </MenubarItem>
                                     <MenubarItem>
-                                        <Link href={""}>契約書</Link>
+                                        <Icon as={SettingsIcon} />
+                                        <Link href={""} className="ml-2">
+                                            契約書
+                                        </Link>
                                     </MenubarItem>
                                     <MenubarSeparator />
                                 </MenubarContent>
@@ -66,12 +65,20 @@ const Header = () => {
                                 <MenubarTrigger>設定メニュー</MenubarTrigger>
                                 <MenubarContent>
                                     <MenubarItem>
-                                        <Link href={"/user-settings"}>
+                                        <Icon as={SettingsIcon} />
+                                        <Link
+                                            href={"/user-settings"}
+                                            className="ml-2"
+                                        >
                                             個人設定{" "}
                                         </Link>
                                     </MenubarItem>
                                     <MenubarItem>
-                                        <Link href={"/company-settings"}>
+                                        <Icon as={SettingsIcon} />
+                                        <Link
+                                            href={"/company-settings"}
+                                            className="ml-2"
+                                        >
                                             会社設定
                                         </Link>
                                     </MenubarItem>

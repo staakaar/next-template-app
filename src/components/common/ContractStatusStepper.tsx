@@ -31,7 +31,7 @@ const ContractStatusStepper = () => {
             <Stepper size="lg" index={activeStep} className="mt-2 mb-6">
                 {ContractSteps.map((step, index) => (
                     <Step key={index}>
-                        <StepIndicator>
+                        <StepIndicator className="bg-blue-500 hover:bg-blue-600 text-white font-bold">
                             <StepStatus
                                 complete={<StepIcon />}
                                 incomplete={<StepNumber />}

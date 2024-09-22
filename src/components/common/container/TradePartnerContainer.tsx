@@ -1,5 +1,12 @@
+import TradePartnerPresentational from "../presentational/TradePartnerPresentational";
+
 const TradePartnerContainer = () => {
-    return <></>;
+    // 取引先担当者などのデータをフェッチ
+    return (
+        <>
+            <TradePartnerPresentational />
+        </>
+    );
 };
 
 export default TradePartnerContainer;

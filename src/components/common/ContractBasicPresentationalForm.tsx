@@ -1,5 +1,7 @@
 "use client";
 
+import { Separator } from "@/components/ui/separator";
+import { Heading } from "@chakra-ui/react";
 import {
     Form,
     FormControl,
@@ -13,7 +15,7 @@ import { Button } from "../ui/button";
 import { Box, SimpleGrid, useToast } from "@chakra-ui/react";
 import {
     contractBasicFormSchema,
-    ContractBasicForm,
+    ContractBasicFormData,
 } from "@/lib/contract/schema";
 import { contractBasicFormState } from "@/stores/contract/atom";
 import { useRecoilState } from "recoil";
@@ -38,8 +40,8 @@ import { postContractBasic } from "@/lib/contract/api";
 
 const ContractBasicPresentationalForm = () => {
     const [formData, setFormData] = useRecoilState(contractBasicFormState);
-    const [errors, setErrors] = useState<Partial<ContractBasicForm>>({});
-    const form = useForm<ContractBasicForm>({
+    const [errors, setErrors] = useState<Partial<ContractBasicFormData>>({});
+    const form = useForm<ContractBasicFormData>({
         resolver: zodResolver(contractBasicFormSchema),
         defaultValues: formData,
     });
@@ -62,7 +64,8 @@ const ContractBasicPresentationalForm = () => {
         } catch (error) {
             if (error instanceof z.ZodError) {
                 setErrors(
-                    error.flatten().fieldErrors as Partial<ContractBasicForm>
+                    error.flatten()
+                        .fieldErrors as Partial<ContractBasicFormData>
                 );
             }
             toast({
@@ -76,152 +79,165 @@ const ContractBasicPresentationalForm = () => {
     });
 
     return (
-        <Box className="mt-10">
-            <Form {...form}>
-                <form onSubmit={onContractBasicSubmit} className="space-y-8">
-                    <SimpleGrid columns={2} spacing={4}>
-                        <FormField
-                            control={form.control}
-                            name="firstName"
-                            render={({ field }) => (
-                                <FormItem>
-                                    <FormLabel>First Name</FormLabel>
-                                    <FormControl>
-                                        <Input {...field} />
-                                    </FormControl>
-                                    <FormMessage />
-                                </FormItem>
-                            )}
-                        />
-                        <FormField
-                            control={form.control}
-                            name="lastName"
-                            render={({ field }) => (
-                                <FormItem>
-                                    <FormLabel>Last Name</FormLabel>
-                                    <FormControl>
-                                        <Input {...field} />
-                                    </FormControl>
-                                    <FormMessage />
-                                </FormItem>
-                            )}
-                        />
-                        <FormField
-                            control={form.control}
-                            name="email"
-                            render={({ field }) => (
-                                <FormItem>
-                                    <FormLabel>Email</FormLabel>
-                                    <FormControl>
-                                        <Input {...field} />
-                                    </FormControl>
-                                    <FormMessage />
-                                </FormItem>
-                            )}
-                        />
-                        <FormField
-                            control={form.control}
-                            name="phone"
-                            render={({ field }) => (
-                                <FormItem>
-                                    <FormLabel>Phone</FormLabel>
-                                    <FormControl>
-                                        <Input {...field} />
-                                    </FormControl>
-                                    <FormMessage />
-                                </FormItem>
-                            )}
-                        />
-                        <FormField
-                            control={form.control}
-                            name="role"
-                            render={({ field }) => (
-                                <FormItem>
-                                    <FormLabel>Role</FormLabel>
-                                    <Select
-                                        onValueChange={field.onChange}
-                                        defaultValue={field.value}
-                                    >
+        <>
+            <Box className="flex items-center justify-between">
+                <Heading className="mt-4 mb-6">基本情報</Heading>
+                {/* 詳細時は更新ボタン */}
+                <Button className="bg-blue-500 hover:bg-blue-600 text-white font-bold py-2 px-4 rounded hover:shadow-lg transition-all duration-200">
+                    更新
+                </Button>
+            </Box>
+            <Separator />
+            <Box className="mt-10">
+                <Form {...form}>
+                    <form
+                        onSubmit={onContractBasicSubmit}
+                        className="space-y-8"
+                    >
+                        <SimpleGrid columns={2} spacing={4}>
+                            <FormField
+                                control={form.control}
+                                name="firstName"
+                                render={({ field }) => (
+                                    <FormItem>
+                                        <FormLabel>First Name</FormLabel>
                                         <FormControl>
-                                            <SelectTrigger>
-                                                <SelectValue placeholder="Select a role" />
-                                            </SelectTrigger>
+                                            <Input {...field} />
                                         </FormControl>
-                                        <SelectContent>
-                                            <SelectItem value="admin">
-                                                Admin
-                                            </SelectItem>
-                                            <SelectItem value="user">
-                                                User
-                                            </SelectItem>
-                                            <SelectItem value="manager">
-                                                Manager
-                                            </SelectItem>
-                                        </SelectContent>
-                                    </Select>
-                                    <FormMessage />
-                                </FormItem>
-                            )}
-                        />
-                        <FormField
-                            control={form.control}
-                            name="department"
-                            render={({ field }) => (
-                                <FormItem>
-                                    <FormLabel>Department</FormLabel>
-                                    <FormControl>
-                                        <Input {...field} />
-                                    </FormControl>
-                                    <FormMessage />
-                                </FormItem>
-                            )}
-                        />
-                        <FormField
-                            control={form.control}
-                            name="startDate"
-                            render={({ field }) => (
-                                <FormItem>
-                                    <FormLabel>Start Date</FormLabel>
-                                    <FormControl>
-                                        <Input type="date" {...field} />
-                                    </FormControl>
-                                    <FormMessage />
-                                </FormItem>
-                            )}
-                        />
-                        <FormField
-                            control={form.control}
-                            name="salary"
-                            render={({ field }) => (
-                                <FormItem>
-                                    <FormLabel>Salary</FormLabel>
-                                    <FormControl>
-                                        <Input type="number" {...field} />
-                                    </FormControl>
-                                    <FormMessage />
-                                </FormItem>
-                            )}
-                        />
-                    </SimpleGrid>
-                    <Box width="100%">
-                        <FormField
-                            control={form.control}
-                            name="comments"
-                            render={({ field }) => (
-                                <FormItem>
-                                    <FormLabel>Comments</FormLabel>
-                                    <FormControl>
-                                        <Textarea {...field} />
-                                    </FormControl>
-                                    <FormMessage />
-                                </FormItem>
-                            )}
-                        />
-                    </Box>
-                    <Button type="submit">Submit</Button>
-                </form>
-            </Form>
-        </Box>
+                                        <FormMessage />
+                                    </FormItem>
+                                )}
+                            />
+                            <FormField
+                                control={form.control}
+                                name="lastName"
+                                render={({ field }) => (
+                                    <FormItem>
+                                        <FormLabel>Last Name</FormLabel>
+                                        <FormControl>
+                                            <Input {...field} />
+                                        </FormControl>
+                                        <FormMessage />
+                                    </FormItem>
+                                )}
+                            />
+                            <FormField
+                                control={form.control}
+                                name="email"
+                                render={({ field }) => (
+                                    <FormItem>
+                                        <FormLabel>Email</FormLabel>
+                                        <FormControl>
+                                            <Input {...field} />
+                                        </FormControl>
+                                        <FormMessage />
+                                    </FormItem>
+                                )}
+                            />
+                            <FormField
+                                control={form.control}
+                                name="phone"
+                                render={({ field }) => (
+                                    <FormItem>
+                                        <FormLabel>Phone</FormLabel>
+                                        <FormControl>
+                                            <Input {...field} />
+                                        </FormControl>
+                                        <FormMessage />
+                                    </FormItem>
+                                )}
+                            />
+                            <FormField
+                                control={form.control}
+                                name="role"
+                                render={({ field }) => (
+                                    <FormItem>
+                                        <FormLabel>Role</FormLabel>
+                                        <Select
+                                            onValueChange={field.onChange}
+                                            defaultValue={field.value}
+                                        >
+                                            <FormControl>
+                                                <SelectTrigger>
+                                                    <SelectValue placeholder="Select a role" />
+                                                </SelectTrigger>
+                                            </FormControl>
+                                            <SelectContent>
+                                                <SelectItem value="admin">
+                                                    Admin
+                                                </SelectItem>
+                                                <SelectItem value="user">
+                                                    User
+                                                </SelectItem>
+                                                <SelectItem value="manager">
+                                                    Manager
+                                                </SelectItem>
+                                            </SelectContent>
+                                        </Select>
+                                        <FormMessage />
+                                    </FormItem>
+                                )}
+                            />
+                            <FormField
+                                control={form.control}
+                                name="department"
+                                render={({ field }) => (
+                                    <FormItem>
+                                        <FormLabel>Department</FormLabel>
+                                        <FormControl>
+                                            <Input {...field} />
+                                        </FormControl>
+                                        <FormMessage />
+                                    </FormItem>
+                                )}
+                            />
+                            <FormField
+                                control={form.control}
+                                name="startDate"
+                                render={({ field }) => (
+                                    <FormItem>
+                                        <FormLabel>Start Date</FormLabel>
+                                        <FormControl>
+                                            <Input type="date" {...field} />
+                                        </FormControl>
+                                        <FormMessage />
+                                    </FormItem>
+                                )}
+                            />
+                            <FormField
+                                control={form.control}
+                                name="salary"
+                                render={({ field }) => (
+                                    <FormItem>
+                                        <FormLabel>Salary</FormLabel>
+                                        <FormControl>
+                                            <Input type="number" {...field} />
+                                        </FormControl>
+                                        <FormMessage />
+                                    </FormItem>
+                                )}
+                            />
+                        </SimpleGrid>
+                        <Box width="100%">
+                            <FormField
+                                control={form.control}
+                                name="comments"
+                                render={({ field }) => (
+                                    <FormItem>
+                                        <FormLabel>Comments</FormLabel>
+                                        <FormControl>
+                                            <Textarea {...field} />
+                                        </FormControl>
+                                        <FormMessage />
+                                    </FormItem>
+                                )}
+                            />
+                        </Box>
+                        <Button type="submit">Submit</Button>
+                    </form>
+                </Form>
+            </Box>
+        </>
     );
 };
 

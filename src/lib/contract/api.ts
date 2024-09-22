@@ -1,46 +1,57 @@
 /** fetch server actions */
-"use server";
+"use client";
 import { ApiContext } from "@/types/api";
 import { ContractResponse } from "@/types/api/contract";
 import { redirect } from "next/navigation";
 import useSWR from "swr";
 import { z } from "zod";
-import { contractBasicFormSchema, ContractBasicFormSchema } from "./schema";
+import { contractBasicFormSchema, ContractBasicForm } from "./schema";
 
 export type QueryParams = {};
 
-/** Request Response型それぞれtypesで指定 */
+/** Request Response型それぞれtypesで指定 axiosにする */
 const fetcher = (url: string): Promise<ContractResponse[] | undefined> =>
     fetch(url).then((res) => res.json());
 
-export default async function useFetchContracts(
+export function useFetchContracts(
     page: number,
-    pageSize: number,
-    search: string
+    pageSize?: number,
+    search?: string
 ) {
     const context: ApiContext = {
         apiRootUrl: process.env.API_BASE_URL || "http://localhost:8000",
     };
 
-    const { data, error } = useSWR(
-        `${context.apiRootUrl}/contracts?page=${page}&pageSize=${pageSize}&search${search}`,
-        fetcher,
-        {
-            revalidateOnFocus: true,
-            revalidateOnReconnect: true,
-        }
-    );
-    console.log("t", data);
-    console.log(error);
+    // const { data, error } = useSWR(
+    //     `${context.apiRootUrl}/contracts?page=${page}&pageSize=${pageSize}&search${search}`,
+    //     fetcher,
+    //     {
+    //         revalidateOnFocus: true,
+    //         revalidateOnReconnect: true,
+    //     }
+    // );
 
-    return {
-        data: data,
-        isLoading: !error && !data,
-        isError: error,
-    };
+    const d = generateMockContracts(100);
+
+    return d;
 }
 
-export async function postContractBasic(formData: ContractBasicFormSchema) {
+/** ダミーデータを用意 */
+const generateMockContracts = (count: number): ContractResponse => {
+    const contracts = Array.from({ length: count }, (_, index) => ({
+        contractCode: `C${index + 1}`,
+        contractName: `Contract ${index + 1}`,
+        tradePartner: `Partner ${index + 1}`,
+        contractPersonInCharge: `Person ${index + 1}`,
+    }));
+
+    return {
+        contracts,
+        totalCount: count,
+    };
+};
+
+export async function postContractBasic(formData: ContractBasicForm) {
     const validatedData = contractBasicFormSchema.parse(formData);
 
     console.log("***", validatedData);

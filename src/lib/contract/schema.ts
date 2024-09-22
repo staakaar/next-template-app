@@ -1,6 +1,8 @@
 import { z } from "zod";
 
 export const contractBasicFormSchema = z.object({
+    contractCode: z.string().min(2, { message: "Contract code is required" }),
+    contractName: z.string().min(2, { message: "Contract name is required" }),
     firstName: z.string().min(2, { message: "First name is required" }),
     lastName: z.string().min(2, { message: "Last name is required" }),
     email: z.string().email({ message: "Invalid email address" }),
@@ -9,9 +11,9 @@ export const contractBasicFormSchema = z.object({
         required_error: "Please select a role",
     }),
     department: z.string().min(1, { message: "Department is required" }),
-    startDate: z.string().min(1, { message: "Start date is required" }),
+    // startDate: z.string().min(1, { message: "Start date is required" }),
     salary: z.string().min(1, { message: "Salary is required" }),
     comments: z.string().optional(),
 });
 
-export type ContractBasicForm = z.infer<typeof contractBasicFormSchema>;
+export type ContractBasicFormData = z.infer<typeof contractBasicFormSchema>;

@@ -1,17 +1,12 @@
-"use client";
-
-import { Contract } from "@/types/api/contract";
+import { TradePartner } from "@/types/api/tradePartner";
 import { Button } from "@chakra-ui/react";
 import { createColumnHelper } from "@tanstack/react-table";
 import { ArrowUpDown } from "lucide-react";
 
-// This type is used to define the shape of our data.
-// You can use a Zod schema here if you want.
-
-const columnHelper = createColumnHelper<Contract>();
+const columnHelper = createColumnHelper<TradePartner>();
 
 export const columns = [
-    columnHelper.accessor("contractCode", {
+    columnHelper.accessor("tradeCompanyId", {
         cell: (info) => info.getValue(),
         footer: (info) => info.column.id,
         // cell: ({ row }) => {
@@ -23,8 +18,8 @@ export const columns = [
         //     return <div className="text-right font-medium">{formatted}</div>
         // }
     }),
-    columnHelper.accessor((row) => row.contractName, {
-        id: "契約書名",
+    columnHelper.accessor((row) => row.tradeCompanyName, {
+        id: "取引先会社名",
         cell: (info) => <i>{info.getValue()}</i>,
         header: ({ column }) => {
             return (
@@ -41,17 +36,25 @@ export const columns = [
         },
         footer: (info) => info.column.id,
     }),
-    columnHelper.accessor("contractName", {
-        header: () => "契約書名",
+    columnHelper.accessor("tradeCompanyAddress", {
+        header: () => "取引先会社住所",
         cell: (info) => info.renderValue(),
         footer: (info) => info.column.id,
     }),
-    columnHelper.accessor("tradePartner", {
-        header: () => <span>取引先</span>,
+    columnHelper.accessor("tradePersonId", {
+        header: () => <span>取引担当者ID</span>,
         footer: (info) => info.column.id,
     }),
-    columnHelper.accessor("contractPersonInCharge", {
-        header: "担当者",
+    columnHelper.accessor("tradePersonName", {
+        header: "取引先担当者名",
+        footer: (info) => info.column.id,
+    }),
+    columnHelper.accessor("tradePartnerDepartmentId", {
+        header: "取引先担当者部署ID",
+        footer: (info) => info.column.id,
+    }),
+    columnHelper.accessor("tradePartnerDepartmentName", {
+        header: "取引先担当者部署名",
         footer: (info) => info.column.id,
     }),
     // columnHelper.accessor((row) => row, {

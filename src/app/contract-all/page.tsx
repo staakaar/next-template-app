@@ -4,21 +4,21 @@ import ContractListTableContainer from "./_components/ContractListTableContainer
 import { Box, Button } from "@chakra-ui/react";
 import Link from "next/link";
 
-const ContractAllList = () => {
+const ContractAllListPage = () => {
     return (
         <>
             {/* タブで管理メニューと設定メニューを表示 */}
             {/* <Container className="container"> */}
-            <Card className=" flex-1 space-y-4 p-8 pt-6">
-                <Box className="flex items-center justify-between space-y-2 px-8">
+            {/* <Card className=" flex-1 space-y-4 p-8 pt-6"> */}
+            {/* <Box className="flex items-center justify-between space-y-2 px-8">
                     <h2>見出し名</h2>
                     <Box className="flex items-center space-x-2">
                         <Button>
                             <Link href={"/contract-new"}>新規作成</Link>
                         </Button>
                     </Box>
-                </Box>
-                <Box className="space-x-4 px-8">
+                </Box> */}
+            {/* <Box className="space-x-4 px-8">
                     <Tabs defaultValue="account" className="w-[400px]">
                         <TabsList className="inline-flex h-9 items-center justify-center rounded-lg bg-muted p-1 text-muted-foreground">
                             <TabsTrigger value="account">作成中</TabsTrigger>
@@ -32,13 +32,13 @@ const ContractAllList = () => {
                             <TabsTrigger value="password">却下</TabsTrigger>
                         </TabsList>
                     </Tabs>
-                </Box>
-                <Box className="space-x-4 px-8">
-                    <ContractListTableContainer />
-                </Box>
-            </Card>
+                </Box> */}
+            {/* <Box className="space-x-4 px-8"> */}
+            <ContractListTableContainer />
+            {/* </Box> */}
+            {/* </Card> */}
             {/* </Container> */}
         </>
     );
 };
-export default ContractAllList;
+export default ContractAllListPage;
