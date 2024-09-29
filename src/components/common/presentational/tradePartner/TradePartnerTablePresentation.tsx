@@ -5,7 +5,6 @@ import {
     CardHeader,
     CardTitle,
 } from "@/components/ui/card";
-import { Input } from "@/components/ui/input";
 import {
     Select,
     SelectContent,
@@ -39,7 +38,6 @@ import {
     useReactTable,
     VisibilityState,
 } from "@tanstack/react-table";
-import { Search } from "lucide-react";
 import { useRouter } from "next/navigation";
 import { useState } from "react";
 

@@ -3,6 +3,7 @@ import { Separator } from "@/components/ui/separator";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Box, Heading } from "@chakra-ui/react";
 import TradePartnerTableContainer from "../container/tradePartner/TradePartnerTableContainer";
+import TradePartnerCompanyTableContainer from "../container/tradePartner/TradePartnerCompanyTableContainer";
 
 const TradePartnerPresentational = () => {
     return (
@@ -27,7 +28,7 @@ const TradePartnerPresentational = () => {
                     <TradePartnerTableContainer />
                 </TabsContent>
                 <TabsContent value="add">
-                    <div>取引先追加</div>
+                    <TradePartnerCompanyTableContainer />
                 </TabsContent>
                 <TabsContent value="newUser">
                     {/* 取引先会社選択して担当者をユーザー単位で登録 */}
