@@ -10,6 +10,7 @@ import {
 import { Box } from "@chakra-ui/react";
 import { Cross1Icon } from "@radix-ui/react-icons";
 import TradePartnerPersonTableContainer from "./TradePartnerPersonTableContainer";
+import React from "react";
 
 const TradePartnerPersonDrawerContainer = ({
     isOpen,
@@ -22,6 +23,7 @@ const TradePartnerPersonDrawerContainer = ({
 
     return (
         <>
+            {/* chakra uiへ変更する */}
             <Drawer
                 direction={"right"}
                 onClose={() => beforeDestroyDrawer}

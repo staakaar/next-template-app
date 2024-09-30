@@ -1,6 +1,9 @@
 // "use client"
 import { useState } from "react";
 import { useFetchTraderPartnerPerson } from "@/lib/tradePartner/api";
+import TradePartnerPersonDrawerPresentation from "../../presentational/tradePartner/TradePartnerPersonDrawerPresentation";
+import { columns } from "./TradePartnerPersonTableColumn";
+import React from "react";
 
 const TradePartnerPersonTableContainer = () => {
     // 取引先担当者をフェッチ
@@ -11,7 +14,15 @@ const TradePartnerPersonTableContainer = () => {
 
     const data = useFetchTraderPartnerPerson(page, pageSize, search);
 
-    return <></>;
+    return (
+        <>
+            <TradePartnerPersonDrawerPresentation
+                data={data.tradePartnerPersons}
+                columns={columns}
+                totalCount={data.totalCount}
+            />
+        </>
+    );
 };
 
 export default TradePartnerPersonTableContainer;
