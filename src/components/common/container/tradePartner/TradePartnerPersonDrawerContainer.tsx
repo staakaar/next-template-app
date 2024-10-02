@@ -1,20 +1,19 @@
 import { Button } from "@/components/ui/button";
 import {
+    Box,
     Drawer,
-    DrawerClose,
+    DrawerBody,
+    DrawerCloseButton,
     DrawerContent,
     DrawerHeader,
-    DrawerTitle,
-    DrawerTrigger,
-} from "@/components/ui/drawer";
-import { Box } from "@chakra-ui/react";
+} from "@chakra-ui/react";
 import { Cross1Icon } from "@radix-ui/react-icons";
 import TradePartnerPersonTableContainer from "./TradePartnerPersonTableContainer";
 import React from "react";
 
 const TradePartnerPersonDrawerContainer = ({
-    isOpen,
-    setOpen,
+    onOpen,
+    onClose,
     selectedRow,
 }: any) => {
     const beforeDestroyDrawer = () => {
@@ -24,22 +23,16 @@ const TradePartnerPersonDrawerContainer = ({
     return (
         <>
             {/* chakra uiへ変更する */}
-            <Drawer
-                direction={"right"}
-                onClose={() => beforeDestroyDrawer}
-                open={isOpen}
-                onOpenChange={setOpen}
-            >
+            <Drawer onClose={() => beforeDestroyDrawer} isOpen={onOpen}>
                 <DrawerContent className="left-0 h-[100vh] w-[80vw] max-w-[80%] sm:max-w-[80%]">
                     <DrawerHeader>
                         <Box className="flex items-center justify-between space-x-4">
                             <Box className="flex items-center">
-                                <DrawerClose>
-                                    <Button variant={"outline"}>
+                                <DrawerCloseButton />
+                                {/* <Button variant={"outline"}>
                                         <Cross1Icon />
-                                    </Button>
-                                </DrawerClose>
-                                <DrawerTitle>「 」取引先担当者一覧</DrawerTitle>
+                                    </Button> */}
+                                <Box>「 」取引先担当者一覧</Box>
                             </Box>
                             <Box className="flex items-center">
                                 <Button>追加</Button>
@@ -47,9 +40,9 @@ const TradePartnerPersonDrawerContainer = ({
                             </Box>
                         </Box>
                     </DrawerHeader>
-                    <Box className="p-4 overflow-auto h-[calc(100vh - 100px)]">
+                    <DrawerBody className="p-4 overflow-auto h-[calc(100vh - 100px)]">
                         <TradePartnerPersonTableContainer />
-                    </Box>
+                    </DrawerBody>
                 </DrawerContent>
             </Drawer>
             {/* drawer  */}

@@ -20,7 +20,7 @@ import {
     TableHeader,
     TableRow,
 } from "@/components/ui/table";
-import { Box, Button } from "@chakra-ui/react";
+import { Box, Button, useDisclosure } from "@chakra-ui/react";
 import {
     ChevronLeftIcon,
     ChevronRightIcon,
@@ -64,7 +64,8 @@ const TradePartnerCompanyTablePresentation = <TData, TValue>({
     totalCount,
 }: TradePartnerTableProps<TData, TValue>) => {
     const router = useRouter();
-    const [isOpen, setIsOpen] = useState(false);
+    // const [isOpen, setIsOpen] = useState(false);
+    const { isOpen, onOpen, onClose } = useDisclosure();
     const [selectedRow, setSelectedRow] = useState(null);
     const [sorting, setSorting] = useState<SortingState>([]);
     const [columnFilters, setColumnFilters] = useState<ColumnFiltersState>([]);
@@ -301,7 +302,8 @@ const TradePartnerCompanyTablePresentation = <TData, TValue>({
             </CardFooter>
             <TradePartnerPersonDrawerContainer
                 isOpen={isOpen}
-                setOpen={() => setIsOpen(false)}
+                onOpen={() => onOpen}
+                onClose={() => onClose}
                 selectedRow={selectedRow}
             />
         </>
