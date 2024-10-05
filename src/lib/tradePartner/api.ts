@@ -21,7 +21,7 @@ export function useFetchTradePartner(
         apiRootUrl: process.env.API_BASE_URL || "http://localhost:8000",
     };
 
-    const tradePartner = generateMockTradePartner(100);
+    const tradePartner = generateMockTradePartner(2);
 
     return tradePartner;
 }

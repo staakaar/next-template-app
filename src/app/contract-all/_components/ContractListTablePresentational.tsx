@@ -69,6 +69,8 @@ import {
 
 import { Box } from "@chakra-ui/react";
 import { useRouter } from "next/navigation";
+import { useSetRecoilState } from "recoil";
+import { contractQueryParamsState } from "@/stores/contracts/atom";
 
 /** 保存時はserver componentで処理 */
 
@@ -103,6 +105,7 @@ const ContractListTablePresentation = <TData, TValue>({
         pageIndex: 0,
         pageSize: 50,
     });
+    const setQueryParams = useSetRecoilState(contractQueryParamsState);
 
     const table = useReactTable({
         data,

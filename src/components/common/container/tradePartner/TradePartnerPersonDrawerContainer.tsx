@@ -6,37 +6,49 @@ import {
     DrawerCloseButton,
     DrawerContent,
     DrawerHeader,
+    DrawerOverlay,
 } from "@chakra-ui/react";
-import { Cross1Icon } from "@radix-ui/react-icons";
 import TradePartnerPersonTableContainer from "./TradePartnerPersonTableContainer";
 import React from "react";
 
 const TradePartnerPersonDrawerContainer = ({
-    onOpen,
+    isOpen,
     onClose,
     selectedRow,
 }: any) => {
-    const beforeDestroyDrawer = () => {
-        /** ドロワー削除時に必要な値をリセットする */
-    };
-
     return (
         <>
-            {/* chakra uiへ変更する */}
-            <Drawer onClose={() => beforeDestroyDrawer} isOpen={onOpen}>
-                <DrawerContent className="left-0 h-[100vh] w-[80vw] max-w-[80%] sm:max-w-[80%]">
+            <Drawer
+                size="full"
+                placement="right"
+                onClose={onClose}
+                isOpen={isOpen}
+            >
+                <DrawerOverlay />
+                <DrawerContent>
                     <DrawerHeader>
-                        <Box className="flex items-center justify-between space-x-4">
+                        <Box className="flex justify-between">
                             <Box className="flex items-center">
-                                <DrawerCloseButton />
-                                {/* <Button variant={"outline"}>
-                                        <Cross1Icon />
-                                    </Button> */}
-                                <Box>「 」取引先担当者一覧</Box>
+                                <DrawerCloseButton
+                                    position="static"
+                                    left="0"
+                                    top="0"
+                                    marginLeft="2"
+                                />
+                                「 」取引先担当者一覧
                             </Box>
+                            {/* </Box> */}
                             <Box className="flex items-center">
-                                <Button>追加</Button>
-                                <Button>更新</Button>
+                                <Box>
+                                    <Button className="bg-blue-500 hover:bg-blue-600 text-white font-bold py-2 px-4 rounded hover:shadow-lg transition-all duration-200">
+                                        追加
+                                    </Button>
+                                </Box>
+                                <Box className="ml-4">
+                                    <Button className="bg-blue-500 hover:bg-blue-600 text-white font-bold py-2 px-4 rounded hover:shadow-lg transition-all duration-200">
+                                        更新
+                                    </Button>
+                                </Box>
                             </Box>
                         </Box>
                     </DrawerHeader>
@@ -45,9 +57,6 @@ const TradePartnerPersonDrawerContainer = ({
                     </DrawerBody>
                 </DrawerContent>
             </Drawer>
-            {/* drawer  */}
-            {/* tradePartnerPersonTableContainer */}
-            {/* tradePartnerPersonTablePresentation */}
         </>
     );
 };

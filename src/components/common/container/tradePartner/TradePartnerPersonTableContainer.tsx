@@ -1,4 +1,3 @@
-// "use client"
 import { useState } from "react";
 import { useFetchTraderPartnerPerson } from "@/lib/tradePartner/api";
 import TradePartnerPersonDrawerPresentation from "../../presentational/tradePartner/TradePartnerPersonDrawerPresentation";

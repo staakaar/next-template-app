@@ -1,8 +1,10 @@
+"use client";
 import { Card } from "@/components/ui/card";
 import { useFetchTradePartner } from "@/lib/tradePartner/api";
 import { useState } from "react";
 import { columns } from "./TradePartnerTableColumn";
 import TradePartnerCompanyTablePresentation from "../../presentational/tradePartner/TradePartnerCompanyTablePresentation";
+import React from "react";
 
 const TradePartnerCompanyTableContainer = () => {
     const [page, setPage] = useState(0);

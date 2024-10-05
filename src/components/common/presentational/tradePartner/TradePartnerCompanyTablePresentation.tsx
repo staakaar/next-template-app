@@ -41,6 +41,7 @@ import {
 import { useRouter } from "next/navigation";
 import { useState } from "react";
 import TradePartnerPersonDrawerContainer from "../../container/tradePartner/TradePartnerPersonDrawerContainer";
+import React from "react";
 
 export type TradePartnerTableProps<TData, TValue> = {
     data: TData[];
@@ -63,9 +64,10 @@ const TradePartnerCompanyTablePresentation = <TData, TValue>({
     columns,
     totalCount,
 }: TradePartnerTableProps<TData, TValue>) => {
-    const router = useRouter();
-    // const [isOpen, setIsOpen] = useState(false);
+    /** ドロワー */
     const { isOpen, onOpen, onClose } = useDisclosure();
+
+    /** テーブル */
     const [selectedRow, setSelectedRow] = useState(null);
     const [sorting, setSorting] = useState<SortingState>([]);
     const [columnFilters, setColumnFilters] = useState<ColumnFiltersState>([]);
@@ -108,7 +110,7 @@ const TradePartnerCompanyTablePresentation = <TData, TValue>({
     /** ハンドラー処理 */
     const handleOpenDrawerTradePartnerPerson = (row: TData) => {
         console.log(row);
-        setIsOpen(true);
+        onOpen();
     };
 
     return (
@@ -302,8 +304,7 @@ const TradePartnerCompanyTablePresentation = <TData, TValue>({
             </CardFooter>
             <TradePartnerPersonDrawerContainer
                 isOpen={isOpen}
-                onOpen={() => onOpen}
-                onClose={() => onClose}
+                onClose={onClose}
                 selectedRow={selectedRow}
             />
         </>

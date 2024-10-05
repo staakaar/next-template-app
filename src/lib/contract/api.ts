@@ -41,6 +41,7 @@ const generateMockContracts = (count: number): ContractResponse => {
     const contracts = Array.from({ length: count }, (_, index) => ({
         contractCode: `C${index + 1}`,
         contractName: `Contract ${index + 1}`,
+        contractStatus: `${index % 2 == 0 ? "CREATE" : "UNDER_CONSTRUCTION"}`,
         tradePartner: `Partner ${index + 1}`,
         contractPersonInCharge: `Person ${index + 1}`,
     }));

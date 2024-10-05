@@ -2,6 +2,7 @@
 export type Contract = {
     contractCode: string;
     contractName: string;
+    contractStatus: string;
     tradePartner: string;
     contractPersonInCharge: string;
 };

@@ -17,7 +17,7 @@ import {
     contractBasicFormSchema,
     ContractBasicFormData,
 } from "@/lib/contract/schema";
-import { contractBasicFormState } from "@/stores/contract/atom";
+import { contractBasicFormState } from "@/stores/contractBasic/atom";
 import { useRecoilState } from "recoil";
 import { useState } from "react";
 import { z } from "zod";

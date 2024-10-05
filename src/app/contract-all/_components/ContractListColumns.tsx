@@ -46,6 +46,11 @@ export const columns = [
         cell: (info) => info.renderValue(),
         footer: (info) => info.column.id,
     }),
+    columnHelper.accessor("contractStatus", {
+        header: () => "ステータス",
+        cell: (info) => info.renderValue(),
+        footer: (info) => info.column.id,
+    }),
     columnHelper.accessor("tradePartner", {
         header: () => <span>取引先</span>,
         footer: (info) => info.column.id,
