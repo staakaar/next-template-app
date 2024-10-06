@@ -1,7 +1,6 @@
 /** 契約書一覧データ取得処理 あくまでサーバーコンポーネントでデータ取得のみ */
 "use client";
-import { useFetchContracts } from "@/lib/contract/api";
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import { Button } from "@chakra-ui/react";
 import Link from "next/link";
 import { Input } from "@/components/ui/input";
@@ -18,11 +17,8 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { columns } from "./ContractListColumns";
 import ContractListTablePresentation from "./ContractListTablePresentational";
 import React from "react";
-import { useRecoilValue, useSetRecoilState } from "recoil";
-import {
-    contractListState,
-    contractQueryParamsState,
-} from "@/stores/contracts/atom";
+import { useRecoilValue } from "recoil";
+import { contractListState } from "@/stores/contracts/atom";
 
 /** 常に最新情報を取得 */
 export const dynamic = "force-dynamic";
@@ -44,9 +40,6 @@ const ContractListTableContainer = () => {
     // }, [data, setContracts]);
 
     const toggleExpansion = () => setIsOpen(!isOpen);
-
-    // if (isLoading) return <div> loading...</div>;
-    // if (isError) return <div>failed to load contracts</div>;
 
     return (
         <>

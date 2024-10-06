@@ -13,7 +13,7 @@ export type QueryParams = {};
 const fetcher = (url: string): Promise<ContractResponse[] | undefined> =>
     fetch(url).then((res) => res.json());
 
-export function useFetchContracts(
+export async function useFetchContracts(
     page: number,
     pageSize?: number,
     search?: string

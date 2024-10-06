@@ -9,6 +9,7 @@ import {
     getFilteredRowModel,
     getPaginationRowModel,
     getSortedRowModel,
+    PaginationState,
     useReactTable,
     VisibilityState,
 } from "@tanstack/react-table";
@@ -71,6 +72,7 @@ import { Box } from "@chakra-ui/react";
 import { useRouter } from "next/navigation";
 import { useSetRecoilState } from "recoil";
 import { contractQueryParamsState } from "@/stores/contracts/atom";
+import { Contract } from "@/types/api/contract";
 
 /** 保存時はserver componentで処理 */
 
@@ -101,7 +103,8 @@ const ContractListTablePresentation = <TData, TValue>({
     const [columnVisibility, setColumnVisibility] = useState<VisibilityState>(
         {}
     );
-    const [pagination, setPagination] = useState({
+    // const [currentPage, setCurrentPage] = useState(0);
+    const [pagination, setPagination] = useState<PaginationState>({
         pageIndex: 0,
         pageSize: 50,
     });
@@ -111,20 +114,25 @@ const ContractListTablePresentation = <TData, TValue>({
         data,
         columns,
         getCoreRowModel: getCoreRowModel(),
-        getPaginationRowModel: getPaginationRowModel(),
         onSortingChange: setSorting,
         getSortedRowModel: getSortedRowModel(),
         onColumnFiltersChange: setColumnFilters,
         getFilteredRowModel: getFilteredRowModel(),
         onPaginationChange: setPagination,
+        getPaginationRowModel: getPaginationRowModel(),
         onColumnVisibilityChange: setColumnVisibility,
+        initialState: {
+            pagination: {
+                pageSize: 50,
+            },
+        },
         state: {
             sorting,
             columnFilters,
             columnVisibility,
             pagination,
         },
-        manualPagination: true,
+        manualPagination: false, //サーバーサイドのページネーション実装が完了したらtrueへ
         pageCount: Math.ceil(totalCount / pagination.pageSize),
     });
 
@@ -132,7 +140,7 @@ const ContractListTablePresentation = <TData, TValue>({
     console.log(columns.length);
     console.log(table.getPageCount(), totalCount / pagination.pageSize);
 
-    const navigateToContractDetail = (rowData: TData) => {
+    const navigateToContractDetail = (rowData: Contract) => {
         console.log(rowData);
         router.push(`/contract/${rowData.contractCode}`);
     };
@@ -162,25 +170,6 @@ const ContractListTablePresentation = <TData, TValue>({
                                 })}
                             </TableRow>
                         ))}
-                        {/* <TableRow>
-                            <TableHead className="hidden w-[100px] sm:table-cell">
-                                <span className="sr-only">Image</span>
-                            </TableHead>
-                            <TableHead>Name</TableHead>
-                            <TableHead>Status</TableHead>
-                            <TableHead className="hidden md:table-cell">
-                                Price
-                            </TableHead>
-                            <TableHead className="hidden md:table-cell">
-                                Total Sales
-                            </TableHead>
-                            <TableHead className="hidden md:table-cell">
-                                Created at
-                            </TableHead>
-                            <TableHead>
-                                <span className="sr-only">Actions</span>
-                            </TableHead>
-                        </TableRow> */}
                     </TableHeader>
                     <TableBody>
                         {table.getRowModel().rows?.length ? (
@@ -266,14 +255,16 @@ const ContractListTablePresentation = <TData, TValue>({
                                         />
                                     </SelectTrigger>
                                     <SelectContent side="top">
-                                        {[50, 75, 100].map((pageSize) => (
-                                            <SelectItem
-                                                key={pageSize}
-                                                value={`${pageSize}`}
-                                            >
-                                                {pageSize}
-                                            </SelectItem>
-                                        ))}
+                                        {[10, 20, 30, 40, 50, 75, 100].map(
+                                            (pageSize) => (
+                                                <SelectItem
+                                                    key={pageSize}
+                                                    value={`${pageSize}`}
+                                                >
+                                                    {pageSize}
+                                                </SelectItem>
+                                            )
+                                        )}
                                     </SelectContent>
                                 </Select>
                                 <p className="text-sm font-medium">件</p>
@@ -288,7 +279,7 @@ const ContractListTablePresentation = <TData, TValue>({
                                     size={"2"}
                                     variant="outline"
                                     className="hidden h-8 w-8 p-0 lg:flex"
-                                    onClick={() => table.setPageIndex(0)}
+                                    onClick={() => table.firstPage()}
                                     disabled={!table.getCanPreviousPage()}
                                 >
                                     <span className="sr-only">
@@ -324,10 +315,11 @@ const ContractListTablePresentation = <TData, TValue>({
                                     size={"2"}
                                     variant="outline"
                                     className="hidden h-8 w-8 p-0 lg:flex"
-                                    onClick={() =>
-                                        table.setPageIndex(
-                                            table.getPageCount() - 1
-                                        )
+                                    onClick={
+                                        () => table.lastPage()
+                                        // table.setPageIndex(
+                                        //     table.getPageCount() - 1
+                                        // )
                                     }
                                     disabled={!table.getCanNextPage()}
                                 >

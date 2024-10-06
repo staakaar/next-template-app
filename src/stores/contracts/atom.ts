@@ -50,10 +50,13 @@ export const selectedContractSelector = selector({
     key: "selectedContractSelector",
     get: ({ get }) => {
         const contractList = get(contractListState);
+        console.log("selectedContractSelector", contractList);
         const selectedCode = get(selectedContractCodeState);
+        console.log("selectedContractSelector", selectedCode);
         return (
-            contractList.find((contract) => contract.code === selectedCode) ||
-            null
+            contractList.contracts.find(
+                (contract) => contract.contractCode === selectedCode
+            ) || null
         );
     },
 });

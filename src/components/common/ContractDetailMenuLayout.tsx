@@ -67,35 +67,33 @@ const ContractDetailMenuLayout = () => {
     ];
 
     return (
-        <>
-            <Box className="flex flex-col space-y-8 lg:flex-row lg:space-x-12 lg:space-y-0 space-x-4 px-8 lg:h-[900px]">
-                <Box as="aside" className="-mx-6 lg:w-1/5 border-r">
-                    <VStack
-                        as="nav"
-                        align="stretch"
-                        w="25%"
-                        className="flex space-x-2 lg:flex-col lg:space-x-12 lg:space-y-1 mt-20"
-                    >
-                        {sideMenu.map((menu) => (
-                            <NavLink
-                                key={menu.id}
-                                href={`#${menu.id}`}
-                                isActive={activeMenu === menu.id}
-                                onClick={(e) => {
-                                    e.preventDefault();
-                                    setActiveMenu(menu.id);
-                                }}
-                            >
-                                {menu.label}
-                            </NavLink>
-                        ))}
-                    </VStack>
-                </Box>
-                <Box flex={1} className="flex-1 lg:max-w-2xl:">
-                    {sideMenu.find((menu) => menu.id === activeMenu)?.component}
-                </Box>
+        <Box className="flex flex-col space-y-8 lg:flex-row lg:space-x-12 lg:space-y-0 space-x-4 px-8 lg:h-[900px]">
+            <Box as="aside" className="-mx-6 lg:w-1/5 border-r">
+                <VStack
+                    as="nav"
+                    align="stretch"
+                    w="25%"
+                    className="flex space-x-2 lg:flex-col lg:space-x-12 lg:space-y-1 mt-20"
+                >
+                    {sideMenu.map((menu) => (
+                        <NavLink
+                            key={menu.id}
+                            href={`#${menu.id}`}
+                            isActive={activeMenu === menu.id}
+                            onClick={(e) => {
+                                e.preventDefault();
+                                setActiveMenu(menu.id);
+                            }}
+                        >
+                            {menu.label}
+                        </NavLink>
+                    ))}
+                </VStack>
             </Box>
-        </>
+            <Box flex={1} className="flex-1 lg:max-w-2xl:">
+                {sideMenu.find((menu) => menu.id === activeMenu)?.component}
+            </Box>
+        </Box>
     );
 };
 
