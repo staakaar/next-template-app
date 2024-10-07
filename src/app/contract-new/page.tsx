@@ -30,23 +30,11 @@ const ContractNewPage = () => {
                                 <Box className="flex items-center space-x-2">
                                     {/* 基本情報を保存した瞬間に非表示 */}
                                     <Button className="bg-blue-500 hover:bg-blue-600 text-white font-bold py-2 px-4 rounded hover:shadow-lg transition-all duration-200">
-                                        キャンセル
+                                        スキップ
                                     </Button>
                                     {/* 基本情報とファイルの登録をしている場合は表示 */}
                                     <Button className="bg-blue-500 hover:bg-blue-600 text-white font-bold py-2 px-4 rounded hover:shadow-lg transition-all duration-200">
-                                        アプローチ
-                                    </Button>
-                                    <Button className="bg-blue-500 hover:bg-blue-600 text-white font-bold py-2 px-4 rounded hover:shadow-lg transition-all duration-200">
-                                        出力
-                                    </Button>
-                                    <Button className="bg-blue-500 hover:bg-blue-600 text-white font-bold py-2 px-4 rounded hover:shadow-lg transition-all duration-200">
-                                        コピー
-                                    </Button>
-                                    <Button className="bg-blue-500 hover:bg-blue-600 text-white font-bold py-2 px-4 rounded hover:shadow-lg transition-all duration-200">
-                                        WF
-                                    </Button>
-                                    <Button className="bg-blue-500 hover:bg-blue-600 text-white font-bold py-2 px-4 rounded hover:shadow-lg transition-all duration-200">
-                                        発行
+                                        登録
                                     </Button>
                                 </Box>
                             </Box>
@@ -59,19 +47,6 @@ const ContractNewPage = () => {
                                 <ContractDetailMenuLayout />
                             </Box>
                         </Card>
-                        {/* <Box flex={1} className="flex-1 lg:max-w-2xl:"> */}
-                        {/* containerにする */}
-                        {/* <ContractBasicContainer />
-                            <TradePartnerContainer /> */}
-                        {/* <ContractFileForm />
-                        <ContractDetailsForm />
-                        <ContractSectionForm />
-                        <OwnCompanyForm />
-                        <ContractAuthority />
-                        <RelatedContract />
-                        <WorkflowForm />
-                        <ContractHistory /> */}
-                        {/* </Box> */}
                     </main>
                 </div>
             </Card>

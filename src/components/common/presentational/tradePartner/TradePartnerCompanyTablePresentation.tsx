@@ -38,7 +38,6 @@ import {
     useReactTable,
     VisibilityState,
 } from "@tanstack/react-table";
-import { useRouter } from "next/navigation";
 import { useState } from "react";
 import TradePartnerPersonDrawerContainer from "../../container/tradePartner/TradePartnerPersonDrawerContainer";
 import React from "react";
@@ -103,7 +102,7 @@ const TradePartnerCompanyTablePresentation = <TData, TValue>({
             },
         },
         autoResetPageIndex: true,
-        manualPagination: true,
+        manualPagination: false,
         pageCount: Math.ceil(totalCount / pagination.pageSize),
     });
 

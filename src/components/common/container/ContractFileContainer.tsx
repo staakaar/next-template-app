@@ -1,38 +1,23 @@
-import { Label } from "@/components/ui/label";
-import {
-    Select,
-    SelectContent,
-    SelectItem,
-    SelectTrigger,
-    SelectValue,
-} from "@/components/ui/select";
+import { Button } from "@/components/ui/button";
+import { Separator } from "@/components/ui/separator";
+import { Box, Heading } from "@chakra-ui/react";
+import ContractFilePresentational from "../presentational/ContractFilePresentational";
 
 const ContractFileContainer = () => {
     return (
-        <>
+        <Box>
+            <Box className="flex items-center justify-between">
+                <Heading className="mt-4 mb-6">契約書ファイル</Heading>
+                {/* 詳細時は更新ボタン */}
+                <Button className="bg-blue-500 hover:bg-blue-600 text-white font-bold py-2 px-4 rounded hover:shadow-lg transition-all duration-200">
+                    更新
+                </Button>
+            </Box>
+            <Separator className="mt-4" />
             <div className="grid gap-3">
-                <Label htmlFor="model">契約書ファイル</Label>
-                {/* TODO: 削除ボタンと見出し作成 */}
-                <Select>
-                    <SelectTrigger
-                        id="model"
-                        className="items-start [&_[data-description]]:hidden"
-                    >
-                        <SelectValue placeholder="ファイルを選択" />
-                    </SelectTrigger>
-                    <SelectContent>
-                        {/* ファイル数分マップ コンポーネント分割 */}
-                        <SelectItem value="genesis">
-                            <div className="flex items-start gap-3 text-muted-foreground">
-                                <div className="grid gap-0.5">
-                                    <p>ファイル名</p>
-                                </div>
-                            </div>
-                        </SelectItem>
-                    </SelectContent>
-                </Select>
+                <ContractFilePresentational />
             </div>
-        </>
+        </Box>
     );
 };
 
