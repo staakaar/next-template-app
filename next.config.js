@@ -11,7 +11,7 @@ const nextConfig = {
             },
         ];
     },
-    webpack: (config, options) => {
+    webpack: (config) => {
         config.module.rules.push({
             test: /\.node/,
             use: "raw-loader",
