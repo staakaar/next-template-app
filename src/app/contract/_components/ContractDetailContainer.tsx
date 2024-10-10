@@ -25,6 +25,8 @@ const ContractDetailContainer = () => {
 
     console.log("contractDetailContainer", contractCode);
 
+    // 権限チェック
+
     useEffect(() => {
         setSelectedContractCode(contractCode);
     }, [contractCode, setSelectedContractCode]);

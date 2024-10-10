@@ -1,7 +1,7 @@
 "use client";
 import NavLink from "@/components/atoms/NavigationLink/NavigationLink";
 import ContractAuthorityContainer from "@/components/common/container/ContractAuthorityContainer";
-import ContractDetailsContainer from "@/components/common/container/ContractDetailsContainer";
+import ContractDetailsContainer from "@/components/common/container/contractDetails/ContractDetailsContainer";
 import ContractFileContainer from "@/components/common/container/ContractFileContainer";
 import ContractHistoryContainer from "@/components/common/container/ContractHistoryContainer";
 import ContractSectionContainer from "@/components/common/container/ContractSectionContainer";

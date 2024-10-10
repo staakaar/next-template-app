@@ -28,7 +28,7 @@ const ContractStatusStepper = () => {
 
     return (
         <Box className="flex justify-center sm:w-min-full md:w-min-full lg:w-min-full">
-            <Stepper size="lg" index={activeStep} className="mb-2">
+            <Stepper size="lg" index={activeStep}>
                 {ContractSteps.map((step, index) => (
                     <Step key={index}>
                         <StepIndicator className="bg-blue-500 hover:bg-blue-600 text-white font-bold">

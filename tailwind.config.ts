@@ -45,6 +45,7 @@ const config = {
                     800: "#086F83",
                     900: "#065666",
                 },
+                "black-alpha-100": "rgba(0, 0, 0, 0.06)",
                 border: "hsl(var(--border))",
                 input: "hsl(var(--input))",
                 ring: "hsl(var(--ring))",

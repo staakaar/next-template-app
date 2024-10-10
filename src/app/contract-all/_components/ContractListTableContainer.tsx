@@ -21,7 +21,7 @@ import { useRecoilValue } from "recoil";
 import { contractListState } from "@/stores/contracts/atom";
 
 /** 常に最新情報を取得 */
-export const dynamic = "force-dynamic";
+// export const dynamic = "force-dynamic";
 
 const ContractListTableContainer = () => {
     // const [page, setPage] = useState(0);
@@ -66,7 +66,7 @@ const ContractListTableContainer = () => {
                     </Box>
                 </Box>
             </Box> */}
-            <div className="flex min-h-screen w-full flex-col bg-muted/40">
+            <div className="flex min-h-screen w-full flex-col bg-black-alpha-200">
                 <div className="flex flex-col sm:gap-4 sm:py-4 sm:pl-14 sm:mt-10">
                     <main className="grid flex-1 items-start gap-4 p-4 sm:px-6 sm:py-0 md:gap-8">
                         <Tabs defaultValue="created">
