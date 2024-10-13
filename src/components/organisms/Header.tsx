@@ -17,7 +17,6 @@ import {
     MenubarSeparator,
     MenubarTrigger,
 } from "@/components/ui/menubar";
-import { Navbar } from "./NavBar";
 import { IconButton } from "@chakra-ui/react";
 import { QuestionOutlineIcon, SettingsIcon } from "@chakra-ui/icons";
 import { CircleUser } from "lucide-react";
@@ -29,7 +28,6 @@ const Header = () => {
         <Box className="border-b">
             <Box className="flex h-16 items-center px-4 justify-between">
                 <Box className="flex items-center">
-                    <Navbar />
                     <Box fontWeight="bold" fontSize="lg" marginLeft="20px">
                         <Link href={"/contract-all"}>サービス名</Link>
                     </Box>
@@ -54,7 +52,19 @@ const Header = () => {
                                     <MenubarItem>
                                         <Icon as={SettingsIcon} />
                                         <Link href={""} className="ml-2">
-                                            契約書
+                                            契約書【A】
+                                        </Link>
+                                    </MenubarItem>
+                                    <MenubarItem>
+                                        <Icon as={SettingsIcon} />
+                                        <Link href={""} className="ml-2">
+                                            契約書【B】
+                                        </Link>
+                                    </MenubarItem>
+                                    <MenubarItem>
+                                        <Icon as={SettingsIcon} />
+                                        <Link href={""} className="ml-2">
+                                            WF
                                         </Link>
                                     </MenubarItem>
                                     <MenubarSeparator />
@@ -64,6 +74,24 @@ const Header = () => {
                                 <Icon as={SettingsIcon}></Icon>
                                 <MenubarTrigger>設定メニュー</MenubarTrigger>
                                 <MenubarContent>
+                                    <MenubarItem>
+                                        <Icon as={SettingsIcon} />
+                                        <Link
+                                            href={"/user-settings"}
+                                            className="ml-2"
+                                        >
+                                            項目設定{" "}
+                                        </Link>
+                                    </MenubarItem>
+                                    <MenubarItem>
+                                        <Icon as={SettingsIcon} />
+                                        <Link
+                                            href={"/user-settings"}
+                                            className="ml-2"
+                                        >
+                                            セクション{" "}
+                                        </Link>
+                                    </MenubarItem>
                                     <MenubarItem>
                                         <Icon as={SettingsIcon} />
                                         <Link

@@ -99,11 +99,11 @@ const ContractDetailMenuLayout = () => {
             as="nav"
             align="stretch"
             w="25%"
-            className="flex space-x-2 lg:flex-col lg:space-x-12 lg:space-y-1 mt-20"
+            className="flex space-x-2 lg:flex-col lg:space-x-12 lg:space-y-1 mt-6"
         >
             <Tabs>
                 <div className="flex items-center">
-                    <TabsList className="inline-flex h-9 items-center justify-center rounded-lg bg-muted p-1 text-muted-foreground">
+                    <TabsList className="inline-flex h-9 items-center justify-center rounded-lg bg-muted text-muted-foreground">
                         {sideMenu.map((menu) => (
                             <NavLink
                                 key={menu.id}

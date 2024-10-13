@@ -1,6 +1,7 @@
 "use client";
+import { Badge } from "@/components/ui/badge";
 import { selectedContractSelector } from "@/stores/contracts/atom";
-import { Badge, Box, Heading, VStack } from "@chakra-ui/react";
+import { Heading, HStack } from "@chakra-ui/react";
 import { useRecoilValue } from "recoil";
 
 const ContractDetailSection = () => {
@@ -9,19 +10,13 @@ const ContractDetailSection = () => {
     if (!contract) return;
 
     return (
-        <Heading className="text-md font-bold flex justify-start py-2">
+        <Heading className="text-md font-bold flex justify-start mt-4">
             {/* 契約書コード、案件名、発行分類・種別ステータスはバッジで表示する */}
-            <VStack spacing={2} align="stretch" marginLeft={8}>
-                <Badge fontSize="0.5em" variant="subtle" colorScheme="green">
-                    契約書名: {contract.contractName}
-                </Badge>
-                <Badge fontSize="0.5em" variant="subtle" colorScheme="green">
-                    契約書コード: {contract.contractCode}
-                </Badge>
-                <Badge fontSize="0.5em" variant="subtle" colorScheme="green">
-                    ステータス: {contract.contractStatus}
-                </Badge>
-            </VStack>
+            <HStack spacing={2} align="stretch">
+                <Badge variant="destructive">{contract.contractCode}</Badge>
+                <Badge variant="destructive">{contract.contractStatus}</Badge>
+                <Badge variant="destructive">{contract.contractName}</Badge>
+            </HStack>
         </Heading>
     );
 };

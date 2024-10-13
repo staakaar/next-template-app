@@ -27,7 +27,7 @@ const ContractStatusStepper = () => {
     });
 
     return (
-        <Box className="flex justify-center sm:w-min-full md:w-min-full lg:w-min-full">
+        <Box className="flex justify-center sm:w-min-full md:w-min-full lg:w-min-full mt-4">
             <Stepper size="lg" index={activeStep}>
                 {ContractSteps.map((step, index) => (
                     <Step key={index}>
