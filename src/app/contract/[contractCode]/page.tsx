@@ -1,21 +1,35 @@
-import React, { Suspense } from "react";
-import ContractDetailContainer from "../_components/ContractDetailContainer";
-import VSpinner from "@/components/atoms/Spinner/Spinner";
+"use client";
+import { redirect, useParams } from "next/navigation";
+import { useSetRecoilState } from "recoil";
+import { selectedContractCodeState } from "@/stores/contracts/atom";
+import { useEffect } from "react";
 
 export type ContractDetailsProps = {
     contractCode: string;
 };
 
 const ContractDetailsPage = () => {
-    return (
-        <>
-            {/* <Suspense fallback={<VSpinner size="xl" />}> */}
-            <ContractDetailContainer />
-            {/* </Suspense> */}
-            {/* 詳細タブ表示(各ドメイン) */}
-            {/* タブに応じて新規作成ページを切り替える 契約書情報を一番最初に入力する必要あり */}
-        </>
+    const params = useParams();
+    const contractCode = params.contractCode;
+    console.log(contractCode);
+
+    if (!contractCode || Array.isArray(contractCode)) {
+        redirect("/contract-all");
+    }
+
+    const setSelectedContractCode = useSetRecoilState(
+        selectedContractCodeState
     );
+
+    console.log("contractDetailContainer", contractCode);
+
+    // 権限チェック
+
+    useEffect(() => {
+        setSelectedContractCode(contractCode);
+    }, [contractCode, setSelectedContractCode]);
+
+    return null;
 };
 
 export default ContractDetailsPage;

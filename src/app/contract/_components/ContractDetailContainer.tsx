@@ -13,25 +13,26 @@ export type ContractDetailProps = {
 const ContractDetailContainer = () => {
     const params = useParams();
     const contractCode = params.contractCode;
-    console.log(contractCode);
+    // console.log(contractCode);
 
-    if (!contractCode || Array.isArray(contractCode)) {
-        redirect("/contract-all");
-    }
+    // if (!contractCode || Array.isArray(contractCode)) {
+    //     redirect("/contract-all");
+    // }
 
-    const setSelectedContractCode = useSetRecoilState(
-        selectedContractCodeState
-    );
+    // const setSelectedContractCode = useSetRecoilState(
+    //     selectedContractCodeState
+    // );
 
-    console.log("contractDetailContainer", contractCode);
+    // console.log("contractDetailContainer", contractCode);
 
-    // 権限チェック
+    // // 権限チェック
 
-    useEffect(() => {
-        setSelectedContractCode(contractCode);
-    }, [contractCode, setSelectedContractCode]);
+    // useEffect(() => {
+    //     setSelectedContractCode(contractCode);
+    // }, [contractCode, setSelectedContractCode]);
 
-    return <ContractDetailPresentation />;
+    redirect(`/contract/${contractCode}/contract-basic`);
+    // return <ContractDetailPresentation />;
 };
 
 export default ContractDetailContainer;

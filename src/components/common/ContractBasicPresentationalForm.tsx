@@ -81,13 +81,13 @@ const ContractBasicPresentationalForm = () => {
     return (
         <>
             <Box className="flex items-center justify-between py-2">
-                <Heading className="mt-4 mb-6">基本情報</Heading>
+                {/* <Heading className="mt-4 mb-6">基本情報</Heading> */}
                 {/* 詳細時は更新ボタン */}
                 <Button className="bg-blue-500 hover:bg-blue-600 text-white font-bold py-2 px-4 rounded hover:shadow-lg transition-all duration-200">
                     更新
                 </Button>
             </Box>
-            <Separator />
+            {/* <Separator /> */}
             <Box className="mt-10">
                 <Form {...form}>
                     <form
