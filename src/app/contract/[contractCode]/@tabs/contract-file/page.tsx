@@ -1,7 +1,9 @@
+import ContractFileContainer from "@/components/common/container/ContractFileContainer";
+
 const ContractFileTab = () => {
     return (
         <>
-            <div>contract File</div>
+            <ContractFileContainer />
         </>
     );
 };

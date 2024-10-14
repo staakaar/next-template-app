@@ -29,7 +29,7 @@ const ContractDetailsPage = () => {
         setSelectedContractCode(contractCode);
     }, [contractCode, setSelectedContractCode]);
 
-    return null;
+    return <></>;
 };
 
 export default ContractDetailsPage;

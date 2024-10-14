@@ -1,7 +1,9 @@
+import ContractAuthorityContainer from "@/components/common/container/ContractAuthorityContainer";
+
 const ContractAuthorityTab = () => {
     return (
         <>
-            <div>contract authority</div>
+            <ContractAuthorityContainer />
         </>
     );
 };

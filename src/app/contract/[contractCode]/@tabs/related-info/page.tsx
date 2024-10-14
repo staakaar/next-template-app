@@ -1,7 +1,9 @@
+import RelatedContractContainer from "@/components/common/container/RelatedContractContainer";
+
 const RelatedInfoTab = () => {
     return (
         <>
-            <div>RelatedInfoTab</div>
+            <RelatedContractContainer />
         </>
     );
 };

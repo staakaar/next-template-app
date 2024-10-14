@@ -16,13 +16,11 @@ const TradePartnerCompanyTableContainer = () => {
 
     return (
         <>
-            <Card className="flex w-full flex-col bg-muted/40 h-[800px]">
-                <TradePartnerCompanyTablePresentation
-                    data={data.tradePartner}
-                    columns={columns}
-                    totalCount={data.totalCount}
-                />
-            </Card>
+            <TradePartnerCompanyTablePresentation
+                data={data.tradePartner}
+                columns={columns}
+                totalCount={data.totalCount}
+            />
         </>
     );
 };

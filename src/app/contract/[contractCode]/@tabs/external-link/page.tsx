@@ -1,7 +1,9 @@
+import ExternalLinkContainer from "@/components/common/container/ExternalLinkContainer";
+
 const ExternalLinkTab = () => {
     return (
         <>
-            <div>ExternalLinkTab</div>
+            <ExternalLinkContainer />
         </>
     );
 };

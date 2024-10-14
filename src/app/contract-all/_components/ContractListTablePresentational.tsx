@@ -106,7 +106,7 @@ const ContractListTablePresentation = <TData, TValue>({
     // const [currentPage, setCurrentPage] = useState(0);
     const [pagination, setPagination] = useState<PaginationState>({
         pageIndex: 0,
-        pageSize: 50,
+        pageSize: 10,
     });
     const setQueryParams = useSetRecoilState(contractQueryParamsState);
 
@@ -123,7 +123,7 @@ const ContractListTablePresentation = <TData, TValue>({
         onColumnVisibilityChange: setColumnVisibility,
         initialState: {
             pagination: {
-                pageSize: 50,
+                pageSize: 10,
             },
         },
         state: {
@@ -173,26 +173,31 @@ const ContractListTablePresentation = <TData, TValue>({
                     </TableHeader>
                     <TableBody>
                         {table.getRowModel().rows?.length ? (
-                            table.getRowModel().rows.map((row) => (
-                                <TableRow
-                                    key={row.id}
-                                    data-state={
-                                        row.getIsSelected() && "selected"
-                                    }
-                                    onClick={() =>
-                                        navigateToContractDetail(row.original)
-                                    }
-                                >
-                                    {row.getVisibleCells().map((cell) => (
-                                        <TableCell key={cell.id}>
-                                            {flexRender(
-                                                cell.column.columnDef.cell,
-                                                cell.getContext()
-                                            )}
-                                        </TableCell>
-                                    ))}
-                                </TableRow>
-                            ))
+                            table
+                                .getRowModel()
+                                .rows.slice(0, pagination.pageSize)
+                                .map((row) => (
+                                    <TableRow
+                                        key={row.id}
+                                        data-state={
+                                            row.getIsSelected() && "selected"
+                                        }
+                                        onClick={() =>
+                                            navigateToContractDetail(
+                                                row.original
+                                            )
+                                        }
+                                    >
+                                        {row.getVisibleCells().map((cell) => (
+                                            <TableCell key={cell.id}>
+                                                {flexRender(
+                                                    cell.column.columnDef.cell,
+                                                    cell.getContext()
+                                                )}
+                                            </TableCell>
+                                        ))}
+                                    </TableRow>
+                                ))
                         ) : (
                             <TableRow>
                                 <TableCell
@@ -331,30 +336,6 @@ const ContractListTablePresentation = <TData, TValue>({
                             </Box>
                         </Box>
                     </Box>
-                    {/* <Box className="flex items-center space-x-6 lg:space-x-8">
-                        <Pagination>
-                            <PaginationContent>
-                                <PaginationItem>
-                                    <PaginationSkipPrevious href="#" />
-                                </PaginationItem>
-                                <PaginationItem
-                                    onClick={() => table.previousPage()}
-                                    aria-disabled={!table.getCanPreviousPage()}
-                                >
-                                    <PaginationPrevious href="#" />
-                                </PaginationItem>
-                                <PaginationItem
-                                    onClick={() => table.nextPage()}
-                                    aria-disabled={!table.getCanNextPage()}
-                                >
-                                    <PaginationNext href="#" />
-                                </PaginationItem>
-                                <PaginationItem>
-                                    <PaginationSkipNext href="#" />
-                                </PaginationItem>
-                            </PaginationContent>
-                        </Pagination>
-                    </Box> */}
                 </Box>
             </CardFooter>
         </Card>

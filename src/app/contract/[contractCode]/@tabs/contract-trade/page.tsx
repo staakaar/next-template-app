@@ -1,7 +1,9 @@
+import TradePartnerContainer from "@/components/common/container/TradePartnerContainer";
+
 const ContractTradeTab = () => {
     return (
         <>
-            <div>fgff</div>
+            <TradePartnerContainer />
         </>
     );
 };

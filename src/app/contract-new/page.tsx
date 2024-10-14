@@ -1,32 +1,63 @@
+"use client";
 import { Card } from "@/components/ui/card";
 import { Separator } from "@/components/ui/separator";
 
-import { Box, Heading, VStack } from "@chakra-ui/react";
+import { Box, Heading } from "@chakra-ui/react";
 import Link from "next/link";
-import ContractStatusStepper from "@/components/common/ContractStatusStepper";
-import ContractBasicContainer from "@/components/common/ContractBasicContainer";
-import TradePartnerContainer from "@/components/common/container/TradePartnerContainer";
 import { Button } from "@/components/ui/button";
-import ContractDetailMenuLayout from "@/components/common/ContractDetailMenuLayout";
+import ContractNewStatusStepper from "@/components/common/ContractNewStatusStepper";
+import ContractNewCarousel from "@/components/common/ContractNewCarousel";
+import { useState } from "react";
+import { useRouter } from "next/navigation";
+import {
+    Dialog,
+    DialogClose,
+    DialogContent,
+    DialogDescription,
+    DialogFooter,
+    DialogHeader,
+    DialogTitle,
+    DialogTrigger,
+} from "@/components/ui/dialog";
+import { VisuallyHidden } from "@chakra-ui/react";
 
 /** 新規作成ページ */
 const ContractNewPage = () => {
+    const [isDialogOpen, setIsDialogOpen] = useState(false);
+    const [currentStep, setCurrentStep] = useState(0);
+    const router = useRouter();
+
+    const handleBackToList = () => {
+        if (currentStep === 0) {
+            setIsDialogOpen(true);
+        } else {
+            console.log("一覧へ");
+            // router.push("/contract-all");
+        }
+    };
+
+    const handleConfirmBackToList = () => {
+        setIsDialogOpen(false);
+        router.push("/contract-all");
+    };
+
+    console.log("***currentStep***", currentStep);
+    console.log("***isDialogOpen***", isDialogOpen);
+
     return (
         <>
             {/* 詳細タブ表示(各ドメイン) */}
             {/* タブに応じて新規作成ページを切り替える 契約書情報を一番最初に入力する必要あり */}
             <Card className="flex min-h-screen w-full flex-col bg-muted/40">
-                <div className="flex flex-col sm:gap-4 sm:py-4 sm:pl-14 sm:mt-10">
-                    <main className="grid flex-1 items-start gap-4 p-4 sm:px-6 sm:py-0 md:gap-8">
-                        <Box className="text-sm font-medium">
-                            <Link href={"/contract-all"}>一覧へ戻る</Link>
-                        </Box>
-                        <ContractStatusStepper />
-                        <Card className="px-4 py-4">
-                            <Box className="flex items-center justify-between space-y-2 px-8 py-4">
-                                <Heading className="text-md font-bold">
-                                    新規作成画面
-                                </Heading>
+                <Dialog open={isDialogOpen} onOpenChange={setIsDialogOpen}>
+                    <div className="flex flex-col sm:gap-4 sm:py-4 sm:pl-14 sm:mt-10">
+                        <main className="grid flex-1 items-start gap-4 p-4 sm:px-6 sm:py-0 md:gap-8">
+                            <Box className="text-sm font-medium flex justify-between">
+                                <DialogTrigger asChild>
+                                    <Button onClick={handleBackToList}>
+                                        <Link href={""}>一覧へ戻る</Link>
+                                    </Button>
+                                </DialogTrigger>
                                 <Box className="flex items-center space-x-2">
                                     {/* 基本情報を保存した瞬間に非表示 */}
                                     <Button className="bg-blue-500 hover:bg-blue-600 text-white font-bold py-2 px-4 rounded hover:shadow-lg transition-all duration-200">
@@ -38,17 +69,46 @@ const ContractNewPage = () => {
                                     </Button>
                                 </Box>
                             </Box>
-                            <Separator />
-
-                            <Box
-                                className="overflow-auto"
-                                style={{ maxHeight: "calc(100vh - 200px)" }}
-                            >
-                                <ContractDetailMenuLayout />
-                            </Box>
-                        </Card>
-                    </main>
-                </div>
+                            <ContractNewStatusStepper />
+                            <Card className="px-4 py-4">
+                                <Box className="flex items-center justify-between space-y-2 px-8 py-4">
+                                    <Heading className="text-md font-bold">
+                                        新規作成画面
+                                    </Heading>
+                                </Box>
+                                <Separator />
+                                <Box
+                                    className="overflow-auto"
+                                    style={{ maxHeight: "calc(100vh - 200px)" }}
+                                >
+                                    <ContractNewCarousel />
+                                </Box>
+                            </Card>
+                        </main>
+                    </div>
+                    {/* {isDialogOpen && ( */}
+                    <DialogContent className="sm:max-w-[425px]">
+                        <DialogHeader>
+                            <VisuallyHidden>
+                                <DialogTitle>
+                                    入力した内容は保存されません。よろしいですか？
+                                </DialogTitle>
+                            </VisuallyHidden>
+                            <DialogDescription>aaaa</DialogDescription>
+                        </DialogHeader>
+                        <DialogFooter>
+                            <DialogFooter>
+                                <Button onClick={() => setIsDialogOpen(false)}>
+                                    キャンセル
+                                </Button>
+                            </DialogFooter>
+                            <Button onClick={handleConfirmBackToList}>
+                                OK
+                            </Button>
+                        </DialogFooter>
+                    </DialogContent>
+                    {/* )} */}
+                </Dialog>
             </Card>
         </>
     );

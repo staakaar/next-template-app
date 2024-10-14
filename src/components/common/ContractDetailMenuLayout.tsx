@@ -11,7 +11,7 @@ import RelatedContractContainer from "@/components/common/container/RelatedContr
 import TradePartnerContainer from "@/components/common/container/TradePartnerContainer";
 import WorkflowContainer from "@/components/common/container/WorkflowContainer";
 import ContractBasicContainer from "@/components/common/ContractBasicContainer";
-import { Box, HStack, VStack } from "@chakra-ui/react";
+import { HStack } from "@chakra-ui/react";
 import { useParams, useRouter } from "next/navigation";
 import { useState } from "react";
 import { Tabs, TabsList } from "../ui/tabs";

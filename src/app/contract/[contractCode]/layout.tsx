@@ -7,6 +7,7 @@ import { Button } from "@/components/ui/button";
 import { Separator } from "@/components/ui/separator";
 import ContractDetailMenuLayout from "@/components/common/ContractDetailMenuLayout";
 import ContractDetailSection from "../_components/ContractDetailSection";
+import { ContractDetailUpdateButton } from "../_components/ContractDetailUpdateButton";
 
 const Layout = ({
     children,
@@ -17,7 +18,7 @@ const Layout = ({
 }>) => {
     return (
         <>
-            <Card className="flex w-full flex-col bg-muted/40">
+            <Card className="flex min-h-screen w-full flex-col bg-muted/40">
                 <div className="flex flex-col sm:gap-4 sm:py-4 sm:pl-10 sm:mt-8">
                     <main className="flex-1 items-start gap-4 p-4 sm:px-6 sm:py-0">
                         <Box className="text-sm font-medium flex justify-between">
@@ -75,6 +76,14 @@ const Layout = ({
                     </main>
                 </div>
             </Card>
+            <footer className="flex items-center justify-end bg-background h-16 sticky bottom-0 border-t">
+                <Box className="mr-8">
+                    <ContractDetailUpdateButton
+                        activeTab={undefined}
+                        contractCode={undefined}
+                    />
+                </Box>
+            </footer>
         </>
     );
 };

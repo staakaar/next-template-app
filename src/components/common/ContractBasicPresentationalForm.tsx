@@ -33,7 +33,7 @@ import {
 } from "../ui/select";
 import { Textarea } from "@/components/ui/textarea";
 import { postContractBasic } from "@/lib/contract/api";
-import ContractDetailFooter from "./ContractDetailFooter";
+import { ContractDetailUpdateButton } from "@/app/contract/_components/ContractDetailUpdateButton";
 
 // export type ContractBasicFormProps = {
 //     onSubmit: (data: ContractBasicFormSchema) => void;
@@ -235,7 +235,6 @@ const ContractBasicPresentationalForm = () => {
                     </form>
                 </Form>
             </Box>
-            <ContractDetailFooter />
         </>
     );
 };

@@ -1,7 +1,9 @@
+import ContractHistoryContainer from "@/components/common/container/ContractHistoryContainer";
+
 const ContractHistoryTab = () => {
     return (
         <>
-            <div>contract history</div>
+            <ContractHistoryContainer />
         </>
     );
 };

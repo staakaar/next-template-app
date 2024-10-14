@@ -1,7 +1,9 @@
+import ContractSectionContainer from "@/components/common/container/ContractSectionContainer";
+
 const SectionTab = () => {
     return (
         <>
-            <div>SectionTab</div>
+            <ContractSectionContainer />
         </>
     );
 };

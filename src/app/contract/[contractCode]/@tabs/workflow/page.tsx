@@ -1,7 +1,9 @@
+import WorkflowContainer from "@/components/common/container/WorkflowContainer";
+
 const WorkflowTab = () => {
     return (
         <>
-            <div>WorkflowTab</div>
+            <WorkflowContainer />
         </>
     );
 };

@@ -1,7 +1,9 @@
+import OwnCompanyContainer from "@/components/common/container/OwnCompanyContainer";
+
 const OwnCompanyTab = () => {
     return (
         <>
-            <div>OwnCompanyTab</div>
+            <OwnCompanyContainer />
         </>
     );
 };

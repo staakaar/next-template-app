@@ -114,97 +114,101 @@ const TradePartnerCompanyTablePresentation = <TData, TValue>({
 
     return (
         <>
-            <CardHeader>
-                <CardTitle>取引先一覧</CardTitle>
-                {/* <Box className="relative ml-auto flex-1 md:grow-0">
-                    <Search className="absolute left-2.5 top-2.5 h-4 w-4 text-muted-foreground" />
-                    <Input
-                        type="search"
-                        placeholder="Search..."
-                        className="w-full rounded-lg bg-background pl-8 md:w-[200px] lg:w-[336px]"
-                    />
-                </Box> */}
-            </CardHeader>
-            <CardContent>
-                <div className="rounded-md border">
-                    <div className="h-[600px]">
-                        <Table>
-                            <TableHeader className="sticky top-0 z-10">
-                                {table.getHeaderGroups().map((headerGroup) => (
-                                    <TableRow key={headerGroup.id}>
-                                        {headerGroup.headers.map((header) => {
-                                            return (
-                                                <TableHead key={header.id}>
-                                                    {header.isPlaceholder
-                                                        ? null
-                                                        : flexRender(
-                                                              header.column
-                                                                  .columnDef
-                                                                  .header,
-                                                              header.getContext()
-                                                          )}
-                                                </TableHead>
-                                            );
-                                        })}
-                                    </TableRow>
-                                ))}
-                            </TableHeader>
-                        </Table>
-                        <div
-                            className="overflow-auto"
-                            style={{ height: "calc(100% - 40px)" }}
-                        >
+            <Box className="mt-8">
+                <CardContent>
+                    <div className="rounded-md border">
+                        <div className="h-[600px]">
                             <Table>
-                                <TableBody>
-                                    {table.getRowModel().rows?.length ? (
-                                        table
-                                            .getRowModel()
-                                            .rows.slice(0, pagination.pageSize)
-                                            .map((row) => (
-                                                <TableRow
-                                                    key={row.id}
-                                                    data-state={
-                                                        row.getIsSelected() &&
-                                                        "selected"
-                                                    }
-                                                    onClick={() =>
-                                                        handleOpenDrawerTradePartnerPerson(
-                                                            row.original
-                                                        )
-                                                    }
-                                                >
-                                                    {row
-                                                        .getVisibleCells()
-                                                        .map((cell) => (
-                                                            <TableCell
-                                                                key={cell.id}
+                                <TableHeader className="sticky top-0 z-10">
+                                    {table
+                                        .getHeaderGroups()
+                                        .map((headerGroup) => (
+                                            <TableRow key={headerGroup.id}>
+                                                {headerGroup.headers.map(
+                                                    (header) => {
+                                                        return (
+                                                            <TableHead
+                                                                key={header.id}
                                                             >
-                                                                {flexRender(
-                                                                    cell.column
-                                                                        .columnDef
-                                                                        .cell,
-                                                                    cell.getContext()
-                                                                )}
-                                                            </TableCell>
-                                                        ))}
-                                                </TableRow>
-                                            ))
-                                    ) : (
-                                        <TableRow>
-                                            <TableCell
-                                                colSpan={columns.length}
-                                                className="h-24 text-center"
-                                            >
-                                                該当するデータが存在しません。
-                                            </TableCell>
-                                        </TableRow>
-                                    )}
-                                </TableBody>
+                                                                {header.isPlaceholder
+                                                                    ? null
+                                                                    : flexRender(
+                                                                          header
+                                                                              .column
+                                                                              .columnDef
+                                                                              .header,
+                                                                          header.getContext()
+                                                                      )}
+                                                            </TableHead>
+                                                        );
+                                                    }
+                                                )}
+                                            </TableRow>
+                                        ))}
+                                </TableHeader>
                             </Table>
+                            <div
+                                className="overflow-auto"
+                                style={{ height: "calc(100% - 40px)" }}
+                            >
+                                <Table>
+                                    <TableBody>
+                                        {table.getRowModel().rows?.length ? (
+                                            table
+                                                .getRowModel()
+                                                .rows.slice(
+                                                    0,
+                                                    pagination.pageSize
+                                                )
+                                                .map((row) => (
+                                                    <TableRow
+                                                        key={row.id}
+                                                        data-state={
+                                                            row.getIsSelected() &&
+                                                            "selected"
+                                                        }
+                                                        onClick={() =>
+                                                            handleOpenDrawerTradePartnerPerson(
+                                                                row.original
+                                                            )
+                                                        }
+                                                    >
+                                                        {row
+                                                            .getVisibleCells()
+                                                            .map((cell) => (
+                                                                <TableCell
+                                                                    key={
+                                                                        cell.id
+                                                                    }
+                                                                >
+                                                                    {flexRender(
+                                                                        cell
+                                                                            .column
+                                                                            .columnDef
+                                                                            .cell,
+                                                                        cell.getContext()
+                                                                    )}
+                                                                </TableCell>
+                                                            ))}
+                                                    </TableRow>
+                                                ))
+                                        ) : (
+                                            <TableRow>
+                                                <TableCell
+                                                    colSpan={columns.length}
+                                                    className="h-24 text-center"
+                                                >
+                                                    該当するデータが存在しません。
+                                                </TableCell>
+                                            </TableRow>
+                                        )}
+                                    </TableBody>
+                                </Table>
+                            </div>
                         </div>
                     </div>
-                </div>
-            </CardContent>
+                </CardContent>
+            </Box>
             <CardFooter className="flex items-center justify-end">
                 <Box className="flex items-center justify-end px-2">
                     {/* ページネーションコンポーネント */}
