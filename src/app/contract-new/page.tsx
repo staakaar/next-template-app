@@ -6,9 +6,15 @@ import { Box, Heading } from "@chakra-ui/react";
 import Link from "next/link";
 import { Button } from "@/components/ui/button";
 import ContractNewStatusStepper from "@/components/common/ContractNewStatusStepper";
-import ContractNewCarousel from "@/components/common/ContractNewCarousel";
 import { useState } from "react";
 import { useRouter } from "next/navigation";
+import {
+    Carousel,
+    CarouselContent,
+    CarouselItem,
+    CarouselNext,
+    CarouselPrevious,
+} from "../../components/ui/carousel";
 import {
     Dialog,
     DialogClose,
@@ -20,6 +26,18 @@ import {
     DialogTrigger,
 } from "@/components/ui/dialog";
 import { VisuallyHidden } from "@chakra-ui/react";
+import ContractNewDynamicCarousel from "@/components/common/ContractNewCarousel";
+
+const CONTRACT_NEW_STEPS = [
+    { name: "ContractBasic", label: "基本情報" },
+    { name: "ContractFile", label: "契約書ファイル" },
+    { name: "ContractTradeCompany", label: "取引先" },
+    { name: "ContractDetails", label: "明細" },
+    { name: "ContractAuthority", label: "権限" },
+    { name: "RelatedInfo", label: "関連情報" },
+    { name: "Section", label: "セクション" },
+    { name: "Workflow", label: "ワークフロー" },
+];
 
 /** 新規作成ページ */
 const ContractNewPage = () => {
@@ -39,6 +57,20 @@ const ContractNewPage = () => {
     const handleConfirmBackToList = () => {
         setIsDialogOpen(false);
         router.push("/contract-all");
+    };
+
+    // 前のステップ
+    const handlePrevious = () => {
+        if (currentStep > 0) {
+            setCurrentStep(currentStep - 1);
+        }
+    };
+
+    // 次のステップ
+    const handleNext = () => {
+        if (currentStep < CONTRACT_NEW_STEPS.length - 1) {
+            setCurrentStep(currentStep + 1);
+        }
     };
 
     console.log("***currentStep***", currentStep);
@@ -81,7 +113,12 @@ const ContractNewPage = () => {
                                     className="overflow-auto"
                                     style={{ maxHeight: "calc(100vh - 200px)" }}
                                 >
-                                    <ContractNewCarousel />
+                                    <ContractNewDynamicCarousel
+                                        steps={CONTRACT_NEW_STEPS}
+                                        currentStep={currentStep}
+                                        handlePrevious={handlePrevious}
+                                        handleNext={handleNext}
+                                    />
                                 </Box>
                             </Card>
                         </main>
@@ -94,7 +131,9 @@ const ContractNewPage = () => {
                                     入力した内容は保存されません。よろしいですか？
                                 </DialogTitle>
                             </VisuallyHidden>
-                            <DialogDescription>aaaa</DialogDescription>
+                            <DialogDescription>
+                                入力した内容は保存されません。よろしいですか？
+                            </DialogDescription>
                         </DialogHeader>
                         <DialogFooter>
                             <DialogFooter>

@@ -1,7 +1,5 @@
 "use client";
 
-import { Separator } from "@/components/ui/separator";
-import { Heading } from "@chakra-ui/react";
 import {
     Form,
     FormControl,
@@ -9,9 +7,9 @@ import {
     FormItem,
     FormLabel,
     FormMessage,
-} from "../ui/form";
-import { Input } from "../ui/input";
-import { Button } from "../ui/button";
+} from "../../ui/form";
+import { Input } from "../../ui/input";
+import { Button } from "../../ui/button";
 import { Box, SimpleGrid, useToast } from "@chakra-ui/react";
 import {
     contractBasicFormSchema,
@@ -30,7 +28,7 @@ import {
     SelectItem,
     SelectTrigger,
     SelectValue,
-} from "../ui/select";
+} from "../../ui/select";
 import { Textarea } from "@/components/ui/textarea";
 import { postContractBasic } from "@/lib/contract/api";
 import { ContractDetailUpdateButton } from "@/app/contract/_components/ContractDetailUpdateButton";

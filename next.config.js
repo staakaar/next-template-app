@@ -2,6 +2,19 @@
 const nextConfig = {
     reactStrictMode: true,
     // experimental: { esmExternals: true },
+    experimental: {
+        turbo: {
+            resolveExtensions: [
+                ".mdx",
+                ".tsx",
+                ".ts",
+                ".jsx",
+                ".js",
+                ".mjs",
+                ".json",
+            ],
+        },
+    },
     async redirects() {
         return [
             {
