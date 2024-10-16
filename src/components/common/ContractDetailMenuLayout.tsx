@@ -10,11 +10,11 @@ import OwnCompanyContainer from "@/components/common/container/OwnCompanyContain
 import RelatedContractContainer from "@/components/common/container/RelatedContractContainer";
 import TradePartnerContainer from "@/components/common/container/TradePartnerContainer";
 import WorkflowContainer from "@/components/common/container/WorkflowContainer";
-import ContractBasicContainer from "@/components/common/ContractBasicContainer";
 import { HStack } from "@chakra-ui/react";
 import { useParams, useRouter } from "next/navigation";
 import { useState } from "react";
 import { Tabs, TabsList } from "../ui/tabs";
+import ContractBasicContainer from "./container/ContractBasicContainer";
 
 const ContractDetailMenuLayout = () => {
     const params = useParams();

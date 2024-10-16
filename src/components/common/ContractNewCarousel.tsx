@@ -1,6 +1,6 @@
 "use client";
 
-import { Suspense } from "react";
+import { ComponentType, Suspense } from "react";
 import {
     Carousel,
     CarouselContent,
@@ -9,9 +9,23 @@ import {
     CarouselPrevious,
 } from "../ui/carousel";
 import dynamic from "next/dynamic";
+import { ContractNewStep } from "@/app/contract-new/page";
+import { Box } from "@chakra-ui/react";
+
+export type StepComponent = {
+    ContractBasic: ComponentType<{}>;
+    ContractFile: ComponentType<{}>;
+    ContractTradeCompany: ComponentType<{}>;
+    ContractDetails: ComponentType<{}>;
+    ContractAuthority: ComponentType<{}>;
+    ExternalLink: ComponentType<{}>;
+    RelatedInfo: ComponentType<{}>;
+    Section: ComponentType<{}>;
+    Workflow: ComponentType<{}>;
+};
 
 // 動的にインポートするコンポーネントを定義
-const StepComponents = {
+const StepComponents: StepComponent = {
     ContractBasic: dynamic(
         () => import("@/components/common/container/ContractBasicContainer")
     ),
@@ -59,41 +73,51 @@ const ErrorFallback = ({ error }) => (
     </div>
 );
 
+export type ContractNewDynamicCarouselProps = {
+    steps: ContractNewStep[];
+    currentStep: number;
+    handlePrevious: () => void;
+    handleNext: () => void;
+};
+
 const ContractNewDynamicCarousel = ({
     steps,
     currentStep,
     handlePrevious,
     handleNext,
-}: any) => {
+}: ContractNewDynamicCarouselProps) => {
     return (
         <>
-            <Carousel className="w-full max-w-xs">
-                <CarouselContent>
-                    {steps.map((step: any, index: number) => {
-                        const StepComponent = StepComponents[step.name];
-                        return (
-                            <CarouselItem key={step.name}>
-                                <div className="p-1 w-full">
-                                    <Suspense fallback={<LoadingFallback />}>
-                                        <StepComponent
-                                            isActive={index === currentStep}
-                                        />
-                                    </Suspense>
-                                </div>
-                            </CarouselItem>
-                        );
-                    })}
-                </CarouselContent>
-                {currentStep > 0 && (
-                    <CarouselPrevious onClick={handlePrevious} />
-                )}
-                {currentStep < steps.length - 1 && (
-                    <CarouselNext
-                        onClick={handleNext}
-                        disabled={currentStep === 0}
-                    />
-                )}
-            </Carousel>
+            <Box
+                className="overflow-auto"
+                style={{ maxHeight: "calc(100vh - 200px)" }}
+            >
+                <Carousel className="w-full xs:max-w-[300px] md:max-w-[500px] xl:max-w-[1200px] mx-auto">
+                    <CarouselContent>
+                        {/* {currentStep > 0 && <CarouselPrevious />} */}
+                        <CarouselPrevious />
+                        {steps.map((step: any, index: number) => {
+                            const StepComponent = StepComponents[step.name];
+                            return (
+                                <CarouselItem key={step.name}>
+                                    <div className="p-1 w-full">
+                                        <Suspense
+                                            fallback={<LoadingFallback />}
+                                        >
+                                            <StepComponent
+                                                isActive={index === currentStep}
+                                                onNext={handleNext}
+                                                onPrevious={handlePrevious}
+                                            />
+                                        </Suspense>
+                                    </div>
+                                </CarouselItem>
+                            );
+                        })}
+                    </CarouselContent>
+                    {currentStep < steps.length - 1 && <CarouselNext />}
+                </Carousel>
+            </Box>
         </>
     );
 };
