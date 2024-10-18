@@ -3,9 +3,7 @@
 import { ApiContext } from "@/types/api";
 import { ContractResponse } from "@/types/api/contract";
 import { redirect } from "next/navigation";
-import useSWR from "swr";
 import { z } from "zod";
-import { contractBasicFormSchema, ContractBasicForm } from "./schema";
 
 export type QueryParams = {};
 
@@ -51,13 +49,6 @@ const generateMockContracts = (count: number): ContractResponse => {
         totalCount: count,
     };
 };
-
-export async function postContractBasic(formData: ContractBasicForm) {
-    const validatedData = contractBasicFormSchema.parse(formData);
-
-    console.log("***", validatedData);
-    return { success: true, message: "基本情報の保存に成功しました" };
-}
 
 // 以下不要
 const formSchema = z.object({

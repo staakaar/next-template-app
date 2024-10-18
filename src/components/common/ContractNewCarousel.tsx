@@ -93,9 +93,9 @@ const ContractNewDynamicCarousel = ({
                 style={{ maxHeight: "calc(100vh - 200px)" }}
             >
                 <Carousel className="w-full xs:max-w-[300px] md:max-w-[500px] xl:max-w-[1200px] mx-auto">
+                    {currentStep > 0 && <CarouselPrevious />}
                     <CarouselContent>
-                        {/* {currentStep > 0 && <CarouselPrevious />} */}
-                        <CarouselPrevious />
+                        {/* <CarouselPrevious /> */}
                         {steps.map((step: any, index: number) => {
                             const StepComponent = StepComponents[step.name];
                             return (
@@ -108,6 +108,7 @@ const ContractNewDynamicCarousel = ({
                                                 isActive={index === currentStep}
                                                 onNext={handleNext}
                                                 onPrevious={handlePrevious}
+                                                isEdit={false}
                                             />
                                         </Suspense>
                                     </div>

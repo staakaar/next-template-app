@@ -14,7 +14,7 @@ import { Box, SimpleGrid, useToast } from "@chakra-ui/react";
 import {
     contractBasicFormSchema,
     ContractBasicFormData,
-} from "@/lib/contract/schema";
+} from "@/lib/contractBasic/schema";
 import { contractBasicFormState } from "@/stores/contractBasic/atom";
 import { useRecoilState } from "recoil";
 import { useState } from "react";
@@ -30,7 +30,7 @@ import {
     SelectValue,
 } from "../../ui/select";
 import { Textarea } from "@/components/ui/textarea";
-import { postContractBasic } from "@/lib/contract/api";
+import { postContractBasic } from "@/lib/contractBasic/api";
 import { ContractDetailUpdateButton } from "@/app/contract/_components/ContractDetailUpdateButton";
 
 // export type ContractBasicFormProps = {

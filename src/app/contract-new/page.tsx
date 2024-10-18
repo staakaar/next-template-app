@@ -19,6 +19,10 @@ import {
 } from "@/components/ui/dialog";
 import { VisuallyHidden } from "@chakra-ui/react";
 import ContractNewDynamicCarousel from "@/components/common/ContractNewCarousel";
+import {
+    ContractBasicRequest,
+    postContractBasic,
+} from "@/lib/contractBasic/api";
 
 export type ContractNewStep = {
     name: String;
@@ -77,9 +81,34 @@ const ContractNewPage = () => {
         // }
     };
 
-    const handleSave = () => {
+    const handleSave = async () => {
         console.log("handleSave");
         // server actionsで登録
+        const a = {
+            contractCode: "COL000001",
+            contractName: "aa",
+        } as ContractBasicRequest;
+
+        switch (currentStep) {
+            case 0:
+                await postContractBasic(a);
+                break;
+            case 1:
+                break;
+            case 2:
+                break;
+            case 3:
+                break;
+            case 4:
+                break;
+            case 5:
+                break;
+            case 6:
+                break;
+            case 7:
+                break;
+            default:
+        }
         // 正常に完了した場合にsetCurrentStep+1する
     };
 
@@ -91,9 +120,6 @@ const ContractNewPage = () => {
     const navigateToTopPage = () => {
         redirect("/contract-all");
     };
-
-    console.log("***currentStep***", currentStep);
-    console.log("***isDialogOpen***", isDialogOpen);
 
     return (
         <>
@@ -108,22 +134,22 @@ const ContractNewPage = () => {
                                 <Link href={""}>一覧へ戻る</Link>
                             </Button>
                             {/* </DialogTrigger> */}
-                            <Box className="flex items-center space-x-2">
-                                {/* 基本情報を保存した瞬間に非表示 */}
-                                <Button
+                            {/* <Box className="flex items-center space-x-2"> */}
+                            {/* 基本情報を保存した瞬間に非表示 */}
+                            {/* <Button
                                     onClick={handleSkip}
                                     className="bg-blue-500 hover:bg-blue-600 text-white font-bold py-2 px-4 rounded hover:shadow-lg transition-all duration-200"
                                 >
                                     スキップ
-                                </Button>
-                                {/* 基本情報とファイルの登録をしている場合は表示 */}
-                                <Button
+                                </Button> */}
+                            {/* 基本情報とファイルの登録をしている場合は表示 */}
+                            {/* <Button
                                     onClick={handleSave}
                                     className="bg-blue-500 hover:bg-blue-600 text-white font-bold py-2 px-4 rounded hover:shadow-lg transition-all duration-200"
                                 >
                                     登録
-                                </Button>
-                            </Box>
+                                </Button> */}
+                            {/* </Box> */}
                         </Box>
                         <ContractNewStatusStepper />
                         <Card className="px-4 py-4">
