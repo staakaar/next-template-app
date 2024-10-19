@@ -1,4 +1,4 @@
-import { ContractBasicFormData } from "@/lib/contract/schema";
+import { ContractBasicFormData } from "@/lib/contractBasic/schema";
 import { atom } from "recoil";
 
 export type Role = "admin" | "user" | "manager";
@@ -17,7 +17,7 @@ export type ContractBasicForm = {
     comments: string;
 };
 
-export const defaultContractBasicForm: ContractBasicForm = Object.freeze({
+export const defaultContractBasicForm: ContractBasicFormData = Object.freeze({
     contractCode: "",
     contractName: "",
     firstName: "",

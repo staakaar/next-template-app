@@ -1,6 +1,4 @@
-import { postContractBasic } from "@/lib/contract/api";
-import { ContractBasicForm } from "@/lib/contract/schema";
-import { Box, Heading, useToast } from "@chakra-ui/react";
+import { Box, Heading } from "@chakra-ui/react";
 import ContractBasicPresentationalForm from "../presentational/ContractBasicPresentationalForm";
 import { Button } from "@/components/ui/button";
 import { Separator } from "@/components/ui/separator";
@@ -9,52 +7,65 @@ import {
     saveContractBasic,
     updateContractBasic,
 } from "@/lib/contractBasic/api";
+import { zodResolver } from "@hookform/resolvers/zod";
+import { useForm } from "react-hook-form";
+import { useRecoilValue, useSetRecoilState } from "recoil";
+import {
+    contractBasicFormState,
+    defaultContractBasicForm,
+} from "@/stores/contractBasic/atom";
+import {
+    ContractBasicFormData,
+    contractBasicFormSchema,
+} from "@/lib/contractBasic/schema";
+import { z } from "zod";
 
 export type ContractBasicContainerProps = {
     isEdit: boolean;
+    contractCode: string; // 新規作成時は空
     handleNext: () => void;
     handlePrevious: () => void;
 };
 
-const ContractBasicContainer = ({ isEdit }: ContractBasicContainerProps) => {
-    // 保存データのフェッチ
-    // ストアに格納
-    // 子要素で抜き出してセット
+const ContractBasicContainer = ({
+    isEdit,
+    contractCode = "",
+    handleNext,
+    handlePrevious,
+}: ContractBasicContainerProps) => {
+    // 状態管理
+    const contractBasic = useRecoilValue(contractBasicFormState);
+    const setContractData = useSetRecoilState(contractBasicFormState);
 
-    // 子要素でセットしたデータをserver actionsへ
-    // 成功の場合成功トースター 失敗の場合は失敗のトースター
-    // const onSubmit = async (data: ContractBasicForm) => {};
+    const form = useForm<z.infer<typeof contractBasicFormSchema>>({
+        resolver: zodResolver(contractBasicFormSchema),
+        defaultValues: isEdit ? contractBasic : defaultContractBasicForm,
+    });
 
     useEffect(() => {
         if (isEdit && contractCode) {
-            fetchContractBasic(contractId).then((data) => {
-                reset(data);
-            });
+            // fetch contractBasic
+            // reset useFormの内容を
         }
-    }, [isEdit, contractCode, reset]);
+    }, [isEdit, contractCode, form.reset]);
 
-    const handleSkip = () => {
-        // スキップ処理を実装
-        console.log("Skipped");
-        // 例: 次のステップに進む
-    };
+    const save = () => {};
 
-    const onSubmit = async (data) => {
-        try {
-            let result;
-            if (isEdit) {
-                result = await updateContractBasic(contractCode, data);
-            } else {
-                result = await saveContractBasic(data);
-            }
+    const update = () => {};
 
-            if (result.success) {
-                // 成功後の処理（例：次のステップに進む、リダイレクトするなど）
-            } else {
-                throw new Error("Server responded with an error");
-            }
-        } catch (error) {
-            console.error("Error:", error);
+    // 新規作成と更新時
+    const onSubmit = async (request: ContractBasicFormData) => {
+        let result;
+        if (isEdit) {
+            result = await updateContractBasic(contractCode);
+        } else {
+            result = await saveContractBasic(request);
+        }
+
+        if (result) {
+            // 成功後の処理（例：次のステップに進む、リダイレクトするなど）
+        } else {
+            throw new Error("Server responded with an error");
         }
     };
 
@@ -64,20 +75,17 @@ const ContractBasicContainer = ({ isEdit }: ContractBasicContainerProps) => {
                 <Heading className="mt-4 mb-6">基本情報</Heading>
                 {/* 詳細時は更新ボタン */}
                 {isEdit ? (
-                    <Button className="bg-blue-500 hover:bg-blue-600 text-white font-bold py-2 px-4 rounded hover:shadow-lg transition-all duration-200">
+                    <Button
+                        onClick={form.handleSubmit(onSubmit)}
+                        className="bg-blue-500 hover:bg-blue-600 text-white font-bold py-2 px-4 rounded hover:shadow-lg transition-all duration-200"
+                    >
                         更新
                     </Button>
                 ) : (
                     <>
                         <Box>
                             <Button
-                                onClick={handleSkip}
-                                className="bg-blue-500 hover:bg-blue-600 text-white font-bold py-2 px-4 rounded hover:shadow-lg transition-all duration-200"
-                            >
-                                スキップ
-                            </Button>
-                            <Button
-                                onClick={onSubmit}
+                                onClick={form.handleSubmit(onSubmit)}
                                 className="bg-blue-500 hover:bg-blue-600 text-white font-bold py-2 px-4 rounded hover:shadow-lg transition-all duration-200"
                             >
                                 登録
@@ -86,9 +94,9 @@ const ContractBasicContainer = ({ isEdit }: ContractBasicContainerProps) => {
                     </>
                 )}
             </Box>
-            <Separator className="mt-4" />
+            <Separator className="mt-2" />
             <div className="grid gap-3">
-                <ContractBasicPresentationalForm />
+                <ContractBasicPresentationalForm form={form} />
             </div>
         </Box>
     );
