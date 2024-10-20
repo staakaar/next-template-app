@@ -1,5 +1,7 @@
+import Loading from "@/components/common/atoms/Loading";
+
 const ContractAllLoading = () => {
-    return <>Loading...</>;
+    return <Loading />;
 };
 
 export default ContractAllLoading;

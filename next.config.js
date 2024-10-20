@@ -14,6 +14,7 @@ const nextConfig = {
                 ".json",
             ],
         },
+        optimizePackageImports: ["@mantine/core", "@mantine/hooks"],
     },
     async redirects() {
         return [

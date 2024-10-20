@@ -12,7 +12,7 @@ export type ContractBasicForm = {
     phone: string;
     role: Role;
     department: string;
-    // startDate: Date;
+    startDate: string;
     salary: string;
     comments: string;
 };
@@ -26,7 +26,7 @@ export const defaultContractBasicForm: ContractBasicFormData = Object.freeze({
     phone: "",
     role: "admin",
     department: "",
-    // startDate: Date.now(),
+    startDate: "",
     salary: "0",
     comments: "",
 });

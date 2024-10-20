@@ -7,6 +7,8 @@ import React from "react";
 import Header from "@/components/organisms/Header";
 import { RecoilRootProvider } from "@/app/recoil";
 import { TooltipProvider } from "@/components/ui/tooltip";
+import "@mantine/core/styles.css";
+import { ColorSchemeScript, MantineProvider } from "@mantine/core";
 
 const fontSans = FontSans({
     subsets: ["latin"],
@@ -25,18 +27,23 @@ export default function RootLayout({
 }>) {
     return (
         <html lang="ja" suppressHydrationWarning>
+            <head>
+                <ColorSchemeScript />
+            </head>
             <body
                 className={cn(
                     "min-h-screen bg-background font-sans antialiased",
                     fontSans.variable
                 )}
             >
-                <RecoilRootProvider>
-                    <TooltipProvider>
-                        <Header />
-                        <Providers>{children}</Providers>
-                    </TooltipProvider>
-                </RecoilRootProvider>
+                <MantineProvider>
+                    <RecoilRootProvider>
+                        <TooltipProvider>
+                            <Header />
+                            <Providers>{children}</Providers>
+                        </TooltipProvider>
+                    </RecoilRootProvider>
+                </MantineProvider>
             </body>
         </html>
     );

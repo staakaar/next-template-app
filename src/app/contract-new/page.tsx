@@ -1,34 +1,15 @@
 "use client";
-import { Card } from "@/components/ui/card";
+import { Card } from "@mantine/core";
 import { Separator } from "@/components/ui/separator";
-
-import { Box, Heading, useSteps } from "@chakra-ui/react";
+import { Box, Title } from "@mantine/core";
 import Link from "next/link";
-import { Button } from "@/components/ui/button";
 import { useState } from "react";
 import { redirect, useRouter } from "next/navigation";
-import {
-    Dialog,
-    DialogContent,
-    DialogDescription,
-    DialogFooter,
-    DialogHeader,
-    DialogTitle,
-} from "@/components/ui/dialog";
-import { VisuallyHidden } from "@chakra-ui/react";
-import {
-    ContractBasicRequest,
-    saveContractBasic,
-} from "@/lib/contractBasic/api";
+import { Button } from "@mantine/core";
 import ContractNewStepper from "@/components/common/ContractNewStepper";
 import dynamic from "next/dynamic";
 import Loading from "../loading";
-
-// export type ContractNewStep = {
-//     name: String;
-//     label: String;
-// };
-
+import ContractNewConfirmDialog from "@/components/ContractNewModal";
 // const CONTRACT_NEW_STEPS: ContractNewStep[] = [
 //     { name: "ContractBasic", label: "基本情報" },
 //     { name: "ContractFile", label: "契約書ファイル" },
@@ -103,13 +84,10 @@ const WorkflowContainer = dynamic(
 const ContractNewPage = () => {
     const [isDialogOpen, setIsDialogOpen] = useState(false);
     const router = useRouter();
-    const { activeStep, setActiveStep } = useSteps({
-        index: 0,
-        count: ContractSteps.length,
-    });
+    const [activeStep, setActiveStep] = useState(0);
 
     const handleBackToList = () => {
-        if (activeStep > 0) {
+        if (activeStep === 0) {
             setIsDialogOpen(true);
             return;
         }
@@ -118,16 +96,17 @@ const ContractNewPage = () => {
 
     const handleConfirmBackToList = () => {
         router.push("/contract-all");
+        setIsDialogOpen(false);
     };
 
     // 前のステップ
     const handlePrevious = () => {
-        setActiveStep((prevStep) => prevStep - 1);
+        setActiveStep((prevStep: number) => prevStep - 1);
     };
 
     // 次のステップ
     const handleNext = () => {
-        setActiveStep((prevStep) => prevStep + 1);
+        setActiveStep((prevStep: number) => prevStep + 1);
     };
 
     const handleSkip = () => {
@@ -176,21 +155,24 @@ const ContractNewPage = () => {
                 <div className="flex flex-col sm:gap-4 sm:py-4 sm:pl-8 sm:mt-10">
                     <main className="grid flex-1 items-start gap-4 p-4 sm:px-6 sm:py-0 md:gap-8">
                         <Box className="text-sm font-medium flex justify-between">
-                            {/* <DialogTrigger asChild> */}
-                            <Button onClick={handleBackToList}>
-                                <Link href={""}>一覧へ戻る</Link>
+                            <Button
+                                component={Link}
+                                onClick={handleBackToList}
+                                href={""}
+                            >
+                                一覧へ戻る
                             </Button>
-                            {/* </DialogTrigger> */}
                         </Box>
                         <ContractNewStepper
                             activeStep={activeStep}
                             steps={ContractSteps}
+                            setActiveStep={() => setActiveStep}
                         />
                         <Card className="px-4 py-4">
                             <Box className="flex items-center justify-between space-y-2 px-8 py-4">
-                                <Heading className="text-md font-bold">
+                                <Title className="text-md font-bold">
                                     新規作成画面
-                                </Heading>
+                                </Title>
                             </Box>
                             <Separator />
                             <Box
@@ -202,31 +184,12 @@ const ContractNewPage = () => {
                         </Card>
                     </main>
                 </div>
-                <Dialog open={isDialogOpen} onOpenChange={setIsDialogOpen}>
-                    <DialogContent className="sm:max-w-[425px]">
-                        <DialogHeader>
-                            <VisuallyHidden>
-                                <DialogTitle>
-                                    入力した内容は保存されません。よろしいですか？
-                                </DialogTitle>
-                            </VisuallyHidden>
-                            <DialogDescription>
-                                入力した内容は保存されません。よろしいですか？
-                            </DialogDescription>
-                        </DialogHeader>
-                        <DialogFooter>
-                            <DialogFooter>
-                                <Button onClick={() => setIsDialogOpen(false)}>
-                                    キャンセル
-                                </Button>
-                            </DialogFooter>
-                            <Button onClick={handleConfirmBackToList}>
-                                OK
-                            </Button>
-                        </DialogFooter>
-                    </DialogContent>
-                </Dialog>
             </Card>
+            <ContractNewConfirmDialog
+                isOpen={isDialogOpen}
+                onClose={() => setIsDialogOpen(false)}
+                onConfirm={handleConfirmBackToList}
+            />
         </>
     );
 };
