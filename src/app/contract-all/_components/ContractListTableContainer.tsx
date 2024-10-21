@@ -1,4 +1,3 @@
-/** 契約書一覧データ取得処理 あくまでサーバーコンポーネントでデータ取得のみ */
 "use client";
 import { useState } from "react";
 import Link from "next/link";
@@ -81,30 +80,35 @@ const ContractListTableContainer = () => {
                                 <Group flex="1" justify="flex-end" gap="sm">
                                     <Menu position="bottom-end">
                                         <MenuTarget>
-                                            <Collapse in={showSearch}>
-                                                <Box mb="md">
-                                                    <TextInput
-                                                        placeholder="検索..."
-                                                        leftSection={
-                                                            <IconSearch size="1rem" />
-                                                        }
-                                                        value={searchQuery}
-                                                        onChange={(event) =>
-                                                            setSearchQuery(
-                                                                event
-                                                                    .currentTarget
-                                                                    .value
-                                                            )
-                                                        }
-                                                    />
-                                                </Box>
-                                            </Collapse>
-                                            <Button variant="outline" size="sm">
-                                                <Group gap="xs">
-                                                    <IconFilter size="1rem" />
-                                                    <span>検索</span>
-                                                </Group>
-                                            </Button>
+                                            <Box>
+                                                <Collapse in={showSearch}>
+                                                    <Box mb="md">
+                                                        <TextInput
+                                                            placeholder="検索..."
+                                                            leftSection={
+                                                                <IconSearch size="1rem" />
+                                                            }
+                                                            value={searchQuery}
+                                                            onChange={(event) =>
+                                                                setSearchQuery(
+                                                                    event
+                                                                        .currentTarget
+                                                                        .value
+                                                                )
+                                                            }
+                                                        />
+                                                    </Box>
+                                                </Collapse>
+                                                <Button
+                                                    variant="outline"
+                                                    size="sm"
+                                                >
+                                                    <Group gap="xs">
+                                                        <IconFilter size="1rem" />
+                                                        <span>検索</span>
+                                                    </Group>
+                                                </Button>
+                                            </Box>
                                         </MenuTarget>
                                         <MenuDropdown>
                                             <MenuLabel>Filter by</MenuLabel>

@@ -51,6 +51,7 @@
         "class-variance-authority": "^0.7.0",
         "clsx": "^2.1.1",
         "embla-carousel-react": "^8.3.0",
+        "fast-sort": "^3.4.1",
         "framer-motion": "^11.0.8",
         "lucide-react": "^0.414.0",
         "mantine-datatable": "^7.12.4",

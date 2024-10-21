@@ -1,5 +1,6 @@
 "use client";
-import React, { useState, useMemo, useEffect } from "react";
+import { sort } from "fast-sort";
+import React, { useState, useEffect } from "react";
 import { useRouter } from "next/navigation";
 import { useSetRecoilState } from "recoil";
 import {
@@ -7,6 +8,7 @@ import {
     useDataTableColumns,
     DataTableSortStatus,
     DataTableRowClickHandler,
+    DataTableColumn,
 } from "mantine-datatable";
 import {
     Card,
@@ -21,40 +23,49 @@ import {
     Collapse,
     Menu,
     MenuItem,
+    MenuTarget,
+    MenuDropdown,
 } from "@mantine/core";
-import { IconSearch, IconTrash, IconEdit, IconDots } from "@tabler/icons-react";
-import { contractQueryParamsState } from "@/stores/contracts/atom";
+import {
+    IconSearch,
+    IconTrash,
+    IconEdit,
+    IconDots,
+    IconEye,
+} from "@tabler/icons-react";
+import { contractPageOptionsState } from "@/stores/contracts/atom";
 import { Contract } from "@/types/api/contract";
 import { useFetchContracts } from "@/lib/contract/api";
 
-/** 保存時はserver componentで処理 */
-
-export type ContractListTableProps<T> = {
-    contracts: Contract[];
-    // columns: ColumnDef<TData, TValue>[];
-    // onPageChange?: (newPage: number) => void;
-    // onPageSizeChange?: (newPageSize: number) => void;
-    // onSearch?: (keyword: string) => void;
+export type ContractListTableProps<T extends Contract> = {
+    contracts: T[];
     initialTotalCount: number;
 };
 
+const PAGE_SIZES = [10, 15, 20, 50, 75, 100];
+
 const ContractListTablePresentation = <T extends Contract>({
     contracts,
-    // columns,
     initialTotalCount,
 }: ContractListTableProps<T>) => {
     const router = useRouter();
     const [page, setPage] = useState(1);
-    const [pageSize, setPageSize] = useState(10);
+    const [pageSize, setPageSize] = useState(PAGE_SIZES[1]);
     const [sortStatus, setSortStatus] = useState<DataTableSortStatus<Contract>>(
         {
             columnAccessor: "contractCode",
             direction: "asc",
         }
     );
-    const [records, setRecords] = useState<Contract[]>(contracts);
+    const [records, setRecords] = useState<Contract[]>(
+        contracts.slice(0, pageSize)
+    );
     const [totalCount, setTotalCount] = useState(initialTotalCount);
-    const setQueryParams = useSetRecoilState(contractQueryParamsState);
+    const setPageOptions = useSetRecoilState(contractPageOptionsState);
+
+    useEffect(() => {
+        setPage(1);
+    }, [pageSize]);
 
     const navigateToContractDetail: DataTableRowClickHandler<Contract> = ({
         record,
@@ -62,21 +73,17 @@ const ContractListTablePresentation = <T extends Contract>({
         router.push(`/contract/${record.contractCode}`);
     };
 
-    const handleDelete = (rowData: T) => {
+    const handleDelete = (rowData: Contract) => {
         console.log("Delete", rowData);
     };
 
-    const handleEdit = (rowData: T) => {
+    const handleEdit = (rowData: Contract) => {
         console.log("Edit", rowData);
     };
 
     const handlePageChange = async (newPage: number) => {
         try {
-            const result = await useFetchContracts(
-                newPage,
-                pageSize,
-                searchQuery
-            );
+            const result = await useFetchContracts(newPage, pageSize);
             setRecords(result.contracts);
             setTotalCount(result.totalCount);
             setPage(newPage);
@@ -90,7 +97,7 @@ const ContractListTablePresentation = <T extends Contract>({
         event: React.ChangeEvent<HTMLInputElement>
     ) => {
         const newSearchQuery = event.currentTarget.value;
-        setSearchQuery(newSearchQuery);
+        // setSearchQuery(newSearchQuery);
         try {
             const result = await useFetchContracts(
                 page,
@@ -111,7 +118,7 @@ const ContractListTablePresentation = <T extends Contract>({
     ) => {
         setSortStatus(newSortStatus);
         try {
-            const result = await useFetchContracts(page, pageSize, searchQuery);
+            const result = await useFetchContracts(page, pageSize);
             setRecords(result.contracts);
             setTotalCount(result.totalCount);
         } catch (error) {
@@ -120,63 +127,65 @@ const ContractListTablePresentation = <T extends Contract>({
         }
     };
 
+    const columns: DataTableColumn<Contract>[] = [
+        {
+            accessor: "contractCode",
+            title: "契約書コード",
+            sortable: true,
+        },
+        {
+            accessor: "contractName",
+            title: "タイトル",
+            sortable: true,
+        },
+        { accessor: "contractStatus", title: "ステータス", sortable: true },
+        { accessor: "tradePartner", title: "取引先", sortable: true },
+        {
+            accessor: "contractPersonInCharge",
+            title: "担当者",
+            sortable: true,
+        },
+        // {
+        //     accessor: "createdAt",
+        //     title: "作成日",
+        //     sortable: true,
+        //     render: ({ createdAt }) =>
+        //         new Date(createdAt).toLocaleDateString(),
+        // },
+        {
+            accessor: "actions",
+            title: <Box mr={6}>Row actions</Box>,
+            textAlign: "right",
+            render: (contract: Contract) => (
+                <Group gap={4} justify="right" wrap="nowrap">
+                    <ActionIcon size="sm" variant="subtle" color="green">
+                        <IconEye size={16} />
+                    </ActionIcon>
+                    <ActionIcon
+                        size="sm"
+                        variant="subtle"
+                        color="blue"
+                        onClick={() => handleEdit(contract)}
+                    >
+                        <IconEdit size={16} />
+                    </ActionIcon>
+                    <ActionIcon
+                        size="sm"
+                        variant="subtle"
+                        color="red"
+                        onClick={() => handleDelete(contract)}
+                    >
+                        <IconTrash size={16} />
+                    </ActionIcon>
+                </Group>
+            ),
+        },
+    ];
+
     const { effectiveColumns } = useDataTableColumns<Contract>({
         key: "contractCode",
-        columns: [
-            {
-                accessor: "contractCode",
-                title: "契約書コード",
-                sortable: true,
-            },
-            {
-                accessor: "contractName",
-                title: "タイトル",
-                sortable: true,
-            },
-            { accessor: "contractStatus", title: "ステータス", sortable: true },
-            { accessor: "tradePartner", title: "取引先", sortable: true },
-            {
-                accessor: "contractPersonInCharge",
-                title: "担当者",
-                sortable: true,
-            },
-            // {
-            //     accessor: "createdAt",
-            //     title: "作成日",
-            //     sortable: true,
-            //     render: ({ createdAt }) =>
-            //         new Date(createdAt).toLocaleDateString(),
-            // },
-            {
-                accessor: "actions",
-                title: "アクション",
-                textAlignment: "right",
-                render: (record) => (
-                    <Menu shadow="md" width={200}>
-                        <Menu.Target>
-                            <ActionIcon>
-                                <IconDots size="1rem" />
-                            </ActionIcon>
-                        </Menu.Target>
-                        <Menu.Dropdown>
-                            <MenuItem
-                                icon={<IconEdit size="1rem" />}
-                                onClick={() => handleEdit(record)}
-                            >
-                                編集
-                            </MenuItem>
-                            <MenuItem
-                                icon={<IconTrash size="1rem" />}
-                                onClick={() => handleDelete(record)}
-                                color="red"
-                            >
-                                削除
-                            </MenuItem>
-                        </Menu.Dropdown>
-                    </Menu>
-                ),
-            },
-        ],
+        columns,
+
         // columnFilters: {
         //     contractCode: {
         //         type: "text",
@@ -199,30 +208,18 @@ const ContractListTablePresentation = <T extends Contract>({
         const from = (page - 1) * pageSize;
         const to = from + pageSize;
         setRecords(contracts.slice(from, to));
-    }, [page]);
-
-    const customSort = (
-        data: Contract[],
-        columnAccessor: keyof Contract,
-        direction: "asc" | "desc"
-    ) => {
-        return [...data].sort((a, b) => {
-            if (a[columnAccessor] < b[columnAccessor])
-                return direction === "asc" ? -1 : 1;
-            if (a[columnAccessor] > b[columnAccessor])
-                return direction === "asc" ? 1 : -1;
-            return 0;
-        });
-    };
+    }, [contracts, page, pageSize]);
 
     useEffect(() => {
-        const sortedData = customSort(
-            contracts,
-            sortStatus.columnAccessor as keyof Contract,
-            sortStatus.direction
+        const sortedContracts = sort(contracts).by([
+            { asc: (c) => c.contractName },
+        ]) as Contract[];
+        setRecords(
+            sortStatus.direction === "desc"
+                ? sortedContracts.reverse()
+                : sortedContracts
         );
-        setRecords(sortedData);
-    }, [sortStatus]);
+    }, [contracts, sortStatus]);
 
     // const filteredData = useMemo(() => {
     //     return contracts.filter((item: Contract) =>
@@ -238,7 +235,7 @@ const ContractListTablePresentation = <T extends Contract>({
     // }, [contracts, searchQuery]);
 
     return (
-        <Card>
+        <Card withBorder>
             <Group justify="flex-start" mb="md">
                 <Text size="lg">契約書一覧</Text>
             </Group>
@@ -246,201 +243,26 @@ const ContractListTablePresentation = <T extends Contract>({
             <DataTable
                 withTableBorder
                 borderRadius="sm"
-                withColumnBorders
                 striped
                 highlightOnHover
                 columns={effectiveColumns}
                 records={records}
                 totalRecords={totalCount}
                 recordsPerPage={pageSize}
+                paginationActiveBackgroundColor="blue"
                 page={page}
-                onPageChange={setPage}
+                recordsPerPageOptions={PAGE_SIZES}
                 sortStatus={sortStatus}
                 onSortStatusChange={setSortStatus}
                 onRowClick={navigateToContractDetail}
+                onPageChange={(p) => setPage(p)}
+                onRecordsPerPageChange={setPageSize}
                 paginationText={({ from, to, totalRecords }) =>
                     `${from}～${to} / ${totalRecords}件`
                 }
                 // rowKey="contractCode"
             />
-
-            <Group flex="1" justify="flex-end" mt="md">
-                <Select
-                    value={pageSize.toString()}
-                    onChange={(value) => setPageSize(Number(value))}
-                    data={["10", "20", "30", "50", "100"].map((size) => ({
-                        value: size,
-                        label: `${size}件`,
-                    }))}
-                />
-                <Text size="sm">全{totalCount}件</Text>
-            </Group>
         </Card>
-        // <Card x-chunk="dashboard-06-chunk-0">
-        //     <CardHeader>
-        //         <CardTitle>契約書一覧</CardTitle>
-        //     </CardHeader>
-        //     <CardContent>
-        //         <Table>
-        //             <TableHeader>
-        //                 {table.getHeaderGroups().map((headerGroup) => (
-        //                     <TableRow key={headerGroup.id}>
-        //                         {headerGroup.headers.map((header) => {
-        //                             return (
-        //                                 <TableHead key={header.id}>
-        //                                     {header.isPlaceholder
-        //                                         ? null
-        //                                         : flexRender(
-        //                                               header.column.columnDef
-        //                                                   .header,
-        //                                               header.getContext()
-        //                                           )}
-        //                                 </TableHead>
-        //                             );
-        //                         })}
-        //                     </TableRow>
-        //                 ))}
-        //             </TableHeader>
-        //             <TableBody>
-        //                 {table.getRowModel().rows?.length ? (
-        //                     table
-        //                         .getRowModel()
-        //                         .rows.slice(0, pagination.pageSize)
-        //                         .map((row) => (
-        //                             <TableRow
-        //                                 key={row.id}
-        //                                 data-state={
-        //                                     row.getIsSelected() && "selected"
-        //                                 }
-        //                                 onClick={() =>
-        //                                     navigateToContractDetail(
-        //                                         row.original
-        //                                     )
-        //                                 }
-        //                             >
-        //                                 {row.getVisibleCells().map((cell) => (
-        //                                     <TableCell key={cell.id}>
-        //                                         {flexRender(
-        //                                             cell.column.columnDef.cell,
-        //                                             cell.getContext()
-        //                                         )}
-        //                                     </TableCell>
-        //                                 ))}
-        //                             </TableRow>
-        //                         ))
-        //                 ) : (
-        //                     <TableRow>
-        //                         <TableCell
-        //                             colSpan={columns.length}
-        //                             className="h-24 text-center"
-        //                         >
-        //                             該当するデータが存在しません。
-        //                         </TableCell>
-        //                     </TableRow>
-        //                 )}
-        //             </TableBody>
-        //         </Table>
-        //     </CardContent>
-        //     <CardFooter className="flex items-center justify-end">
-        //         <Box className="flex items-center justify-end px-2">
-        //             {/* ページネーションコンポーネント */}
-        //             <Box className="flex items-center justify-between px-2">
-        //                 <Box className="flex items-center space-x-6 lg:space-x-8">
-        //                     <Box className="flex items-center space-x-2">
-        //                         <Select
-        //                             value={`${table.getState().pagination.pageSize}`}
-        //                             onValueChange={(value) => {
-        //                                 table.setPageSize(Number(value));
-        //                             }}
-        //                         >
-        //                             <SelectTrigger className="h-8 w-[70px]">
-        //                                 <SelectValue
-        //                                     placeholder={
-        //                                         table.getState().pagination
-        //                                             .pageSize
-        //                                     }
-        //                                 />
-        //                             </SelectTrigger>
-        //                             <SelectContent side="top">
-        //                                 {[10, 20, 30, 40, 50, 75, 100].map(
-        //                                     (pageSize) => (
-        //                                         <SelectItem
-        //                                             key={pageSize}
-        //                                             value={`${pageSize}`}
-        //                                         >
-        //                                             {pageSize}
-        //                                         </SelectItem>
-        //                                     )
-        //                                 )}
-        //                             </SelectContent>
-        //                         </Select>
-        //                         <p className="text-sm font-medium">件</p>
-        //                     </Box>
-        //                     <Box className="flex w-[100px] items-center justify-center text-sm font-medium">
-        //                         {table.getState().pagination.pageIndex + 1}
-        //                         {" / "}
-        //                         {table.getPageCount()}
-        //                     </Box>
-        //                     <Box className="flex items-center space-x-2">
-        //                         <Button
-        //                             size={"2"}
-        //                             variant="outline"
-        //                             className="hidden h-8 w-8 p-0 lg:flex"
-        //                             onClick={() => table.firstPage()}
-        //                             disabled={!table.getCanPreviousPage()}
-        //                         >
-        //                             <span className="sr-only">
-        //                                 Go to first page
-        //                             </span>
-        //                             <DoubleArrowLeftIcon className="h-4 w-4" />
-        //                         </Button>
-        //                         <Button
-        //                             size={"2"}
-        //                             variant="outline"
-        //                             className="h-8 w-8 p-0"
-        //                             onClick={() => table.previousPage()}
-        //                             disabled={!table.getCanPreviousPage()}
-        //                         >
-        //                             <span className="sr-only">
-        //                                 Go to previous page
-        //                             </span>
-        //                             <ChevronLeftIcon className="h-4 w-4" />
-        //                         </Button>
-        //                         <Button
-        //                             size={"2"}
-        //                             variant="outline"
-        //                             className="h-8 w-8 p-0"
-        //                             onClick={() => table.nextPage()}
-        //                             disabled={!table.getCanNextPage()}
-        //                         >
-        //                             <span className="sr-only">
-        //                                 Go to next page
-        //                             </span>
-        //                             <ChevronRightIcon className="h-4 w-4" />
-        //                         </Button>
-        //                         <Button
-        //                             size={"2"}
-        //                             variant="outline"
-        //                             className="hidden h-8 w-8 p-0 lg:flex"
-        //                             onClick={
-        //                                 () => table.lastPage()
-        //                                 // table.setPageIndex(
-        //                                 //     table.getPageCount() - 1
-        //                                 // )
-        //                             }
-        //                             disabled={!table.getCanNextPage()}
-        //                         >
-        //                             <span className="sr-only">
-        //                                 Go to last page
-        //                             </span>
-        //                             <DoubleArrowRightIcon className="h-4 w-4" />
-        //                         </Button>
-        //                     </Box>
-        //                 </Box>
-        //             </Box>
-        //         </Box>
-        //     </CardFooter>
-        // </Card>
     );
 };
 

@@ -7,9 +7,9 @@ import { atom, selector, selectorFamily } from "recoil";
 //     default: [],
 // });
 
-/** ページネーション */
-export const contractQueryParamsState = atom({
-    key: "contractQueryParamsState",
+/** 契約書ページネーション */
+export const contractPageOptionsState = atom({
+    key: "contractPageOptionsState",
     default: {
         page: 0,
         pageSize: 50,
@@ -36,7 +36,7 @@ export const contractsQuery = selectorFamily({
 export const contractListState = selector({
     key: "contractListState",
     get: ({ get }) => {
-        const params = get(contractQueryParamsState);
+        const params = get(contractPageOptionsState);
         return get(contractsQuery(params));
     },
 });
