@@ -55,7 +55,7 @@ const ContractListTableContainer = () => {
                 <Box className="sm:gap-4 sm:py-4 sm:pl-14 sm:mt-10">
                     <Stack gap="md" p="md">
                         <Tabs value={activeTab} defaultValue="created">
-                            <Group className="flex items-center">
+                            <Box className="mb-4 flex justify-center">
                                 <TabsList className="inline-flex h-9 items-center justify-center rounded-lg bg-muted p-1 text-muted-foreground">
                                     <TabsTab value="under_construction">
                                         作成中
@@ -71,11 +71,13 @@ const ContractListTableContainer = () => {
                                     <TabsTab value="ok">合意</TabsTab>
                                     <TabsTab value="reject">却下</TabsTab>
                                 </TabsList>
+                            </Box>
 
+                            <Group className="flex items-center">
                                 <TextInput
                                     placeholder="Search..."
                                     leftSection={<IconSearch size="1rem" />}
-                                    style={{ width: "400px" }}
+                                    style={{ width: "600px" }}
                                 />
                                 <Group flex="1" justify="flex-end" gap="sm">
                                     <Menu position="bottom-end">

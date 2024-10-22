@@ -49,23 +49,43 @@ const ContractListTablePresentation = <T extends Contract>({
     initialTotalCount,
 }: ContractListTableProps<T>) => {
     const router = useRouter();
-    const [page, setPage] = useState(1);
-    const [pageSize, setPageSize] = useState(PAGE_SIZES[1]);
+    const [pageSize, setPageSize] = useState(PAGE_SIZES[2]);
+
+    useEffect(() => {
+        setPage(1);
+    }, [pageSize]);
+
     const [sortStatus, setSortStatus] = useState<DataTableSortStatus<Contract>>(
         {
             columnAccessor: "contractCode",
             direction: "asc",
         }
     );
+
+    const [page, setPage] = useState(1);
     const [records, setRecords] = useState<Contract[]>(
         contracts.slice(0, pageSize)
     );
-    const [totalCount, setTotalCount] = useState(initialTotalCount);
-    const setPageOptions = useSetRecoilState(contractPageOptionsState);
 
     useEffect(() => {
-        setPage(1);
-    }, [pageSize]);
+        const from = (page - 1) * pageSize;
+        const to = from + pageSize;
+        setRecords(contracts.slice(from, to));
+    }, [contracts, page, pageSize]);
+
+    useEffect(() => {
+        const sortedContracts = sort(contracts).by([
+            { asc: (c) => c.contractName },
+        ]) as Contract[];
+        setRecords(
+            sortStatus.direction === "desc"
+                ? sortedContracts.reverse()
+                : sortedContracts
+        );
+    }, [contracts, sortStatus]);
+
+    const [totalCount, setTotalCount] = useState(initialTotalCount);
+    const setPageOptions = useSetRecoilState(contractPageOptionsState);
 
     const navigateToContractDetail: DataTableRowClickHandler<Contract> = ({
         record,
@@ -204,23 +224,6 @@ const ContractListTablePresentation = <T extends Contract>({
         // },
     });
 
-    useEffect(() => {
-        const from = (page - 1) * pageSize;
-        const to = from + pageSize;
-        setRecords(contracts.slice(from, to));
-    }, [contracts, page, pageSize]);
-
-    useEffect(() => {
-        const sortedContracts = sort(contracts).by([
-            { asc: (c) => c.contractName },
-        ]) as Contract[];
-        setRecords(
-            sortStatus.direction === "desc"
-                ? sortedContracts.reverse()
-                : sortedContracts
-        );
-    }, [contracts, sortStatus]);
-
     // const filteredData = useMemo(() => {
     //     return contracts.filter((item: Contract) =>
     //         Object.values(item).some(
@@ -235,7 +238,7 @@ const ContractListTablePresentation = <T extends Contract>({
     // }, [contracts, searchQuery]);
 
     return (
-        <Card withBorder>
+        <Card withBorder mt={4}>
             <Group justify="flex-start" mb="md">
                 <Text size="lg">契約書一覧</Text>
             </Group>
@@ -260,7 +263,6 @@ const ContractListTablePresentation = <T extends Contract>({
                 paginationText={({ from, to, totalRecords }) =>
                     `${from}～${to} / ${totalRecords}件`
                 }
-                // rowKey="contractCode"
             />
         </Card>
     );
