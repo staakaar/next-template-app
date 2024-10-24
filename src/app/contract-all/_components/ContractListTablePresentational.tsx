@@ -70,18 +70,22 @@ const ContractListTablePresentation = <T extends Contract>({
     useEffect(() => {
         const from = (page - 1) * pageSize;
         const to = from + pageSize;
+        console.log(from);
+        console.log(to);
         setRecords(contracts.slice(from, to));
     }, [contracts, page, pageSize]);
 
     useEffect(() => {
         const sortedContracts = sort(contracts).by([
-            { asc: (c) => c.contractName },
+            { asc: (c) => c.contractCode },
         ]) as Contract[];
+        /**
         setRecords(
             sortStatus.direction === "desc"
                 ? sortedContracts.reverse()
                 : sortedContracts
         );
+         */
     }, [contracts, sortStatus]);
 
     const [totalCount, setTotalCount] = useState(initialTotalCount);
@@ -205,23 +209,6 @@ const ContractListTablePresentation = <T extends Contract>({
     const { effectiveColumns } = useDataTableColumns<Contract>({
         key: "contractCode",
         columns,
-
-        // columnFilters: {
-        //     contractCode: {
-        //         type: "text",
-        //         label: "契約書コード",
-        //         placeholder: "契約書コードを入力...",
-        //     },
-        //     status: {
-        //         type: "select",
-        //         label: "ステータス",
-        //         options: [
-        //             { value: "作成中", label: "作成中" },
-        //             { value: "承認待ち", label: "承認待ち" },
-        //             { value: "承認済み", label: "承認済み" },
-        //         ],
-        //     },
-        // },
     });
 
     // const filteredData = useMemo(() => {
@@ -250,8 +237,16 @@ const ContractListTablePresentation = <T extends Contract>({
                 highlightOnHover
                 columns={effectiveColumns}
                 records={records}
+                noRecordsText={
+                    records.length === 0
+                        ? "該当のレコードが存在しません。"
+                        : undefined
+                }
+                emptyState={records.length === 0}
+                loadingText="読み込み中です..."
                 totalRecords={totalCount}
                 recordsPerPage={pageSize}
+                recordsPerPageLabel=""
                 paginationActiveBackgroundColor="blue"
                 page={page}
                 recordsPerPageOptions={PAGE_SIZES}
@@ -260,9 +255,51 @@ const ContractListTablePresentation = <T extends Contract>({
                 onRowClick={navigateToContractDetail}
                 onPageChange={(p) => setPage(p)}
                 onRecordsPerPageChange={setPageSize}
-                paginationText={({ from, to, totalRecords }) =>
-                    `${from}～${to} / ${totalRecords}件`
-                }
+                styles={{
+                    pagination: {
+                        display: "flex",
+                        justifyContent: "flex-end",
+                        alignItems: "center",
+                        padding: "1rem",
+                        gap: "1rem",
+
+                        ".mantine-Group-root": {
+                            dispaly: "flex",
+                            alignItems: "center",
+                            gap: "1rem",
+                            flex: 1,
+                        },
+
+                        "[data-records-per-page]": {
+                            order: 1,
+                        },
+
+                        ".mantine-Pagination-root": {
+                            order: 2,
+                        },
+
+                        "[data-pagination-text]": {
+                            marginLeft: "auto",
+                            whiteSpace: "nowrap",
+                            order: 3,
+                        },
+
+                        tr: {
+                            cursor: "pointer",
+                            position: "relative",
+                            transition: "all 0.2s ease",
+                            "&:hover": {
+                                backgroundColor: "blue",
+                                boxShadow: `0 4px 8px `,
+                                transform: "translateY(-1px)",
+                                zIndex: 1, // 他の行より上に表示
+                            },
+                        },
+                    },
+                }}
+                // paginationText={({ from, to, totalRecords }) =>
+                //     `${from}～${to} / ${totalRecords}件`
+                // }
             />
         </Card>
     );
