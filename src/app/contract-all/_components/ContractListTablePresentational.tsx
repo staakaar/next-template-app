@@ -36,6 +36,7 @@ import {
 import { contractPageOptionsState } from "@/stores/contracts/atom";
 import { Contract } from "@/types/api/contract";
 import { useFetchContracts } from "@/lib/contract/api";
+import VTooltip from "@/components/common/atoms/Tooltip";
 
 export type ContractListTableProps<T extends Contract> = {
     contracts: T[];
@@ -156,18 +157,61 @@ const ContractListTablePresentation = <T extends Contract>({
             accessor: "contractCode",
             title: "契約書コード",
             sortable: true,
+            render: (contract: Contract) => (
+                <VTooltip
+                    content={contract.contractCode}
+                    tooltip={`契約書コード: ${contract.contractCode}`}
+                    maxWidth={"100"}
+                />
+            ),
         },
         {
             accessor: "contractName",
             title: "タイトル",
             sortable: true,
+            render: (contract: Contract) => (
+                <VTooltip
+                    content={contract.contractName}
+                    tooltip={`契約書名: ${contract.contractName}`}
+                    maxWidth={"100"}
+                />
+            ),
         },
-        { accessor: "contractStatus", title: "ステータス", sortable: true },
-        { accessor: "tradePartner", title: "取引先", sortable: true },
+        {
+            accessor: "contractStatus",
+            title: "ステータス",
+            sortable: true,
+            render: (contract: Contract) => (
+                <VTooltip
+                    content={contract.contractStatus}
+                    tooltip={`契約書ステータス: ${contract.contractStatus}`}
+                    maxWidth={"100"}
+                />
+            ),
+        },
+        {
+            accessor: "tradePartner",
+            title: "取引先",
+            sortable: true,
+            render: (contract: Contract) => (
+                <VTooltip
+                    content={contract.tradePartner}
+                    tooltip={`取引先: ${contract.tradePartner}`}
+                    maxWidth={"100"}
+                />
+            ),
+        },
         {
             accessor: "contractPersonInCharge",
             title: "担当者",
             sortable: true,
+            render: (contract: Contract) => (
+                <VTooltip
+                    content={contract.contractPersonInCharge}
+                    tooltip={`担当者: ${contract.contractPersonInCharge}`}
+                    maxWidth={"100"}
+                />
+            ),
         },
         // {
         //     accessor: "createdAt",
@@ -178,7 +222,7 @@ const ContractListTablePresentation = <T extends Contract>({
         // },
         {
             accessor: "actions",
-            title: <Box mr={6}>Row actions</Box>,
+            title: "",
             textAlign: "right",
             render: (contract: Contract) => (
                 <Group gap={4} justify="right" wrap="nowrap">

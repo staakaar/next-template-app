@@ -1,11 +1,11 @@
-import ContractDetailMenuLayout from "@/components/common/ContractDetailMenuLayout";
-import ContractStatusStepper from "@/components/common/ContractStatusStepper";
-import { Button } from "@/components/ui/button";
-import { Card } from "@/components/ui/card";
-import { Separator } from "@/components/ui/separator";
-import { Box } from "@chakra-ui/react";
-import Link from "next/link";
-import ContractDetailSection from "./ContractDetailSection";
+// import ContractDetailMenuLayout from "@/components/common/ContractDetailMenuLayout";
+// import ContractStatusStepper from "@/components/common/ContractStatusStepper";
+// import { Button } from "@/components/ui/button";
+// import { Card } from "@/components/ui/card";
+// import { Separator } from "@/components/ui/separator";
+// import { Box } from "@chakra-ui/react";
+// import Link from "next/link";
+// import ContractDetailSection from "./ContractDetailSection";
 
 const ContractDetailPresentation = () => {
     return (

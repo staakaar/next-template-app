@@ -3,7 +3,7 @@ import ContractFileContainer from "@/components/common/container/ContractFileCon
 const ContractFileTab = () => {
     return (
         <>
-            <ContractFileContainer />
+            <ContractFileContainer isEdit={true} />
         </>
     );
 };

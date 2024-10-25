@@ -29,6 +29,7 @@ import ContractListTablePresentation from "./ContractListTablePresentational";
 import React from "react";
 import { useRecoilValue } from "recoil";
 import { contractListState } from "@/stores/contracts/atom";
+import ContractSearchArea from "@/components/common/ContractSearchArea";
 
 /** 常に最新情報を取得 */
 // export const dynamic = "force-dynamic";
@@ -38,6 +39,7 @@ const ContractListTableContainer = () => {
     const [activeTab, setActiveTab] = useState("created");
     const [showSearch, setShowSearch] = useState(false);
     const [searchQuery, setSearchQuery] = useState("");
+    const [isSearchAreaOpen, setIsSearchAreaOpen] = useState(false);
 
     const contracts = useRecoilValue(contractListState);
 
@@ -80,7 +82,7 @@ const ContractListTableContainer = () => {
                                     style={{ width: "600px" }}
                                 />
                                 <Group flex="1" justify="flex-end" gap="sm">
-                                    <Menu position="bottom-end">
+                                    {/* <Menu position="bottom-end">
                                         <MenuTarget>
                                             <Box>
                                                 <Collapse in={showSearch}>
@@ -118,7 +120,27 @@ const ContractListTableContainer = () => {
                                             <MenuItem>Draft</MenuItem>
                                             <MenuItem>Archived</MenuItem>
                                         </MenuDropdown>
-                                    </Menu>
+                                    </Menu> */}
+                                    <Button
+                                        variant="outline"
+                                        size="sm"
+                                        onClick={() =>
+                                            setIsSearchAreaOpen(
+                                                !isSearchAreaOpen
+                                            )
+                                        }
+                                    >
+                                        <Group gap="xs">
+                                            <IconFilter size="1rem" />
+                                            <span>検索</span>
+                                        </Group>
+                                    </Button>
+                                    <ContractSearchArea
+                                        isOpen={isSearchAreaOpen}
+                                        onClose={() =>
+                                            setIsSearchAreaOpen(false)
+                                        }
+                                    />
 
                                     <ActionIcon variant="outline" size="lg">
                                         <IconFile size="1.1rem" />

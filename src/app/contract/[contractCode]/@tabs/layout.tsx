@@ -2,7 +2,7 @@ import React, { ReactNode } from "react";
 
 const Layout = ({
     children,
-    tabs,
+    // tabs,
 }: Readonly<{
     children: ReactNode;
     tabs: ReactNode;

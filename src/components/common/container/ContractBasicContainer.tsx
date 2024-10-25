@@ -1,3 +1,4 @@
+"use client";
 import { Box, Heading } from "@chakra-ui/react";
 import ContractBasicPresentationalForm from "../presentational/ContractBasicPresentationalForm";
 import { Button } from "@/components/ui/button";
@@ -23,8 +24,8 @@ import { z } from "zod";
 export type ContractBasicContainerProps = {
     isEdit: boolean;
     contractCode: string; // 新規作成時は空
-    handleNext: () => void;
-    handlePrevious: () => void;
+    handleNext?: () => void;
+    handlePrevious?: () => void;
 };
 
 const ContractBasicContainer = ({

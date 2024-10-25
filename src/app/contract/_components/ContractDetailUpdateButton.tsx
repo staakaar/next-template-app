@@ -1,7 +1,8 @@
 "use client";
 import { useState } from "react";
-import { Button } from "@/components/ui/button";
-import updateContractBasicInfo from "@/lib/contractBasic/api";
+import { Button } from "@mantine/core";
+// import { Button } from "@/components/ui/button";
+import updateContractBasic from "@/lib/contractBasic/api";
 import updateContractDetails from "@/lib/contractDetails/api";
 import updateContractFiles from "@/lib/contractFile/api";
 
@@ -19,7 +20,7 @@ export function ContractDetailUpdateButton({
         try {
             switch (activeTab) {
                 case "basic":
-                    await updateContractBasicInfo(contractCode);
+                    await updateContractBasic(contractCode);
                     break;
                 case "details":
                     await updateContractDetails(contractCode);

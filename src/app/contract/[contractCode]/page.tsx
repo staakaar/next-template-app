@@ -4,10 +4,6 @@ import { useSetRecoilState } from "recoil";
 import { selectedContractCodeState } from "@/stores/contracts/atom";
 import { useEffect } from "react";
 
-export type ContractDetailsProps = {
-    contractCode: string;
-};
-
 const ContractDetailsPage = () => {
     const params = useParams();
     const contractCode = params.contractCode;

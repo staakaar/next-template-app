@@ -1,7 +1,15 @@
-import ContractBasicContainer from "@/components/common/ContractBasicContainer";
+import ContractBasicContainer from "@/components/common/container/ContractBasicContainer";
+import { selectedContractCodeState } from "@/stores/contracts/atom";
+import { useRecoilValue } from "recoil";
 
 const ContractBasicTab = () => {
-    return <ContractBasicContainer />;
+    const setSelectedContractCode = useRecoilValue(selectedContractCodeState);
+    return (
+        <ContractBasicContainer
+            isEdit={true}
+            contractCode={setSelectedContractCode}
+        />
+    );
 };
 
 export default ContractBasicTab;
