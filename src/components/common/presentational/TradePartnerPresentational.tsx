@@ -1,7 +1,6 @@
-import { Button } from "@/components/ui/button";
 import { Separator } from "@/components/ui/separator";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
-import { Box, Heading } from "@chakra-ui/react";
+import { Box } from "@chakra-ui/react";
 import TradePartnerTableContainer from "../container/tradePartner/TradePartnerTableContainer";
 import TradePartnerCompanyTableContainer from "../container/tradePartner/TradePartnerCompanyTableContainer";
 

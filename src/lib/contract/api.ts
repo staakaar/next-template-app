@@ -1,4 +1,3 @@
-/** fetch server actions */
 "use client";
 import { ApiContext } from "@/types/api";
 import { ContractResponse } from "@/types/api/contract";

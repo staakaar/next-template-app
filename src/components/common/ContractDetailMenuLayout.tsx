@@ -15,11 +15,14 @@ import { useParams, useRouter } from "next/navigation";
 import { useState } from "react";
 import { Tabs, TabsList } from "../ui/tabs";
 import ContractBasicContainer from "./container/ContractBasicContainer";
+import { selectedContractCodeState } from "@/stores/contracts/atom";
+import { useRecoilValue } from "recoil";
 
 const ContractDetailMenuLayout = () => {
     const params = useParams();
     const contractCode = params.contractCode;
     const router = useRouter();
+    const selectedContractCode = useRecoilValue(selectedContractCodeState);
     console.log("contractDetailMenuLayout", contractCode);
 
     const [activeMenu, setActiveMenu] = useState("basic");
@@ -28,7 +31,12 @@ const ContractDetailMenuLayout = () => {
             id: "basic",
             url: `contract-basic`,
             label: "基本情報",
-            component: <ContractBasicContainer />,
+            component: (
+                <ContractBasicContainer
+                    isEdit={false}
+                    contractCode={selectedContractCode}
+                />
+            ),
         },
         {
             id: "tradePartner",
@@ -40,7 +48,7 @@ const ContractDetailMenuLayout = () => {
             id: "file",
             url: `contract-file`,
             label: "ファイル",
-            component: <ContractFileContainer />,
+            component: <ContractFileContainer isEdit={false} />,
         },
         {
             id: "details",
@@ -93,8 +101,6 @@ const ContractDetailMenuLayout = () => {
     ];
 
     return (
-        // <Box className="flex flex-col space-y-8 lg:flex-row lg:space-x-12 lg:space-y-0 space-x-4 px-8 lg:h-[900px]">
-        //     <Box as="aside" className="-mx-6 lg:w-1/5 border-r">
         <HStack
             as="nav"
             align="stretch"
@@ -121,8 +127,6 @@ const ContractDetailMenuLayout = () => {
                 </div>
             </Tabs>
         </HStack>
-        //     </Box>
-        // </Box>
     );
 };
 

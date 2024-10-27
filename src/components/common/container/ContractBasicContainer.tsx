@@ -1,8 +1,15 @@
 "use client";
-import { Box, Heading } from "@chakra-ui/react";
+import {
+    Button,
+    Paper,
+    Stack,
+    Title,
+    Group,
+    Divider,
+    Box,
+} from "@mantine/core";
+import { notifications } from "@mantine/notifications";
 import ContractBasicPresentationalForm from "../presentational/ContractBasicPresentationalForm";
-import { Button } from "@/components/ui/button";
-import { Separator } from "@/components/ui/separator";
 import { useEffect } from "react";
 import {
     saveContractBasic,
@@ -45,10 +52,26 @@ const ContractBasicContainer = ({
 
     useEffect(() => {
         if (isEdit && contractCode) {
-            // fetch contractBasic
-            // reset useFormの内容を
+            const fetchContractBasic = async () => {
+                try {
+                    const response = await fetch(
+                        `api/contracts/${contractCode}`
+                    );
+                    const data = await response.json();
+                    form.reset(data);
+                } catch (error) {
+                    console.log("基本情報の取得に失敗しました。", error);
+                    notifications.show({
+                        title: "エラー",
+                        message: "エラーが発生しました。",
+                        color: "red",
+                    });
+                }
+            };
+
+            fetchContractBasic();
         }
-    }, [isEdit, contractCode, form.reset]);
+    }, [isEdit, contractCode, form]);
 
     const save = () => {};
 
@@ -65,41 +88,54 @@ const ContractBasicContainer = ({
 
         if (result) {
             // 成功後の処理（例：次のステップに進む、リダイレクトするなど）
+            notifications.show({
+                title: isEdit ? "更新完了" : "登録完了",
+                message: "エラーが発生しました。",
+                color: "red",
+            });
         } else {
-            throw new Error("Server responded with an error");
+            notifications.show({
+                title: "エラー",
+                message: "エラーが発生しました。",
+                color: "red",
+            });
         }
     };
 
     return (
-        <Box>
-            <Box className="flex items-center justify-between">
-                <Heading className="mt-4 mb-6">基本情報</Heading>
-                {/* 詳細時は更新ボタン */}
-                {isEdit ? (
-                    <Button
-                        onClick={form.handleSubmit(onSubmit)}
-                        className="bg-blue-500 hover:bg-blue-600 text-white font-bold py-2 px-4 rounded hover:shadow-lg transition-all duration-200"
-                    >
-                        更新
-                    </Button>
-                ) : (
-                    <>
-                        <Box>
+        <Paper shadow="xs" p="md">
+            <Stack>
+                <Group align="center" justify="space-between">
+                    <Title className="mt-4">基本情報</Title>
+                    {/* 詳細時は更新ボタン */}
+                    <Group>
+                        {isEdit ? (
                             <Button
+                                type="submit"
                                 onClick={form.handleSubmit(onSubmit)}
                                 className="bg-blue-500 hover:bg-blue-600 text-white font-bold py-2 px-4 rounded hover:shadow-lg transition-all duration-200"
                             >
-                                登録
+                                更新
                             </Button>
-                        </Box>
-                    </>
-                )}
-            </Box>
-            <Separator className="mt-2" />
-            <div className="grid gap-3">
+                        ) : (
+                            <>
+                                <Button
+                                    type="submit"
+                                    onClick={form.handleSubmit(onSubmit)}
+                                    className="bg-blue-500 hover:bg-blue-600 text-white font-bold py-2 px-4 rounded hover:shadow-lg transition-all duration-200"
+                                >
+                                    登録
+                                </Button>
+                            </>
+                        )}
+                    </Group>
+                </Group>
+            </Stack>
+            <Divider className="mt-2" />
+            <Box className="grid gap-3">
                 <ContractBasicPresentationalForm form={form} />
-            </div>
-        </Box>
+            </Box>
+        </Paper>
     );
 };
 export default ContractBasicContainer;

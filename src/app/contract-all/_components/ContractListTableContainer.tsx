@@ -6,18 +6,12 @@ import {
     Tabs,
     TextInput,
     Button,
-    Menu,
     ActionIcon,
     Group,
     Stack,
     TabsList,
     TabsTab,
     TabsPanel,
-    MenuTarget,
-    MenuDropdown,
-    MenuLabel,
-    MenuItem,
-    Collapse,
 } from "@mantine/core";
 import {
     IconSearch,
@@ -82,45 +76,6 @@ const ContractListTableContainer = () => {
                                     style={{ width: "600px" }}
                                 />
                                 <Group flex="1" justify="flex-end" gap="sm">
-                                    {/* <Menu position="bottom-end">
-                                        <MenuTarget>
-                                            <Box>
-                                                <Collapse in={showSearch}>
-                                                    <Box mb="md">
-                                                        <TextInput
-                                                            placeholder="検索..."
-                                                            leftSection={
-                                                                <IconSearch size="1rem" />
-                                                            }
-                                                            value={searchQuery}
-                                                            onChange={(event) =>
-                                                                setSearchQuery(
-                                                                    event
-                                                                        .currentTarget
-                                                                        .value
-                                                                )
-                                                            }
-                                                        />
-                                                    </Box>
-                                                </Collapse>
-                                                <Button
-                                                    variant="outline"
-                                                    size="sm"
-                                                >
-                                                    <Group gap="xs">
-                                                        <IconFilter size="1rem" />
-                                                        <span>検索</span>
-                                                    </Group>
-                                                </Button>
-                                            </Box>
-                                        </MenuTarget>
-                                        <MenuDropdown>
-                                            <MenuLabel>Filter by</MenuLabel>
-                                            <MenuItem>Active</MenuItem>
-                                            <MenuItem>Draft</MenuItem>
-                                            <MenuItem>Archived</MenuItem>
-                                        </MenuDropdown>
-                                    </Menu> */}
                                     <Button
                                         variant="outline"
                                         size="sm"
@@ -161,7 +116,6 @@ const ContractListTableContainer = () => {
                             <TabsPanel value="created">
                                 <ContractListTablePresentation
                                     contracts={contracts.contracts}
-                                    // columns={columns}
                                     initialTotalCount={contracts.totalCount}
                                 />
                             </TabsPanel>

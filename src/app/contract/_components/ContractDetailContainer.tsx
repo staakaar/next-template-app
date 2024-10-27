@@ -1,8 +1,8 @@
 "use client";
-import { selectedContractCodeState } from "@/stores/contracts/atom";
-import { useEffect } from "react";
-import { useSetRecoilState } from "recoil";
-import ContractDetailPresentation from "./ContractDetailPresentation";
+// import { selectedContractCodeState } from "@/stores/contracts/atom";
+// import { useEffect } from "react";
+// import { useSetRecoilState } from "recoil";
+// import ContractDetailPresentation from "./ContractDetailPresentation";
 // import { useRouter } from "next/router";
 import { redirect, useParams } from "next/navigation";
 

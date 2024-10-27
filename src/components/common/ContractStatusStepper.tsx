@@ -1,17 +1,6 @@
 "use client";
-import {
-    Box,
-    Step,
-    StepDescription,
-    StepIcon,
-    StepIndicator,
-    StepNumber,
-    StepSeparator,
-    StepStatus,
-    StepTitle,
-    Stepper,
-    useSteps,
-} from "@chakra-ui/react";
+import { useRef, useState } from "react";
+import { Stepper, Box, Group, Text, StepperStep } from "@mantine/core";
 
 const ContractSteps = [
     { title: "1", description: "契約書作成中" },
@@ -21,33 +10,56 @@ const ContractSteps = [
 ];
 
 const ContractStatusStepper = () => {
-    const { activeStep } = useSteps({
-        index: 1,
-        count: ContractSteps.length,
-    });
+    const [activeStep] = useState(1);
 
     return (
         <Box className="flex justify-center sm:w-min-full md:w-min-full lg:w-min-full mt-4">
-            <Stepper size="lg" index={activeStep}>
+            <Stepper
+                size="lg"
+                color="blue"
+                active={activeStep}
+                styles={(theme) => ({
+                    root: {
+                        padding: "0 1rem",
+                        "@media (min-width: 768px)": {
+                            padding: "0 2rem",
+                        },
+                    },
+                    separator: {
+                        marginLeft: theme.spacing.xl,
+                        marginRight: theme.spacing.xl,
+                    },
+                    step: {
+                        padding: theme.spacing.md,
+                    },
+                    stepIcon: {
+                        borderWidth: 0,
+                        backgroundColor: activeStep
+                            ? theme.colors.blue[6]
+                            : undefined,
+                        color: activeStep ? theme.white : undefined,
+                        "&[data-completed]": {
+                            backgroundColor: theme.colors.blue[6],
+                            color: theme.white,
+                        },
+                    },
+                    stepLabel: {
+                        fontSize: theme.fontSizes.sm,
+                        fontWeight: 500,
+                    },
+                    stepDescription: {
+                        fontSize: theme.fontSizes.xs,
+                        marginTop: theme.spacing.xs,
+                        color: theme.colors.gray[6],
+                    },
+                })}
+            >
                 {ContractSteps.map((step, index) => (
-                    <Step key={index}>
-                        <StepIndicator className="bg-blue-500 hover:bg-blue-600 text-white font-bold">
-                            <StepStatus
-                                complete={<StepIcon />}
-                                incomplete={<StepNumber />}
-                                active={<StepNumber />}
-                            />
-                        </StepIndicator>
-
-                        <Box flexShrink="0" className="mx-6">
-                            <StepTitle>{step.title}</StepTitle>
-                            <StepDescription>
-                                {step.description}
-                            </StepDescription>
-                        </Box>
-
-                        <StepSeparator />
-                    </Step>
+                    <StepperStep
+                        key={index}
+                        label={step.title}
+                        description={step.description}
+                    />
                 ))}
             </Stepper>
         </Box>

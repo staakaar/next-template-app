@@ -1,14 +1,13 @@
 import type { Metadata } from "next";
 import { Inter as FontSans } from "next/font/google";
-import { Providers } from "./providers";
+import { MantineProviders } from "./providers";
 import { cn } from "@/lib/utils";
 import "./globals.css";
 import React from "react";
 import Header from "@/components/organisms/Header";
 import { RecoilRootProvider } from "@/app/recoil";
-import { TooltipProvider } from "@/components/ui/tooltip";
 import "@mantine/core/styles.css";
-import { ColorSchemeScript, MantineProvider } from "@mantine/core";
+import { ColorSchemeScript } from "@mantine/core";
 
 const fontSans = FontSans({
     subsets: ["latin"],
@@ -36,14 +35,12 @@ export default function RootLayout({
                     fontSans.variable
                 )}
             >
-                <MantineProvider>
+                <MantineProviders>
                     <RecoilRootProvider>
-                        <TooltipProvider>
-                            <Header />
-                            <Providers>{children}</Providers>
-                        </TooltipProvider>
+                        <Header />
+                        {children}
                     </RecoilRootProvider>
-                </MantineProvider>
+                </MantineProviders>
             </body>
         </html>
     );

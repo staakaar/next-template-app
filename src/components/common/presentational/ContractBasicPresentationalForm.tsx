@@ -1,221 +1,136 @@
 "use client";
-
 import {
-    Form,
-    FormControl,
-    FormField,
-    FormItem,
-    FormLabel,
-    FormMessage,
-} from "../../ui/form";
-import { Input } from "../../ui/input";
-import { Box, SimpleGrid } from "@chakra-ui/react";
-import React from "react";
-import {
+    Textarea,
+    Box,
+    TextInput,
+    SimpleGrid,
+    NumberInput,
+    Stack,
     Select,
-    SelectContent,
-    SelectItem,
-    SelectTrigger,
-    SelectValue,
-} from "../../ui/select";
-import { Textarea } from "@/components/ui/textarea";
+    LoadingOverlay,
+} from "@mantine/core";
+import { DateInput } from "@mantine/dates";
+import React from "react";
+import { contractBasicFormSchema } from "@/lib/contractBasic/schema";
+import { z } from "zod";
+import { Controller, useForm } from "react-hook-form";
 
-export type ContractBasicFormProps = {
-    form: any;
-    // control: Control<ContractBasicFormData>;
-    // register: UseFormRegister<ContractBasicFormData>;
-    // errors: FieldErrors<ContractBasicFormData>;
-};
+type ContractBasicFormValues = z.infer<typeof contractBasicFormSchema>;
+
+interface ContractBasicFormProps {
+    form: ReturnType<typeof useForm<ContractBasicFormValues>>;
+}
 
 const ContractBasicPresentationalForm = ({ form }: ContractBasicFormProps) => {
-    const control = form.control;
-    const errors = form.errors;
+    const {
+        register,
+        formState: { errors },
+        control,
+    } = form;
 
     return (
-        <>
-            <Box className="mt-10">
-                <Form {...form}>
-                    <SimpleGrid
-                        columns={{ base: 1, sm: 2, md: 1, lg: 2 }}
-                        spacing={4}
-                    >
-                        <FormField
-                            control={control}
-                            name="firstName"
-                            render={({ field }) => (
-                                <FormItem>
-                                    <FormLabel>First Name</FormLabel>
-                                    <FormControl>
-                                        <Input {...field} />
-                                    </FormControl>
-                                    {errors?.firstName && (
-                                        <FormMessage>
-                                            {errors.firstName.message}
-                                        </FormMessage>
-                                    )}
-                                </FormItem>
-                            )}
-                        />
-                        <FormField
-                            control={control}
-                            name="lastName"
-                            render={({ field }) => (
-                                <FormItem>
-                                    <FormLabel>Last Name</FormLabel>
-                                    <FormControl>
-                                        <Input {...field} />
-                                    </FormControl>
-                                    {errors?.lastName && (
-                                        <FormMessage>
-                                            {errors.lastName.message}
-                                        </FormMessage>
-                                    )}
-                                </FormItem>
-                            )}
-                        />
-                        <FormField
-                            control={control}
-                            name="email"
-                            render={({ field }) => (
-                                <FormItem>
-                                    <FormLabel>Email</FormLabel>
-                                    <FormControl>
-                                        <Input {...field} />
-                                    </FormControl>
-                                    {errors?.email && (
-                                        <FormMessage>
-                                            {errors.email.message}
-                                        </FormMessage>
-                                    )}
-                                </FormItem>
-                            )}
-                        />
-                        <FormField
-                            control={control}
-                            name="phone"
-                            render={({ field }) => (
-                                <FormItem>
-                                    <FormLabel>Phone</FormLabel>
-                                    <FormControl>
-                                        <Input {...field} />
-                                    </FormControl>
-                                    {errors?.phone && (
-                                        <FormMessage>
-                                            {errors.phone.message}
-                                        </FormMessage>
-                                    )}
-                                </FormItem>
-                            )}
-                        />
-                        <FormField
-                            control={control}
-                            name="role"
-                            render={({ field }) => (
-                                <FormItem>
-                                    <FormLabel>Role</FormLabel>
-                                    <Select
-                                        onValueChange={field.onChange}
-                                        defaultValue={field.value}
-                                    >
-                                        <FormControl>
-                                            <SelectTrigger>
-                                                <SelectValue placeholder="Select a role" />
-                                            </SelectTrigger>
-                                        </FormControl>
-                                        <SelectContent>
-                                            <SelectItem value="admin">
-                                                Admin
-                                            </SelectItem>
-                                            <SelectItem value="user">
-                                                User
-                                            </SelectItem>
-                                            <SelectItem value="manager">
-                                                Manager
-                                            </SelectItem>
-                                        </SelectContent>
-                                    </Select>
-                                    {errors?.role && (
-                                        <FormMessage>
-                                            {errors.role.message}
-                                        </FormMessage>
-                                    )}
-                                </FormItem>
-                            )}
-                        />
-                        <FormField
-                            control={control}
-                            name="department"
-                            render={({ field }) => (
-                                <FormItem>
-                                    <FormLabel>Department</FormLabel>
-                                    <FormControl>
-                                        <Input {...field} />
-                                    </FormControl>
-                                    {errors?.department && (
-                                        <FormMessage>
-                                            {errors.department.message}
-                                        </FormMessage>
-                                    )}
-                                </FormItem>
-                            )}
-                        />
-                        <FormField
-                            control={control}
-                            name="startDate"
-                            render={({ field }) => (
-                                <FormItem>
-                                    <FormLabel>Start Date</FormLabel>
-                                    <FormControl>
-                                        <Input type="date" {...field} />
-                                    </FormControl>
-                                    {errors?.startDate && (
-                                        <FormMessage>
-                                            {errors.startDate.message}
-                                        </FormMessage>
-                                    )}
-                                </FormItem>
-                            )}
-                        />
-                        <FormField
-                            control={control}
-                            name="salary"
-                            render={({ field }) => (
-                                <FormItem>
-                                    <FormLabel>Salary</FormLabel>
-                                    <FormControl>
-                                        <Input type="number" {...field} />
-                                    </FormControl>
-                                    {errors?.salary && (
-                                        <FormMessage>
-                                            {errors.salary.message}
-                                        </FormMessage>
-                                    )}
-                                </FormItem>
-                            )}
-                        />
-                    </SimpleGrid>
-                    <Box width="100%">
-                        <FormField
-                            control={control}
-                            name="comments"
-                            render={({ field }) => (
-                                <FormItem>
-                                    <FormLabel>Comments</FormLabel>
-                                    <FormControl>
-                                        <Textarea {...field} />
-                                    </FormControl>
-                                    {errors?.comments && (
-                                        <FormMessage>
-                                            {errors.comments.message}
-                                        </FormMessage>
-                                    )}
-                                </FormItem>
-                            )}
-                        />
-                    </Box>
-                </Form>
-            </Box>
-        </>
+        <Box className="mt-10">
+            <LoadingOverlay visible={form.formState.isSubmitting} />
+            <form>
+                <SimpleGrid cols={{ base: 1, sm: 2 }} spacing="lg">
+                    <TextInput
+                        label="First Name"
+                        error={errors.firstName?.message}
+                        {...register("firstName")}
+                        disabled={form.formState.isSubmitting}
+                        required
+                    />
+                    <TextInput
+                        label="Last Name"
+                        error={errors.lastName?.message}
+                        {...register("lastName")}
+                        disabled={form.formState.isSubmitting}
+                        required
+                    />
+                    <TextInput
+                        label="Email"
+                        error={errors.email?.message}
+                        {...register("email")}
+                        disabled={form.formState.isSubmitting}
+                        required
+                    />
+                    <TextInput
+                        label="Phone"
+                        error={errors.phone?.message}
+                        {...register("phone")}
+                        disabled={form.formState.isSubmitting}
+                        required
+                    />
+                    <Controller
+                        name="role"
+                        control={control}
+                        render={({ field }) => (
+                            <Select
+                                label="Role"
+                                error={errors.role?.message}
+                                {...register("role")}
+                                data={[
+                                    { value: "admin", label: "admin" },
+                                    { value: "user", label: "User" },
+                                    { value: "manager", label: "Manager" },
+                                ]}
+                                disabled={form.formState.isSubmitting}
+                                onChange={(value) => field.onChange(value)}
+                                required
+                            />
+                        )}
+                    />
+                    <TextInput
+                        label="Department"
+                        error={errors.department?.message}
+                        {...register("department")}
+                        disabled={form.formState.isSubmitting}
+                        required
+                    />
+                    <Controller
+                        name="startDate"
+                        control={control}
+                        render={({ field }) => (
+                            <DateInput
+                                label="Start Date"
+                                error={errors.startDate?.message}
+                                {...register("startDate")}
+                                disabled={form.formState.isSubmitting}
+                                onChange={(value) => field.onChange(value)}
+                                required
+                            />
+                        )}
+                    />
+                    <Controller
+                        name="salary"
+                        control={control}
+                        render={({ field }) => (
+                            <NumberInput
+                                label="Salary"
+                                error={errors.salary?.message}
+                                {...register("salary", { valueAsNumber: true })}
+                                disabled={form.formState.isSubmitting}
+                                value={field.value}
+                                min={0}
+                                max={9999999999}
+                                hideControls={false}
+                                onChange={(value) => field.onChange(value)}
+                                required
+                            />
+                        )}
+                    />
+                </SimpleGrid>
+                <Stack mt="lg">
+                    <Textarea
+                        label="Comments"
+                        error={errors.comments?.message}
+                        {...register("comments")}
+                        disabled={form.formState.isSubmitting}
+                        minRows={3}
+                    />
+                </Stack>
+            </form>
+        </Box>
     );
 };
 

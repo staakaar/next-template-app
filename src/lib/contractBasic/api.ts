@@ -25,4 +25,5 @@ export async function updateContractBasic(
     contractCode: string
 ): Promise<ResponseMessage | void> {
     console.log("updateContractBasicInfo", contractCode);
+    return;
 }

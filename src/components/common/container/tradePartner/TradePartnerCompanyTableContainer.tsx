@@ -1,5 +1,4 @@
 "use client";
-import { Card } from "@/components/ui/card";
 import { useFetchTradePartner } from "@/lib/tradePartner/api";
 import { useState } from "react";
 import { columns } from "./TradePartnerTableColumn";

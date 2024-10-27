@@ -278,14 +278,13 @@ const ContractListTablePresentation = <T extends Contract>({
                 withTableBorder
                 borderRadius="sm"
                 striped
-                highlightOnHover
+                highlightOnHover={true}
                 columns={effectiveColumns}
                 records={records}
                 noRecordsText={
-                    records.length === 0
-                        ? "該当のレコードが存在しません。"
-                        : undefined
+                    records.length === 0 ? "該当のレコードが存在しません。" : ""
                 }
+                // noRecordsIcon={true}
                 emptyState={records.length === 0}
                 loadingText="読み込み中です..."
                 totalRecords={totalCount}
