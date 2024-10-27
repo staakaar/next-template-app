@@ -1,6 +1,11 @@
-import { Separator } from "@/components/ui/separator";
-import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
-import { Box } from "@chakra-ui/react";
+import {
+    Box,
+    Tabs,
+    Divider,
+    TabsList,
+    TabsTab,
+    TabsPanel,
+} from "@mantine/core";
 import TradePartnerTableContainer from "../container/tradePartner/TradePartnerTableContainer";
 import TradePartnerCompanyTableContainer from "../container/tradePartner/TradePartnerCompanyTableContainer";
 
@@ -11,24 +16,22 @@ const TradePartnerPresentational = () => {
                 <Tabs defaultValue="list">
                     <div className="flex items-center">
                         <TabsList className="inline-flex h-9 items-center justify-center rounded-lg bg-muted p-1 text-muted-foreground">
-                            <TabsTrigger value="list">一覧</TabsTrigger>
-                            <TabsTrigger value="add">取引先追加</TabsTrigger>
-                            <TabsTrigger value="newUser">
-                                担当者追加
-                            </TabsTrigger>
+                            <TabsTab value="list">一覧</TabsTab>
+                            <TabsTab value="add">取引先追加</TabsTab>
+                            <TabsTab value="newUser">担当者追加</TabsTab>
                         </TabsList>
                     </div>
-                    <Separator className="mt-4" />
-                    <TabsContent value="list">
+                    <Divider className="mt-4" />
+                    <TabsPanel value="list">
                         <TradePartnerTableContainer />
-                    </TabsContent>
-                    <TabsContent value="add">
+                    </TabsPanel>
+                    <TabsPanel value="add">
                         <TradePartnerCompanyTableContainer />
-                    </TabsContent>
-                    <TabsContent value="newUser">
+                    </TabsPanel>
+                    <TabsPanel value="newUser">
                         {/* 取引先会社選択して担当者をユーザー単位で登録 */}
                         <div>担当者追加</div>
-                    </TabsContent>
+                    </TabsPanel>
                 </Tabs>
             </Box>
         </>

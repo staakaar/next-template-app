@@ -8,7 +8,6 @@ import {
     Stack,
     Divider,
     Paper,
-    Container,
     Anchor,
 } from "@mantine/core";
 import {
@@ -111,15 +110,7 @@ const Layout = ({
             <Paper
                 shadow="sm"
                 p="md"
-                style={{
-                    position: "sticky",
-                    bottom: 0,
-                    borderTop: "1px solid var(--mantine-color-gray-3)",
-                    backgroundColor: "var(--mantine-color-white)",
-                    justifyContent: "flex-end",
-                    alignItems: "center",
-                    display: "flex",
-                }}
+                className="sticky bottom-0 border-t border-gray-300 bg-white flex justify-end items-center z-50 w-full transition-all duration-200 ease-in-out shadow-lg"
             >
                 <Group>
                     <ContractDetailUpdateButton
