@@ -25,3 +25,13 @@ export const tradePartnerFormState = atom<TradePartnerFormData>({
     key: "tradePartnerFormState",
     default: defaultTradePartnerForm,
 });
+
+/** 取引先ページネーション */
+export const tradePartnerPageOptionsState = atom({
+    key: "tradePartnerPageOptionsState",
+    default: {
+        page: 0,
+        pageSize: 50,
+        search: "",
+    },
+});

@@ -16,9 +16,8 @@ const TradePartnerCompanyTableContainer = () => {
     return (
         <>
             <TradePartnerCompanyTablePresentation
-                data={data.tradePartner}
-                columns={columns}
-                totalCount={data.totalCount}
+                tradePartnerCompany={data.tradePartner}
+                initialTotalCount={data.totalCount}
             />
         </>
     );
