@@ -1,18 +1,18 @@
-import { Button } from "@/components/ui/button";
 import {
-    Box,
     Drawer,
-    DrawerBody,
-    DrawerCloseButton,
-    DrawerContent,
+    Button,
+    Box,
     DrawerHeader,
+    DrawerBody,
+    DrawerContent,
+    DrawerCloseButton,
     DrawerOverlay,
-} from "@chakra-ui/react";
+} from "@mantine/core";
 import TradePartnerPersonTableContainer from "./TradePartnerPersonTableContainer";
 import React from "react";
 
 const TradePartnerPersonDrawerContainer = ({
-    isOpen,
+    opened,
     onClose,
     selectedRow,
 }: any) => {
@@ -20,22 +20,17 @@ const TradePartnerPersonDrawerContainer = ({
         <>
             <Drawer
                 size="full"
-                placement="right"
+                position="right"
                 onClose={onClose}
-                isOpen={isOpen}
+                opened={opened}
             >
                 <DrawerOverlay />
                 <DrawerContent>
                     <DrawerHeader>
                         <Box className="flex justify-between">
                             <Box className="flex items-center">
-                                <DrawerCloseButton
-                                    position="static"
-                                    left="0"
-                                    top="0"
-                                    marginLeft="2"
-                                />
-                                「 」取引先担当者一覧
+                                <DrawerCloseButton left="0" top="0" />「
+                                」取引先担当者一覧
                             </Box>
                             {/* </Box> */}
                             <Box className="flex items-center">

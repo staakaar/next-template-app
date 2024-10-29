@@ -25,6 +25,7 @@ import {
     MenuItem,
     MenuTarget,
     MenuDropdown,
+    TableTrProps,
 } from "@mantine/core";
 import {
     IconSearch,
@@ -298,6 +299,7 @@ const ContractListTablePresentation = <T extends Contract>({
                 onRowClick={navigateToContractDetail}
                 onPageChange={(p) => setPage(p)}
                 onRecordsPerPageChange={setPageSize}
+                key="contractCode"
                 styles={{
                     pagination: {
                         display: "flex",
@@ -306,22 +308,22 @@ const ContractListTablePresentation = <T extends Contract>({
                         padding: "1rem",
                         gap: "1rem",
 
-                        ".mantine-Group-root": {
+                        ".mantineGroupRoot": {
                             dispaly: "flex",
                             alignItems: "center",
                             gap: "1rem",
                             flex: 1,
                         },
 
-                        "[data-records-per-page]": {
+                        "[dataRecordsPerPage]": {
                             order: 1,
                         },
 
-                        ".mantine-Pagination-root": {
+                        ".mantinePaginationRoot": {
                             order: 2,
                         },
 
-                        "[data-pagination-text]": {
+                        "[dataPaginationText]": {
                             marginLeft: "auto",
                             whiteSpace: "nowrap",
                             order: 3,

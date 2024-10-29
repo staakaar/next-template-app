@@ -1,7 +1,6 @@
 "use client";
 import { useFetchTradePartner } from "@/lib/tradePartner/api";
 import { useState } from "react";
-import { columns } from "./TradePartnerTableColumn";
 import TradePartnerCompanyTablePresentation from "../../presentational/tradePartner/TradePartnerCompanyTablePresentation";
 import React from "react";
 

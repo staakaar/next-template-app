@@ -1,8 +1,8 @@
 "use client";
-import { useDisclosure } from "@chakra-ui/react";
 import TradePartnerPersonDrawerContainer from "../../container/tradePartner/TradePartnerPersonDrawerContainer";
 import React, { useEffect, useState } from "react";
 import { TradePartner } from "@/types/api/tradePartner";
+import { useDisclosure } from "@mantine/hooks";
 import {
     DataTable,
     DataTableColumn,
@@ -19,6 +19,7 @@ import { useSetRecoilState } from "recoil";
 import VTooltip from "../../atoms/Tooltip";
 import { ActionIcon, Group } from "@mantine/core";
 import { IconEdit, IconEye, IconTrash } from "@tabler/icons-react";
+import { sort } from "fast-sort";
 
 export type TradePartnerTableProps<T extends TradePartner> = {
     tradePartnerCompany: T[];
@@ -30,9 +31,9 @@ const PAGE_SIZES = [10, 15, 20, 50, 75, 100];
 const TradePartnerCompanyTablePresentation = <T extends TradePartner>({
     tradePartnerCompany,
     initialTotalCount,
-}: TradePartnerTableProps<TData, TValue>) => {
+}: TradePartnerTableProps<T>) => {
     /** ドロワー */
-    const { isOpen, onOpen, onClose } = useDisclosure();
+    const [opened, { open, close }] = useDisclosure();
 
     const router = useRouter();
     const [selectedRow, setSelectedRow] = useState(defaultTradePartnerForm);
@@ -234,8 +235,8 @@ const TradePartnerCompanyTablePresentation = <T extends TradePartner>({
             />
 
             <TradePartnerPersonDrawerContainer
-                isOpen={isOpen}
-                onClose={onClose}
+                isOpen={opened}
+                onClose={close}
                 selectedRow={selectedRow}
             />
         </>

@@ -182,6 +182,7 @@ const TradePartnerTablePresentation = <T extends TradePartner>({
             onRowClick={navigateToContractDetail}
             onPageChange={(p) => setPage(p)}
             onRecordsPerPageChange={setPageSize}
+            key={"tradePersonId"}
             styles={{
                 pagination: {
                     display: "flex",
@@ -190,22 +191,22 @@ const TradePartnerTablePresentation = <T extends TradePartner>({
                     padding: "1rem",
                     gap: "1rem",
 
-                    ".mantine-Group-root": {
+                    ".mantineGroupRoot": {
                         dispaly: "flex",
                         alignItems: "center",
                         gap: "1rem",
                         flex: 1,
                     },
 
-                    "[data-records-per-page]": {
+                    "[dataRecordsPerPage]": {
                         order: 1,
                     },
 
-                    ".mantine-Pagination-root": {
+                    ".mantinePaginationRoot": {
                         order: 2,
                     },
 
-                    "[data-pagination-text]": {
+                    "[dataPaginationText]": {
                         marginLeft: "auto",
                         whiteSpace: "nowrap",
                         order: 3,
