@@ -33,7 +33,7 @@ const TradePartnerCompanyTablePresentation = <T extends TradePartner>({
     initialTotalCount,
 }: TradePartnerTableProps<T>) => {
     /** ドロワー */
-    const [opened, { open, close }] = useDisclosure();
+    const [opened, { open, close }] = useDisclosure(false);
 
     const router = useRouter();
     const [selectedRow, setSelectedRow] = useState(defaultTradePartnerForm);
@@ -80,10 +80,12 @@ const TradePartnerCompanyTablePresentation = <T extends TradePartner>({
     const [totalCount, setTotalCount] = useState(initialTotalCount);
     const setPageOptions = useSetRecoilState(tradePartnerPageOptionsState);
 
-    const navigateToContractDetail: DataTableRowClickHandler<TradePartner> = ({
-        record,
-    }) => {
+    const navigateToTradePartnerPerson: DataTableRowClickHandler<
+        TradePartner
+    > = ({ record }) => {
+        console.log(record);
         setSelectedRow(record);
+        open;
     };
 
     const columns: DataTableColumn<TradePartner>[] = [
@@ -184,7 +186,7 @@ const TradePartnerCompanyTablePresentation = <T extends TradePartner>({
                 recordsPerPageOptions={PAGE_SIZES}
                 sortStatus={sortStatus}
                 onSortStatusChange={setSortStatus}
-                onRowClick={navigateToContractDetail}
+                onRowClick={navigateToTradePartnerPerson}
                 onPageChange={(p) => setPage(p)}
                 onRecordsPerPageChange={setPageSize}
                 styles={{
@@ -229,13 +231,10 @@ const TradePartnerCompanyTablePresentation = <T extends TradePartner>({
                         },
                     },
                 }}
-                // paginationText={({ from, to, totalRecords }) =>
-                //     `${from}～${to} / ${totalRecords}件`
-                // }
             />
 
             <TradePartnerPersonDrawerContainer
-                isOpen={opened}
+                opened={opened}
                 onClose={close}
                 selectedRow={selectedRow}
             />

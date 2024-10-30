@@ -8,8 +8,8 @@ import { redirect, useRouter } from "next/navigation";
 import { Button } from "@mantine/core";
 import ContractNewStepper from "@/components/common/ContractNewStepper";
 import dynamic from "next/dynamic";
-import Loading from "../loading";
 import ContractNewConfirmDialog from "@/components/ContractNewModal";
+import VLoading from "../loading";
 // const CONTRACT_NEW_STEPS: ContractNewStep[] = [
 //     { name: "ContractBasic", label: "基本情報" },
 //     { name: "ContractFile", label: "契約書ファイル" },
@@ -39,45 +39,45 @@ const ContractSteps: ContractStep[] = [
 // 動的にインポートするコンポーネントを定義
 const ContractBasicContainer = dynamic(
     () => import("@/components/common/container/ContractBasicContainer"),
-    { loading: () => <Loading /> }
+    { loading: () => <VLoading /> }
 );
 const ContractFileContainer = dynamic(
     () => import("@/components/common/container/ContractFileContainer"),
-    { loading: () => <Loading /> }
+    { loading: () => <VLoading /> }
 );
 const TradePartnerCompanyTableContainer = dynamic(
     () =>
         import(
             "@/components/common/container/tradePartner/TradePartnerCompanyTableContainer"
         ),
-    { loading: () => <Loading /> }
+    { loading: () => <VLoading /> }
 );
 const ContractDetailsContainer = dynamic(
     () =>
         import(
             "@/components/common/container/contractDetails/ContractDetailsContainer"
         ),
-    { loading: () => <Loading /> }
+    { loading: () => <VLoading /> }
 );
 const ContractAuthorityContainer = dynamic(
     () => import("@/components/common/container/ContractAuthorityContainer"),
-    { loading: () => <Loading /> }
+    { loading: () => <VLoading /> }
 );
 const ExternalLinkContainer = dynamic(
     () => import("@/components/common/container/ExternalLinkContainer"),
-    { loading: () => <Loading /> }
+    { loading: () => <VLoading /> }
 );
 const RelatedContractContainer = dynamic(
     () => import("@/components/common/container/RelatedContractContainer"),
-    { loading: () => <Loading /> }
+    { loading: () => <VLoading /> }
 );
 const ContractSectionContainer = dynamic(
     () => import("@/components/common/container/ContractSectionContainer"),
-    { loading: () => <Loading /> }
+    { loading: () => <VLoading /> }
 );
 const WorkflowContainer = dynamic(
     () => import("@/components/common/container/WorkflowContainer"),
-    { loading: () => <Loading /> }
+    { loading: () => <VLoading /> }
 );
 
 /** 新規作成ページ */

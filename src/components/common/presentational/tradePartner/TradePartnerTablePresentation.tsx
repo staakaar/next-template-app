@@ -71,12 +71,6 @@ const TradePartnerTablePresentation = <T extends TradePartner>({
     const [totalCount, setTotalCount] = useState(initialTotalCount);
     const setPageOptions = useSetRecoilState(tradePartnerPageOptionsState);
 
-    const navigateToContractDetail: DataTableRowClickHandler<TradePartner> = ({
-        record,
-    }) => {
-        router.push(`/contract/${record.tradeCompanyId}`);
-    };
-
     const columns: DataTableColumn<TradePartner>[] = [
         {
             accessor: "tradeCompanyName",
@@ -179,7 +173,6 @@ const TradePartnerTablePresentation = <T extends TradePartner>({
             recordsPerPageOptions={PAGE_SIZES}
             sortStatus={sortStatus}
             onSortStatusChange={setSortStatus}
-            onRowClick={navigateToContractDetail}
             onPageChange={(p) => setPage(p)}
             onRecordsPerPageChange={setPageSize}
             key={"tradePersonId"}

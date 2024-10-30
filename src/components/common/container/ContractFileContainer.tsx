@@ -29,9 +29,9 @@ const ContractFileContainer = ({ isEdit }: ContractFileContainerProps) => {
                 )}
             </Box>
             <Divider className="mt-4" />
-            <div className="grid gap-3">
+            <Box className="grid gap-3">
                 <ContractFilePresentational />
-            </div>
+            </Box>
         </Box>
     );
 };

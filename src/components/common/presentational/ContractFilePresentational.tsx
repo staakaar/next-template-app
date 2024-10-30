@@ -1,20 +1,13 @@
 "use client";
 import { uploadFilesState } from "@/stores/contractFile/atom";
-import {
-    Box,
-    Button,
-    HStack,
-    IconButton,
-    Text,
-    VStack,
-} from "@chakra-ui/react";
-import { useState } from "react";
+import { Box, Text, Button, ActionIcon, Group, Stack } from "@mantine/core";
+import { useCallback, useEffect, useState } from "react";
+import { useRecoilState } from "recoil";
 import { useDropzone } from "react-dropzone";
 import { Viewer, Worker } from "@react-pdf-viewer/core";
 import { defaultLayoutPlugin } from "@react-pdf-viewer/default-layout";
 import "@react-pdf-viewer/core/lib/styles/index.css";
 import "@react-pdf-viewer/default-layout/lib/styles/index.css";
-import { useRecoilState } from "recoil";
 import { TrashIcon } from "lucide-react";
 
 interface UploadFile {
@@ -24,80 +17,101 @@ interface UploadFile {
 
 const ContractFilePresentational = () => {
     const [uploadFiles, setUploadFiles] =
-        useRecoilState<UploadFile[]>(uploadFilesState);
+        useRecoilState<Array<UploadFile>>(uploadFilesState);
     const [selectedFileIndex, setSelectedFileIndex] = useState<number | null>(
         null
     );
     // プラグイン初期化
     const defaultLayoutPluginInstance = defaultLayoutPlugin();
 
-    const { getRootProps, getInputProps } = useDropzone({
-        accept: {
-            "application/pdf": [".pdf"],
-        },
-        onDrop: (acceptedFiles) => {
+    const onDrop = useCallback(
+        (acceptedFiles: File[]) => {
             const newFiles = acceptedFiles.map((file) => ({
                 file,
                 preview: URL.createObjectURL(file),
             }));
+
             setUploadFiles((prev) => [...prev, ...newFiles]);
         },
+        [setUploadFiles]
+    );
+
+    const { getRootProps, getInputProps } = useDropzone({
+        accept: {
+            "application/pdf": [".pdf"],
+            "image/*": [".png", ".jpg", ".jpeg"],
+        },
+        onDrop: onDrop,
     });
 
-    const removeFile = (index: number) => {
-        setUploadFiles((v) => v.filter((_, i) => i !== index));
-        if (selectedFileIndex === index) {
-            setSelectedFileIndex(null);
-        }
-    };
+    const removeFile = useCallback(
+        (index: number) => {
+            setUploadFiles((v) => v.filter((_, i) => i !== index));
+            if (selectedFileIndex === index) {
+                setSelectedFileIndex(null);
+            }
+        },
+        [selectedFileIndex, setUploadFiles]
+    );
+
+    // クリーンアップ関数
+    useEffect(() => {
+        return () => {
+            // ファイルのプレビューURLを解放
+            uploadFiles.forEach((file) => {
+                URL.revokeObjectURL(file.preview);
+            });
+        };
+    }, [uploadFiles]);
+
+    const handleFileSelect = useCallback((index: number) => {
+        setSelectedFileIndex(index);
+    }, []);
 
     return (
         <Box>
             <Box
                 {...getRootProps()}
-                border="2px dashed"
-                borderColor="gray.300"
-                p={4}
-                rounded="md"
-                textAlign="center"
-                cursor="pointer"
+                className="border-dashed border-gray-200 bg-gray-100 p-4 rounded-md text-center cursor-pointer"
             >
                 <input {...getInputProps()} />
-                <Text fontSize="lg" mb={2}>
+                <Text mb={2}>
                     ファイルをドラッグ＆ドロップするか、クリックして選択してください
                 </Text>
-                <Button>フィアルを選択</Button>
+                <Button>ファイルを選択</Button>
             </Box>
 
-            <VStack mt={4} align="stretch">
+            <Stack mt={4} align="stretch">
                 {uploadFiles.map((file, index) => (
-                    <HStack
-                        key={index}
+                    <Group
+                        key={file.file.name + index}
                         p={2}
                         bg="gray.100"
-                        rounded="md"
-                        justifyContent="space-between"
+                        className="justify-between"
                     >
                         <Text
-                            onClick={() => setSelectedFileIndex(index)}
-                            cursor="pointer"
+                            onClick={() => handleFileSelect}
+                            className="cursor-pointer"
                         >
                             {file.file.name} -{" "}
                             {(file.file.size / 1024 / 1024).toFixed(2)} MB
                         </Text>
-                        <IconButton
-                            aria-label="Delte file"
-                            icon={<TrashIcon />}
+                        <ActionIcon
+                            aria-label="Delete file"
                             onClick={() => removeFile(index)}
                             size="sm"
-                        />
-                    </HStack>
+                            color="red"
+                            variant="subtle"
+                        >
+                            <TrashIcon size="1rem" />
+                        </ActionIcon>
+                    </Group>
                 ))}
-            </VStack>
+            </Stack>
 
             {selectedFileIndex !== null && (
                 <Box>
-                    <Worker workerUrl="">
+                    <Worker workerUrl="https://unpkg.com/pdfjs-dist@3.4.120/build/pdf.worker.min.js">
                         <Viewer
                             fileUrl={uploadFiles[selectedFileIndex].preview}
                             plugins={[defaultLayoutPluginInstance]}

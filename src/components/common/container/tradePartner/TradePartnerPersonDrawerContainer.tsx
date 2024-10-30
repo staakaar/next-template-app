@@ -10,12 +10,19 @@ import {
 } from "@mantine/core";
 import TradePartnerPersonTableContainer from "./TradePartnerPersonTableContainer";
 import React from "react";
+import { TradePartner } from "@/types/api/tradePartner";
+
+interface TradePartnerPersonDrawerContainerProps {
+    opened: boolean;
+    onClose: () => void;
+    selectedRow: TradePartner;
+}
 
 const TradePartnerPersonDrawerContainer = ({
     opened,
     onClose,
     selectedRow,
-}: any) => {
+}: TradePartnerPersonDrawerContainerProps) => {
     return (
         <>
             <Drawer

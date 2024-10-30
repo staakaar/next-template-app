@@ -27,13 +27,7 @@ import {
     MenuDropdown,
     TableTrProps,
 } from "@mantine/core";
-import {
-    IconSearch,
-    IconTrash,
-    IconEdit,
-    IconDots,
-    IconEye,
-} from "@tabler/icons-react";
+import { IconTrash, IconEdit, IconEye } from "@tabler/icons-react";
 import { contractPageOptionsState } from "@/stores/contracts/atom";
 import { Contract } from "@/types/api/contract";
 import { useFetchContracts } from "@/lib/contract/api";
