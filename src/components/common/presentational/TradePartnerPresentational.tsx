@@ -12,16 +12,16 @@ import TradePartnerCompanyTableContainer from "../container/tradePartner/TradePa
 const TradePartnerPresentational = () => {
     return (
         <>
-            <Box className="mt-8">
+            <Box className="mt-4">
                 <Tabs defaultValue="list">
-                    <div className="flex items-center">
-                        <TabsList className="inline-flex h-9 items-center justify-center rounded-lg bg-muted p-1 text-muted-foreground">
+                    <Box className="flex items-center">
+                        <TabsList className="inline-flex h-9 items-center justify-center p-1 text-muted-foreground">
                             <TabsTab value="list">一覧</TabsTab>
                             <TabsTab value="add">取引先追加</TabsTab>
                             <TabsTab value="newUser">担当者追加</TabsTab>
                         </TabsList>
-                    </div>
-                    <Divider className="mt-4" />
+                    </Box>
+                    <Divider />
                     <TabsPanel value="list">
                         <TradePartnerTableContainer />
                     </TabsPanel>

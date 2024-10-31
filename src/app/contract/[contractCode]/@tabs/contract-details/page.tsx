@@ -1,9 +1,7 @@
+import ContractDetailsContainer from "@/components/common/container/contractDetails/ContractDetailsContainer";
+
 const ContractDetailsTab = () => {
-    return (
-        <>
-            <div>contract details</div>
-        </>
-    );
+    return <ContractDetailsContainer />;
 };
 
 export default ContractDetailsTab;

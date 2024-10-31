@@ -1,15 +1,6 @@
 // "use client";
 import React, { ReactNode } from "react";
-import {
-    Card,
-    Button,
-    Group,
-    Box,
-    Stack,
-    Divider,
-    Paper,
-    Anchor,
-} from "@mantine/core";
+import { Card, Button, Group, Box, Stack, Paper, Anchor } from "@mantine/core";
 import {
     IconArrowLeft,
     IconFileExport,
@@ -95,7 +86,7 @@ const Layout = ({
                             <ContractDetailSection />
                             {/* メニューレイアウト */}
                             <ContractDetailMenuLayout />
-                            <Divider />
+                            {/* <Divider /> */}
                             <Box
                                 flex={1}
                                 className="flex-1 lg:max-w-2xl: bg-black-alpha-200"

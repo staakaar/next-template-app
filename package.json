@@ -50,6 +50,7 @@
         "caniuse-lite": "^1.0.30001668",
         "class-variance-authority": "^0.7.0",
         "clsx": "^2.1.1",
+        "decimal.js": "^10.4.3",
         "embla-carousel-react": "^8.3.0",
         "fast-sort": "^3.4.1",
         "framer-motion": "^11.0.8",
