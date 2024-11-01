@@ -10,13 +10,12 @@ import OwnCompanyContainer from "@/components/common/container/OwnCompanyContain
 import RelatedContractContainer from "@/components/common/container/RelatedContractContainer";
 import TradePartnerContainer from "@/components/common/container/TradePartnerContainer";
 import WorkflowContainer from "@/components/common/container/WorkflowContainer";
-import { HStack } from "@chakra-ui/react";
 import { useParams, useRouter } from "next/navigation";
 import { useState } from "react";
-import { Tabs, TabsList } from "../ui/tabs";
 import ContractBasicContainer from "./container/ContractBasicContainer";
 import { selectedContractCodeState } from "@/stores/contracts/atom";
 import { useRecoilValue } from "recoil";
+import { Tabs, TabsList, TabsTab } from "@mantine/core";
 
 const ContractDetailMenuLayout = () => {
     const params = useParams();
@@ -101,32 +100,25 @@ const ContractDetailMenuLayout = () => {
     ];
 
     return (
-        <HStack
-            as="nav"
-            align="stretch"
-            w="25%"
-            className="flex space-x-2 lg:flex-col lg:space-x-12 lg:space-y-1 mt-6"
-        >
-            <Tabs>
-                <div className="flex items-center">
-                    <TabsList className="inline-flex h-9 items-center justify-center rounded-lg bg-muted text-muted-foreground">
-                        {sideMenu.map((menu) => (
-                            <NavLink
-                                key={menu.id}
-                                href={`${menu.url}`}
-                                isActive={activeMenu === menu.id}
-                                onClick={(e) => {
-                                    setActiveMenu(menu.id);
-                                    router.push(menu.url);
-                                }}
-                            >
-                                {menu.label}
-                            </NavLink>
-                        ))}
-                    </TabsList>
-                </div>
-            </Tabs>
-        </HStack>
+        <Tabs value={activeMenu} orientation="horizontal">
+            <TabsList className="">
+                {sideMenu.map((menu) => (
+                    <TabsTab key={menu.id} value={menu.id} color="blue">
+                        <NavLink
+                            key={menu.id}
+                            href={`${menu.url}`}
+                            isActive={activeMenu === menu.id}
+                            onClick={(e) => {
+                                setActiveMenu(menu.id);
+                                router.push(menu.url);
+                            }}
+                        >
+                            {menu.label}
+                        </NavLink>
+                    </TabsTab>
+                ))}
+            </TabsList>
+        </Tabs>
     );
 };
 

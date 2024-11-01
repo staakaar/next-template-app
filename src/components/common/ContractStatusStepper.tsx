@@ -1,6 +1,6 @@
 "use client";
-import { useRef, useState } from "react";
-import { Stepper, Box, Group, Text, StepperStep } from "@mantine/core";
+import { useState } from "react";
+import { Stepper, Box, StepperStep } from "@mantine/core";
 
 const ContractSteps = [
     { title: "1", description: "契約書作成中" },
@@ -15,7 +15,7 @@ const ContractStatusStepper = () => {
     return (
         <Box className="flex justify-center sm:w-min-full md:w-min-full lg:w-min-full mt-4">
             <Stepper
-                size="lg"
+                size="sm"
                 color="blue"
                 active={activeStep}
                 styles={(theme) => ({
