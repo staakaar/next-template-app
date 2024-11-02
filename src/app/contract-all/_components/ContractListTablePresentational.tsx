@@ -27,7 +27,7 @@ import {
     MenuDropdown,
     TableTrProps,
 } from "@mantine/core";
-import { IconTrash, IconEdit, IconEye } from "@tabler/icons-react";
+import { IconTrash, IconEdit, IconEye, IconSearch } from "@tabler/icons-react";
 import { contractPageOptionsState } from "@/stores/contracts/atom";
 import { Contract } from "@/types/api/contract";
 import { useFetchContracts } from "@/lib/contract/api";
@@ -264,9 +264,15 @@ const ContractListTablePresentation = <T extends Contract>({
     // }, [contracts, searchQuery]);
 
     return (
-        <Card withBorder mt={4}>
-            <Group justify="flex-start" mb="md">
+        <Card withBorder>
+            <Group mb="md">
                 <Text size="lg">契約書一覧</Text>
+                <TextInput
+                    className="ml-64"
+                    placeholder="Search..."
+                    leftSection={<IconSearch size="1rem" />}
+                    style={{ width: "600px" }}
+                />
             </Group>
 
             <DataTable

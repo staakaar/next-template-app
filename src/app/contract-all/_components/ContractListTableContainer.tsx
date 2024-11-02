@@ -51,31 +51,26 @@ const ContractListTableContainer = () => {
                 <Box className="sm:gap-4 sm:py-4 sm:pl-14 sm:mt-10">
                     <Stack gap="md" p="md">
                         <Tabs value={activeTab} defaultValue="created">
-                            <Box className="mb-4 flex justify-center">
-                                <TabsList className="inline-flex h-9 items-center justify-center rounded-lg bg-muted p-1 text-muted-foreground">
-                                    <TabsTab value="under_construction">
-                                        作成中
-                                    </TabsTab>
-                                    <TabsTab value="created">作成済み</TabsTab>
-                                    <TabsTab value="internal_approved">
-                                        承認中
-                                    </TabsTab>
-                                    <TabsTab value="revised">差し戻し</TabsTab>
-                                    <TabsTab value="reject">却下</TabsTab>
-                                    <TabsTab value="approved">承認済み</TabsTab>
-                                    <TabsTab value="issued">発行</TabsTab>
-                                    <TabsTab value="ok">合意</TabsTab>
-                                    <TabsTab value="reject">却下</TabsTab>
-                                </TabsList>
-                            </Box>
+                            {/* <Box className="mb-4 flex justify-center"> */}
+                            <TabsList>
+                                <TabsTab value="under_construction">
+                                    作成中
+                                </TabsTab>
+                                <TabsTab value="created">作成済み</TabsTab>
+                                <TabsTab value="internal_approved">
+                                    承認中
+                                </TabsTab>
+                                <TabsTab value="revised">差し戻し</TabsTab>
+                                <TabsTab value="reject">却下</TabsTab>
+                                <TabsTab value="approved">承認済み</TabsTab>
+                                <TabsTab value="issued">発行</TabsTab>
+                                <TabsTab value="ok">合意</TabsTab>
+                                <TabsTab value="reject">却下</TabsTab>
+                            </TabsList>
+                            {/* </Box> */}
 
-                            <Group className="flex items-center">
-                                <TextInput
-                                    placeholder="Search..."
-                                    leftSection={<IconSearch size="1rem" />}
-                                    style={{ width: "600px" }}
-                                />
-                                <Group flex="1" justify="flex-end" gap="sm">
+                            <Group className="flex items-center mt-8">
+                                <Group flex="1" justify="flex-end">
                                     <Button
                                         variant="outline"
                                         size="sm"
@@ -90,16 +85,6 @@ const ContractListTableContainer = () => {
                                             <span>検索</span>
                                         </Group>
                                     </Button>
-                                    <ContractSearchArea
-                                        isOpen={isSearchAreaOpen}
-                                        onClose={() =>
-                                            setIsSearchAreaOpen(false)
-                                        }
-                                    />
-
-                                    <ActionIcon variant="outline" size="lg">
-                                        <IconFile size="1.1rem" />
-                                    </ActionIcon>
 
                                     <Button
                                         component={Link}
@@ -113,6 +98,10 @@ const ContractListTableContainer = () => {
                                     </Button>
                                 </Group>
                             </Group>
+                            <ContractSearchArea
+                                isOpen={isSearchAreaOpen}
+                                onClose={() => setIsSearchAreaOpen(false)}
+                            />
                             <TabsPanel value="created">
                                 <ContractListTablePresentation
                                     contracts={contracts.contracts}
