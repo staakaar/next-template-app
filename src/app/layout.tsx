@@ -8,6 +8,7 @@ import Header from "@/components/organisms/Header";
 import { RecoilRootProvider } from "@/app/recoil";
 import "@mantine/core/styles.css";
 import { ColorSchemeScript } from "@mantine/core";
+import SideMenu from "@/components/organisms/SideMenu";
 
 const fontSans = FontSans({
     subsets: ["latin"],
@@ -38,6 +39,8 @@ export default function RootLayout({
                 <MantineProviders>
                     <RecoilRootProvider>
                         <Header />
+                        <SideMenu />
+
                         {children}
                     </RecoilRootProvider>
                 </MantineProviders>

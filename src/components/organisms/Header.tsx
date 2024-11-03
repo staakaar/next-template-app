@@ -1,165 +1,221 @@
 "use client";
-import { Box, Button, Icon } from "@chakra-ui/react";
-import {
-    DropdownMenu,
-    DropdownMenuContent,
-    DropdownMenuItem,
-    DropdownMenuLabel,
-    DropdownMenuSeparator,
-    DropdownMenuTrigger,
-} from "@/components/ui/dropdown-menu";
 
 import {
-    Menubar,
-    MenubarContent,
-    MenubarItem,
-    MenubarMenu,
-    MenubarSeparator,
-    MenubarTrigger,
-} from "@/components/ui/menubar";
-import { IconButton } from "@chakra-ui/react";
-import { QuestionOutlineIcon, SettingsIcon } from "@chakra-ui/icons";
-import { CircleUser } from "lucide-react";
+    Box,
+    Group,
+    Text,
+    Menu,
+    ActionIcon,
+    Button,
+    Avatar,
+    Divider,
+    MenuItem,
+    MenuDropdown,
+    MenuTarget,
+    MenuLabel,
+    MenuDivider,
+} from "@mantine/core";
+import {
+    IconSettings,
+    IconHelp,
+    IconUser,
+    IconFileText,
+    IconBuildingSkyscraper,
+    IconAdjustments,
+    IconUserCircle,
+    IconLogout,
+    IconQuestionMark,
+} from "@tabler/icons-react";
 import Link from "next/link";
 
 const Header = () => {
     return (
-        // ヘッダー固定する
-        <Box className="border-b">
-            <Box className="flex h-16 items-center px-4 justify-between">
-                <Box className="flex items-center">
-                    <Box fontWeight="bold" fontSize="lg" marginLeft="20px">
-                        <Link href={"/contract-all"}>サービス名</Link>
-                    </Box>
-                    <Box
-                        as="nav"
-                        className="flex items-center space-x-4 lg:space-x-4 mx-6 ml-20"
-                    >
-                        <Menubar className="ml-2 border-none focus:ring-0">
-                            <MenubarMenu>
-                                <Icon as={SettingsIcon} />
-                                <MenubarTrigger>管理メニュー</MenubarTrigger>
-                                <MenubarContent>
-                                    <MenubarItem>
-                                        <Icon as={SettingsIcon} />
-                                        <Link
-                                            href={"/contract-all"}
-                                            className="ml-2"
-                                        >
-                                            契約書一覧
-                                        </Link>
-                                    </MenubarItem>
-                                    <MenubarItem>
-                                        <Icon as={SettingsIcon} />
-                                        <Link href={""} className="ml-2">
-                                            契約書【A】
-                                        </Link>
-                                    </MenubarItem>
-                                    <MenubarItem>
-                                        <Icon as={SettingsIcon} />
-                                        <Link href={""} className="ml-2">
-                                            契約書【B】
-                                        </Link>
-                                    </MenubarItem>
-                                    <MenubarItem>
-                                        <Icon as={SettingsIcon} />
-                                        <Link href={""} className="ml-2">
-                                            WF
-                                        </Link>
-                                    </MenubarItem>
-                                    <MenubarSeparator />
-                                </MenubarContent>
-                            </MenubarMenu>
-                            <MenubarMenu>
-                                <Icon as={SettingsIcon}></Icon>
-                                <MenubarTrigger>設定メニュー</MenubarTrigger>
-                                <MenubarContent>
-                                    <MenubarItem>
-                                        <Icon as={SettingsIcon} />
-                                        <Link
-                                            href={"/user-settings"}
-                                            className="ml-2"
-                                        >
-                                            項目設定{" "}
-                                        </Link>
-                                    </MenubarItem>
-                                    <MenubarItem>
-                                        <Icon as={SettingsIcon} />
-                                        <Link
-                                            href={"/user-settings"}
-                                            className="ml-2"
-                                        >
-                                            セクション{" "}
-                                        </Link>
-                                    </MenubarItem>
-                                    <MenubarItem>
-                                        <Icon as={SettingsIcon} />
-                                        <Link
-                                            href={"/user-settings"}
-                                            className="ml-2"
-                                        >
-                                            個人設定{" "}
-                                        </Link>
-                                    </MenubarItem>
-                                    <MenubarItem>
-                                        <Icon as={SettingsIcon} />
-                                        <Link
-                                            href={"/company-settings"}
-                                            className="ml-2"
-                                        >
-                                            会社設定
-                                        </Link>
-                                    </MenubarItem>
-                                    <MenubarSeparator />
-                                </MenubarContent>
-                            </MenubarMenu>
-                        </Menubar>
-                    </Box>
-                </Box>
-                <Box className="flex items-center">
-                    <Box className="flex items-center">
-                        <Box className="space-x-4">
-                            <IconButton
-                                aria-label={"button"}
-                                icon={<QuestionOutlineIcon />}
-                                bg={"white"}
-                            />
-                        </Box>
-                        <Box className="space-x-4 ml-4">
-                            <p>会社名</p>
-                        </Box>
-                        <Box className="space-x-4 ml-4">
-                            <DropdownMenu>
-                                <DropdownMenuTrigger asChild>
+        <>
+            <Box
+                py="md"
+                px="xl"
+                style={{
+                    borderBottom: "1px solid var(--mantine-color-gray-3)",
+                }}
+            >
+                <Group className="flex justify-between">
+                    <Group>
+                        <Text
+                            component={Link}
+                            href="/contract-all"
+                            size="lg"
+                            style={{ textDecoration: "none" }}
+                        >
+                            サービス名
+                        </Text>
+
+                        {/* 管理メニュー */}
+                        <Group ml="xl">
+                            <Menu shadow="md">
+                                <MenuTarget>
                                     <Button
-                                        variant="secondary"
-                                        size="icon"
-                                        className="rounded-full"
+                                        variant="subtle"
+                                        leftSection={
+                                            <IconSettings size="1.2rem" />
+                                        }
                                     >
-                                        <CircleUser className="h-5 w-5" />
-                                        <span className="sr-only">
-                                            Toggle user menu
-                                        </span>
+                                        管理メニュー
                                     </Button>
-                                </DropdownMenuTrigger>
-                                <DropdownMenuContent align="end">
-                                    <DropdownMenuLabel>
-                                        My Account
-                                    </DropdownMenuLabel>
-                                    <DropdownMenuSeparator />
-                                    <DropdownMenuItem>
-                                        Settings
-                                    </DropdownMenuItem>
-                                    <DropdownMenuItem>Support</DropdownMenuItem>
-                                    <DropdownMenuSeparator />
-                                    <DropdownMenuItem>Logout</DropdownMenuItem>
-                                </DropdownMenuContent>
-                            </DropdownMenu>
-                        </Box>
-                    </Box>
-                </Box>
+                                </MenuTarget>
+
+                                <MenuDropdown>
+                                    <MenuItem
+                                        leftSection={
+                                            <IconFileText size="1.2rem" />
+                                        }
+                                        component={Link}
+                                        href="/contract-all"
+                                    >
+                                        契約書一覧
+                                    </MenuItem>
+                                    <MenuItem
+                                        leftSection={
+                                            <IconFileText size="1.2rem" />
+                                        }
+                                        component={Link}
+                                        href=""
+                                    >
+                                        契約書【A】
+                                    </MenuItem>
+                                    <MenuItem
+                                        leftSection={
+                                            <IconFileText size="1.2rem" />
+                                        }
+                                        component={Link}
+                                        href=""
+                                    >
+                                        契約書【B】
+                                    </MenuItem>
+                                    <MenuItem
+                                        leftSection={
+                                            <IconSettings size="1.2rem" />
+                                        }
+                                        component={Link}
+                                        href=""
+                                    >
+                                        WF
+                                    </MenuItem>
+                                    <Divider />
+                                </MenuDropdown>
+                            </Menu>
+
+                            {/* 設定メニュー */}
+                            <Menu shadow="md">
+                                <MenuTarget>
+                                    <Button
+                                        variant="subtle"
+                                        leftSection={
+                                            <IconSettings size="1.2rem" />
+                                        }
+                                    >
+                                        設定メニュー
+                                    </Button>
+                                </MenuTarget>
+
+                                <MenuDropdown>
+                                    <MenuItem
+                                        leftSection={
+                                            <IconAdjustments size="1.2rem" />
+                                        }
+                                        component={Link}
+                                        href="/user-settings"
+                                    >
+                                        項目設定
+                                    </MenuItem>
+                                    <MenuItem
+                                        leftSection={
+                                            <IconAdjustments size="1.2rem" />
+                                        }
+                                        component={Link}
+                                        href="/user-settings"
+                                    >
+                                        セクション
+                                    </MenuItem>
+                                    <MenuItem
+                                        leftSection={
+                                            <IconUserCircle size="1.2rem" />
+                                        }
+                                        component={Link}
+                                        href="/user-settings"
+                                    >
+                                        個人設定
+                                    </MenuItem>
+                                    <MenuItem
+                                        leftSection={
+                                            <IconBuildingSkyscraper size="1.2rem" />
+                                        }
+                                        component={Link}
+                                        href="/company-settings"
+                                    >
+                                        会社設定
+                                    </MenuItem>
+                                    <Divider />
+                                </MenuDropdown>
+                            </Menu>
+                        </Group>
+                    </Group>
+
+                    {/* 右側: ヘルプ、会社名、ユーザーメニュー */}
+                    <Group>
+                        <ActionIcon
+                            variant="subtle"
+                            size="lg"
+                            aria-label="Help"
+                        >
+                            <IconQuestionMark size="1.2rem" />
+                        </ActionIcon>
+
+                        <Text>会社名</Text>
+
+                        <Menu shadow="md" position="bottom-end">
+                            <MenuTarget>
+                                <ActionIcon
+                                    variant="subtle"
+                                    size="lg"
+                                    radius="xl"
+                                >
+                                    <Avatar
+                                        size="sm"
+                                        radius="xl"
+                                        src={null}
+                                        alt="User menu"
+                                    >
+                                        <IconUser size="1.2rem" />
+                                    </Avatar>
+                                </ActionIcon>
+                            </MenuTarget>
+
+                            <MenuDropdown>
+                                <MenuLabel>My Account</MenuLabel>
+                                <MenuDivider />
+                                <MenuItem
+                                    leftSection={<IconSettings size="1.2rem" />}
+                                >
+                                    Settings
+                                </MenuItem>
+                                <MenuItem
+                                    leftSection={<IconHelp size="1.2rem" />}
+                                >
+                                    Support
+                                </MenuItem>
+                                <MenuDivider />
+                                <MenuItem
+                                    leftSection={<IconLogout size="1.2rem" />}
+                                    color="red"
+                                >
+                                    Logout
+                                </MenuItem>
+                            </MenuDropdown>
+                        </Menu>
+                    </Group>
+                </Group>
             </Box>
-        </Box>
+        </>
     );
 };
 export default Header;
