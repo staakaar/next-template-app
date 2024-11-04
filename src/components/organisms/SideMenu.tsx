@@ -16,7 +16,6 @@ const SideMenu = () => {
     const [drawerOpened, setDrawerOpened] = useState(false);
     const { width } = useViewportSize();
     const sidebarTriggerRef = useRef<HTMLDivElement>(null);
-    // const { hovered } = useHover();
 
     // サイドバートリガーエリアの設定
     useEffect(() => {
@@ -51,8 +50,6 @@ const SideMenu = () => {
 
     return (
         <>
-            {/* トリガーエリア */}
-
             {/* モバイル用ドロワー */}
             <Drawer
                 opened={drawerOpened}

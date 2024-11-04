@@ -16,6 +16,7 @@ import ContractBasicContainer from "./container/ContractBasicContainer";
 import { selectedContractCodeState } from "@/stores/contracts/atom";
 import { useRecoilValue } from "recoil";
 import { Tabs, TabsList, TabsTab } from "@mantine/core";
+import BusinessFormContainer from "./container/businessForm/BusinessFormContainer";
 
 const ContractDetailMenuLayout = () => {
     const params = useParams();
@@ -97,10 +98,16 @@ const ContractDetailMenuLayout = () => {
             label: "履歴",
             component: <ContractHistoryContainer />,
         },
+        {
+            id: "businessForm",
+            url: `business-form`,
+            label: "帳票",
+            component: <BusinessFormContainer />,
+        },
     ];
 
     return (
-        <Tabs value={activeMenu} orientation="horizontal">
+        <Tabs defaultValue="basic" value={activeMenu} orientation="horizontal">
             <TabsList className="">
                 {sideMenu.map((menu) => (
                     <TabsTab key={menu.id} value={menu.id} color="blue">
@@ -108,7 +115,7 @@ const ContractDetailMenuLayout = () => {
                             key={menu.id}
                             href={`${menu.url}`}
                             isActive={activeMenu === menu.id}
-                            onClick={(e) => {
+                            onClick={() => {
                                 setActiveMenu(menu.id);
                                 router.push(menu.url);
                             }}

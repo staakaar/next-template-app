@@ -4,21 +4,14 @@ import Link from "next/link";
 import {
     Box,
     Tabs,
-    TextInput,
     Button,
-    ActionIcon,
     Group,
     Stack,
     TabsList,
     TabsTab,
     TabsPanel,
 } from "@mantine/core";
-import {
-    IconSearch,
-    IconFilter,
-    IconFile,
-    IconPlus,
-} from "@tabler/icons-react";
+import { IconFilter, IconPlus } from "@tabler/icons-react";
 import ContractListTablePresentation from "./ContractListTablePresentational";
 import React from "react";
 import { useRecoilValue } from "recoil";
@@ -51,7 +44,6 @@ const ContractListTableContainer = () => {
                 <Box className="sm:gap-4 sm:py-4 sm:pl-14 sm:mt-10">
                     <Stack gap="md" p="md">
                         <Tabs value={activeTab} defaultValue="created">
-                            {/* <Box className="mb-4 flex justify-center"> */}
                             <TabsList>
                                 <TabsTab value="under_construction">
                                     作成中
@@ -67,7 +59,6 @@ const ContractListTableContainer = () => {
                                 <TabsTab value="ok">合意</TabsTab>
                                 <TabsTab value="reject">却下</TabsTab>
                             </TabsList>
-                            {/* </Box> */}
 
                             <Group className="flex items-center mt-8">
                                 <Group flex="1" justify="flex-end">
