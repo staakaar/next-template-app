@@ -1,7 +1,16 @@
 "use client";
+import "@mantine/dropzone/styles.css";
 import { uploadFilesState } from "@/stores/contractFile/atom";
 import { Box, Text, Button, ActionIcon, Group, Stack } from "@mantine/core";
-import { useCallback, useEffect, useState } from "react";
+import { IconUpload, IconPhoto, IconX } from "@tabler/icons-react";
+import {
+    Dropzone,
+    DropzoneAccept,
+    DropzoneProps,
+    DropzoneReject,
+    IMAGE_MIME_TYPE,
+} from "@mantine/dropzone";
+import { useCallback, useEffect, useRef, useState } from "react";
 import { useRecoilState } from "recoil";
 import { useDropzone } from "react-dropzone";
 import { Viewer, Worker } from "@react-pdf-viewer/core";
@@ -16,6 +25,7 @@ interface UploadFile {
 }
 
 const ContractFilePresentational = () => {
+    const openRef = useRef<() => void>(null);
     const [uploadFiles, setUploadFiles] =
         useRecoilState<Array<UploadFile>>(uploadFilesState);
     const [selectedFileIndex, setSelectedFileIndex] = useState<number | null>(
@@ -70,7 +80,7 @@ const ContractFilePresentational = () => {
 
     return (
         <Box>
-            <Box
+            {/* <Box
                 {...getRootProps()}
                 className="border-dashed border-gray-200 bg-gray-100 p-4 rounded-md text-center cursor-pointer"
             >
@@ -79,7 +89,64 @@ const ContractFilePresentational = () => {
                     ファイルをドラッグ＆ドロップするか、クリックして選択してください
                 </Text>
                 <Button>ファイルを選択</Button>
-            </Box>
+            </Box> */}
+            <Dropzone
+                loading
+                onDrop={(files) => console.log("accepted files", files)}
+                onReject={(files) => console.log("rejected files", files)}
+                maxSize={5 * 1024 ** 2}
+                accept={IMAGE_MIME_TYPE}
+                {...props}
+            >
+                <Group
+                    justify="center"
+                    gap="xl"
+                    mih={220}
+                    style={{ pointerEvents: "none" }}
+                >
+                    <DropzoneAccept>
+                        <IconUpload
+                            style={{
+                                width: rem(52),
+                                height: rem(52),
+                                color: "var(--mantine-color-blue-6)",
+                            }}
+                            stroke={1.5}
+                        />
+                    </DropzoneAccept>
+                    <DropzoneReject>
+                        <IconX
+                            style={{
+                                width: rem(52),
+                                height: rem(52),
+                                color: "var(--mantine-color-red-6)",
+                            }}
+                            stroke={1.5}
+                        />
+                    </DropzoneReject>
+                    <Dropzone.Idle>
+                        <IconPhoto
+                            style={{
+                                width: rem(52),
+                                height: rem(52),
+                                color: "var(--mantine-color-dimmed)",
+                            }}
+                            stroke={1.5}
+                        />
+                    </Dropzone.Idle>
+
+                    <div>
+                        <Text size="xl" inline>
+                            ファイルをドラッグ＆ドロップするか、クリックして選択してください
+                        </Text>
+                        <Group justify="center" mt="md">
+                            <Button onClick={() => openRef.current?.()}>
+                                Select files
+                            </Button>
+                        </Group>
+                    </div>
+                </Group>
+            </Dropzone>
 
             <Stack mt={4} align="stretch">
                 {uploadFiles.map((file, index) => (

@@ -1,7 +1,10 @@
+import BusinessFormPresentation from "../../presentational/businessForm/BusinessFormPresentation";
+
 const BusinessFormContainer = () => {
+    // fetch
     return (
         <>
-            <div>帳票</div>
+            <BusinessFormPresentation />
         </>
     );
 };
