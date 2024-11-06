@@ -1,30 +1,46 @@
 "use client";
 import "@mantine/dropzone/styles.css";
 import { uploadFilesState } from "@/stores/contractFile/atom";
-import { Box, Text, Button, ActionIcon, Group, Stack } from "@mantine/core";
+import {
+    Box,
+    Text,
+    Button,
+    ActionIcon,
+    Group,
+    Stack,
+    Progress,
+} from "@mantine/core";
 import { IconUpload, IconPhoto, IconX } from "@tabler/icons-react";
 import {
     Dropzone,
     DropzoneAccept,
+    DropzoneIdle,
     DropzoneProps,
     DropzoneReject,
+    FileWithPath,
     IMAGE_MIME_TYPE,
+    MS_EXCEL_MIME_TYPE,
+    MS_POWERPOINT_MIME_TYPE,
+    MS_WORD_MIME_TYPE,
+    PDF_MIME_TYPE,
 } from "@mantine/dropzone";
 import { useCallback, useEffect, useRef, useState } from "react";
 import { useRecoilState } from "recoil";
-import { useDropzone } from "react-dropzone";
 import { Viewer, Worker } from "@react-pdf-viewer/core";
 import { defaultLayoutPlugin } from "@react-pdf-viewer/default-layout";
 import "@react-pdf-viewer/core/lib/styles/index.css";
 import "@react-pdf-viewer/default-layout/lib/styles/index.css";
 import { TrashIcon } from "lucide-react";
 
-interface UploadFile {
+interface UploadFile extends FileWithPath {
+    id: string;
+    progress: number;
+    status: "uploading" | "done" | "error";
     file: File;
     preview: string;
 }
 
-const ContractFilePresentational = () => {
+const ContractFilePresentational = (props: Partial<DropzoneProps>) => {
     const openRef = useRef<() => void>(null);
     const [uploadFiles, setUploadFiles] =
         useRecoilState<Array<UploadFile>>(uploadFilesState);
@@ -34,26 +50,9 @@ const ContractFilePresentational = () => {
     // プラグイン初期化
     const defaultLayoutPluginInstance = defaultLayoutPlugin();
 
-    const onDrop = useCallback(
-        (acceptedFiles: File[]) => {
-            const newFiles = acceptedFiles.map((file) => ({
-                file,
-                preview: URL.createObjectURL(file),
-            }));
-
-            setUploadFiles((prev) => [...prev, ...newFiles]);
-        },
-        [setUploadFiles]
-    );
-
-    const { getRootProps, getInputProps } = useDropzone({
-        accept: {
-            "application/pdf": [".pdf"],
-            "image/*": [".png", ".jpg", ".jpeg"],
-        },
-        onDrop: onDrop,
-    });
-
+    /** ファイルのアップロード */
+    /** ファイルのドロップ */
+    /** ファイルの削除 */
     const removeFile = useCallback(
         (index: number) => {
             setUploadFiles((v) => v.filter((_, i) => i !== index));
@@ -78,24 +77,21 @@ const ContractFilePresentational = () => {
         setSelectedFileIndex(index);
     }, []);
 
+    const MIME_TYPE = [
+        ...IMAGE_MIME_TYPE,
+        ...PDF_MIME_TYPE,
+        ...MS_WORD_MIME_TYPE,
+        ...MS_EXCEL_MIME_TYPE,
+        ...MS_POWERPOINT_MIME_TYPE,
+    ];
+
     return (
         <Box>
-            {/* <Box
-                {...getRootProps()}
-                className="border-dashed border-gray-200 bg-gray-100 p-4 rounded-md text-center cursor-pointer"
-            >
-                <input {...getInputProps()} />
-                <Text mb={2}>
-                    ファイルをドラッグ＆ドロップするか、クリックして選択してください
-                </Text>
-                <Button>ファイルを選択</Button>
-            </Box> */}
             <Dropzone
-                loading
                 onDrop={(files) => console.log("accepted files", files)}
                 onReject={(files) => console.log("rejected files", files)}
                 maxSize={5 * 1024 ** 2}
-                accept={IMAGE_MIME_TYPE}
+                accept={MIME_TYPE}
                 {...props}
             >
                 <Group
@@ -106,34 +102,22 @@ const ContractFilePresentational = () => {
                 >
                     <DropzoneAccept>
                         <IconUpload
-                            style={{
-                                width: rem(52),
-                                height: rem(52),
-                                color: "var(--mantine-color-blue-6)",
-                            }}
+                            className="w-[52px] h-[52px] text-gray-400 dark:text-gray-500"
                             stroke={1.5}
                         />
                     </DropzoneAccept>
                     <DropzoneReject>
                         <IconX
-                            style={{
-                                width: rem(52),
-                                height: rem(52),
-                                color: "var(--mantine-color-red-6)",
-                            }}
+                            className="w-[52px] h-[52px] text-gray-400 dark:text-gray-500"
                             stroke={1.5}
                         />
                     </DropzoneReject>
-                    <Dropzone.Idle>
+                    <DropzoneIdle>
                         <IconPhoto
-                            style={{
-                                width: rem(52),
-                                height: rem(52),
-                                color: "var(--mantine-color-dimmed)",
-                            }}
+                            className="w-[52px] h-[52px] text-gray-400 dark:text-gray-500"
                             stroke={1.5}
                         />
-                    </Dropzone.Idle>
+                    </DropzoneIdle>
 
                     <div>
                         <Text size="xl" inline>
@@ -172,6 +156,9 @@ const ContractFilePresentational = () => {
                         >
                             <TrashIcon size="1rem" />
                         </ActionIcon>
+                        <Box>
+                            <Progress value={file.progress} />
+                        </Box>
                     </Group>
                 ))}
             </Stack>

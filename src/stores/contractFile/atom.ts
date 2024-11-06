@@ -1,6 +1,10 @@
+import { FileWithPath } from "@mantine/dropzone";
 import { atom } from "recoil";
 
-interface UploadFile {
+interface UploadFile extends FileWithPath {
+    id: string;
+    progress: number;
+    status: "uploading" | "done" | "error";
     file: File;
     preview: string;
 }

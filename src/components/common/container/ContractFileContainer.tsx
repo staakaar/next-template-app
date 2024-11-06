@@ -13,7 +13,7 @@ const ContractFileContainer = ({ isEdit }: ContractFileContainerProps) => {
                 {/* 詳細時は更新ボタン */}
                 {isEdit ? (
                     <Button className="bg-blue-500 hover:bg-blue-600 text-white font-bold py-2 px-4 rounded hover:shadow-lg transition-all duration-200">
-                        更新
+                        アップロード
                     </Button>
                 ) : (
                     <>
@@ -22,7 +22,7 @@ const ContractFileContainer = ({ isEdit }: ContractFileContainerProps) => {
                                 スキップ
                             </Button>
                             <Button className="bg-blue-500 hover:bg-blue-600 text-white font-bold py-2 px-4 rounded hover:shadow-lg transition-all duration-200">
-                                登録
+                                アップロード
                             </Button>
                         </Box>
                     </>
