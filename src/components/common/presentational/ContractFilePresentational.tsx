@@ -47,11 +47,41 @@ const ContractFilePresentational = (props: Partial<DropzoneProps>) => {
     const [selectedFileIndex, setSelectedFileIndex] = useState<number | null>(
         null
     );
+    const [isUploading, setIsUploading] = useState(false);
     // プラグイン初期化
     const defaultLayoutPluginInstance = defaultLayoutPlugin();
 
     /** ファイルのアップロード */
+    const uploadFile = async (file: UploadFile) => {
+        const formData = new FormData();
+        formData.append("file", file);
+
+        // API処理
+    };
+
     /** ファイルのドロップ */
+    const handleDrop = async (acceptedFiles: FileWithPath[]) => {
+        const newFiles = acceptedFiles.map(
+            (file) =>
+                ({
+                    ...file,
+                    id: crypto.randomUUID(),
+                    progress: 0,
+                    status: "uploading" as const,
+                }) as UploadFile
+        );
+
+        setUploadFiles((uploadedFile) => [...uploadedFile, ...newFiles]);
+        setIsUploading(true);
+
+        for (const file of newFiles) {
+            // API処理関数呼び出し
+            console.log("API処理関数呼び出し", file);
+        }
+
+        setIsUploading(false);
+    };
+
     /** ファイルの削除 */
     const removeFile = useCallback(
         (index: number) => {
@@ -92,6 +122,7 @@ const ContractFilePresentational = (props: Partial<DropzoneProps>) => {
                 onReject={(files) => console.log("rejected files", files)}
                 maxSize={5 * 1024 ** 2}
                 accept={MIME_TYPE}
+                disabled={isUploading}
                 {...props}
             >
                 <Group
