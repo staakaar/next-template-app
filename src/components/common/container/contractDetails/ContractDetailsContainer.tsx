@@ -24,7 +24,7 @@ const ContractDetailsContainer = () => {
                     </TabsList>
                     {/* 詳細時は更新ボタン */}
                     <Divider />
-                    <Box className="flex justify-end ">
+                    <Box className="flex justify-end">
                         <Button className="mb-2 bg-blue-500 hover:bg-blue-600 text-white font-bold py-2 px-4 rounded hover:shadow-lg transition-all duration-200">
                             更新
                         </Button>

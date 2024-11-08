@@ -1,3 +1,9 @@
+import bundleAnalyzer from "@next/bundle-analyzer";
+
+const withBundleAnalyzer = bundleAnalyzer({
+    enabled: process.env.ANALYZE == "true",
+});
+
 /** @type {import('next').NextConfig} */
 const nextConfig = {
     reactStrictMode: true,
@@ -16,6 +22,14 @@ const nextConfig = {
         },
         optimizePackageImports: ["@mantine/core", "@mantine/hooks"],
     },
+    // async rewrites() {
+    //     return [
+    //         {
+    //             source: "",
+    //             destination: "/ja/contract-all"
+    //         }
+    //     ]
+    // },
     async redirects() {
         return [
             {
@@ -34,4 +48,4 @@ const nextConfig = {
     },
 };
 
-export default nextConfig;
+export default withBundleAnalyzer(nextConfig);
