@@ -1,0 +1,15 @@
+version: 1
+frontend:
+    pharses:
+        build:
+            commands:
+                - npm ci
+                - npm run build
+    artifacts:
+        baseDirectory: .next
+        files:
+            - "**/*"
+    cache:
+        paths:
+            - node_modules/**/*
+            - .next/cache/**/*
