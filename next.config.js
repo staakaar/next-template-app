@@ -34,7 +34,7 @@ const nextConfig = {
         return [
             {
                 source: "/",
-                destination: "/contract-all",
+                destination: "/ja/contract-all",
                 permanent: true,
             },
         ];

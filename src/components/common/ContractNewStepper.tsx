@@ -20,7 +20,7 @@ const ContractNewStepper = ({
                 active={activeStep}
                 onStepClick={setActiveStep}
                 classNames={{
-                    root: "w-full max-w-3xl",
+                    root: "w-full max-w-full px-10",
                     steps: "flex items-center justify-between",
                     separator: "flex-1 h-0.5 mx-2 bg-gray-300",
                     stepBody: "flex flex-col items-center",

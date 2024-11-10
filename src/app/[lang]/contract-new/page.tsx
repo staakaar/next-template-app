@@ -1,5 +1,5 @@
 "use client";
-import { Card } from "@mantine/core";
+import { Anchor, Card } from "@mantine/core";
 import { Separator } from "@/components/ui/separator";
 import { Box, Title } from "@mantine/core";
 import Link from "next/link";
@@ -152,24 +152,24 @@ const ContractNewPage = () => {
             {/* 詳細タブ表示(各ドメイン) */}
             {/* タブに応じて新規作成ページを切り替える 契約書情報を一番最初に入力する必要あり */}
             <Card className="flex min-h-screen w-full flex-col bg-muted/40">
-                <div className="flex flex-col sm:gap-4 sm:py-4 sm:pl-8 sm:mt-10">
+                <div className="flex flex-col sm:gap-4 sm:py-4 sm:pl-8">
                     <main className="grid flex-1 items-start gap-4 p-4 sm:px-6 sm:py-0 md:gap-8">
                         <Box className="text-sm font-medium flex justify-between">
-                            <Button
+                            <Anchor
                                 component={Link}
                                 onClick={handleBackToList}
                                 href={""}
                             >
                                 一覧へ戻る
-                            </Button>
+                            </Anchor>
                         </Box>
                         <ContractNewStepper
                             activeStep={activeStep}
                             steps={ContractSteps}
                             setActiveStep={() => setActiveStep}
                         />
-                        <Card className="px-4 py-4">
-                            <Box className="flex items-center justify-between space-y-2 px-8 py-4">
+                        <Card className="px-4">
+                            <Box className="flex items-center justify-between px-4 pb-4">
                                 <Title className="text-md font-bold">
                                     新規作成画面
                                 </Title>

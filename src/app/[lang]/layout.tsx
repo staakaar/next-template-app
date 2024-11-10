@@ -5,15 +5,20 @@ import { cn } from "@/lib/utils";
 import "./globals.css";
 import React from "react";
 import Header from "@/components/organisms/Header";
-import { RecoilRootProvider } from "@/app/recoil";
+import { RecoilRootProvider } from "@/app/[lang]/recoil";
 import "@mantine/core/styles.css";
 import { ColorSchemeScript } from "@mantine/core";
 import SideMenu from "@/components/organisms/SideMenu";
+import { i18n, Locale } from "../../../middleware";
 
 const fontSans = FontSans({
     subsets: ["latin"],
     variable: "--font-sans",
 });
+
+export async function generateStaticParams() {
+    return i18n.locales.map((locale) => ({ lang: locale }));
+}
 
 export const metadata: Metadata = {
     title: "Contract",
@@ -22,11 +27,13 @@ export const metadata: Metadata = {
 
 export default function RootLayout({
     children,
+    params: { lang },
 }: Readonly<{
     children: React.ReactNode;
+    params: { lang: Locale };
 }>) {
     return (
-        <html lang="ja" suppressHydrationWarning>
+        <html lang={lang} suppressHydrationWarning>
             <head>
                 <ColorSchemeScript />
             </head>

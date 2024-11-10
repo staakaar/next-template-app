@@ -1,4 +1,6 @@
 "use client";
+import "@mantine/core/styles.layer.css";
+import "mantine-datatable/styles.layer.css";
 import { sort } from "fast-sort";
 import React, { useState, useEffect } from "react";
 import { useRouter } from "next/navigation";
@@ -208,13 +210,6 @@ const ContractListTablePresentation = <T extends Contract>({
                 />
             ),
         },
-        // {
-        //     accessor: "createdAt",
-        //     title: "作成日",
-        //     sortable: true,
-        //     render: ({ createdAt }) =>
-        //         new Date(createdAt).toLocaleDateString(),
-        // },
         {
             accessor: "actions",
             title: "",
@@ -276,17 +271,15 @@ const ContractListTablePresentation = <T extends Contract>({
             </Group>
 
             <DataTable
-                withTableBorder
-                borderRadius="sm"
                 striped
-                highlightOnHover={true}
+                highlightOnHover
+                highlightOnHoverColor="gray.100"
                 columns={effectiveColumns}
                 records={records}
                 noRecordsText={
                     records.length === 0 ? "該当のレコードが存在しません。" : ""
                 }
-                // noRecordsIcon={true}
-                emptyState={records.length === 0}
+                emptyState={records.length !== 0}
                 loadingText="読み込み中です..."
                 totalRecords={totalCount}
                 recordsPerPage={pageSize}
@@ -299,7 +292,7 @@ const ContractListTablePresentation = <T extends Contract>({
                 onRowClick={navigateToContractDetail}
                 onPageChange={(p) => setPage(p)}
                 onRecordsPerPageChange={setPageSize}
-                key="contractCode"
+                idAccessor="contractCode"
                 styles={{
                     pagination: {
                         display: "flex",
@@ -342,9 +335,6 @@ const ContractListTablePresentation = <T extends Contract>({
                         },
                     },
                 }}
-                // paginationText={({ from, to, totalRecords }) =>
-                //     `${from}～${to} / ${totalRecords}件`
-                // }
             />
         </Card>
     );

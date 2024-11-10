@@ -38,7 +38,7 @@ const Header = () => {
                     borderBottom: "1px solid var(--mantine-color-gray-3)",
                 }}
             >
-                <Group className="flex justify-between">
+                <Group flex={1} justify="space-between">
                     <Group>
                         <Text
                             component={Link}

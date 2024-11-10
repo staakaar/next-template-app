@@ -73,7 +73,7 @@ const ContractSearchArea = ({ isOpen, onClose }: ContractSearchAreaProps) => {
     const handleExport = () => {};
 
     return (
-        <Box mb="md">
+        <Box mb="sm">
             <Collapse in={isOpen}>
                 <Tabs defaultValue="basic">
                     <TabsList>
@@ -175,7 +175,7 @@ const ContractSearchArea = ({ isOpen, onClose }: ContractSearchAreaProps) => {
                                 </Grid>
                             </TabsPanel>
                             {/* ボタングループ */}
-                            <Group mt="md" className="flex justify-center">
+                            <Group mt="md" flex={1} justify="center">
                                 <Button
                                     variant="subtle"
                                     color="gray"

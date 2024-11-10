@@ -58,6 +58,7 @@ const ContractListTableContainer = () => {
                                 <TabsTab value="issued">発行</TabsTab>
                                 <TabsTab value="ok">合意</TabsTab>
                                 <TabsTab value="reject">却下</TabsTab>
+                                <TabsTab value="complete">締結</TabsTab>
                             </TabsList>
 
                             <Group className="flex items-center mt-8">

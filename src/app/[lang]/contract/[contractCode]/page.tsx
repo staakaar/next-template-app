@@ -4,7 +4,7 @@ import { redirect, useParams } from "next/navigation";
 import { useEffect } from "react";
 import { useSetRecoilState } from "recoil";
 
-const ContractDetailDefault = () => {
+const ContractDetail = () => {
     const params = useParams();
     const contractCode = params.contractCode;
     console.log(contractCode);
@@ -24,8 +24,7 @@ const ContractDetailDefault = () => {
     useEffect(() => {
         setSelectedContractCode(contractCode);
     }, [contractCode, setSelectedContractCode]);
-
-    return <></>;
+    return null;
 };
 
-export default ContractDetailDefault;
+export default ContractDetail;

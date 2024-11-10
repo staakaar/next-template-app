@@ -11,25 +11,53 @@ import RelatedContractContainer from "@/components/common/container/RelatedContr
 import TradePartnerContainer from "@/components/common/container/TradePartnerContainer";
 import WorkflowContainer from "@/components/common/container/WorkflowContainer";
 import { useParams, useRouter } from "next/navigation";
-import { useState } from "react";
+import { ReactNode, useState } from "react";
 import ContractBasicContainer from "./container/ContractBasicContainer";
 import { selectedContractCodeState } from "@/stores/contracts/atom";
 import { useRecoilValue } from "recoil";
-import { Tabs, TabsList, TabsTab } from "@mantine/core";
+import { Tabs, TabsList, TabsPanel, TabsTab } from "@mantine/core";
 import BusinessFormContainer from "./container/businessForm/BusinessFormContainer";
 
-const ContractDetailMenuLayout = () => {
+interface ContractDetailMenuProps {
+    contractBasic: ReactNode;
+    contractTrade: ReactNode;
+    contractAuthority: ReactNode;
+    contractDetails: ReactNode;
+    contractFile: ReactNode;
+    contractHistory: ReactNode;
+    externalLink: ReactNode;
+    ownCompany: ReactNode;
+    relatedInfo: ReactNode;
+    section: ReactNode;
+    workflow: ReactNode;
+    businessForm: ReactNode;
+}
+
+const ContractDetailMenuLayout = ({
+    contractBasic,
+    contractTrade,
+    contractAuthority,
+    contractDetails,
+    contractFile,
+    contractHistory,
+    externalLink,
+    ownCompany,
+    relatedInfo,
+    section,
+    workflow,
+    businessForm,
+}: ContractDetailMenuProps) => {
     const params = useParams();
     const contractCode = params.contractCode;
     const router = useRouter();
     const selectedContractCode = useRecoilValue(selectedContractCodeState);
-    console.log("contractDetailMenuLayout", contractCode);
+    console.log("contractDetailMenuLayout", selectedContractCode);
 
     const [activeMenu, setActiveMenu] = useState("basic");
     const sideMenu = [
         {
             id: "basic",
-            url: `contract-basic`,
+            url: `/contract/${selectedContractCode}/contractBasic`,
             label: "基本情報",
             component: (
                 <ContractBasicContainer
@@ -40,7 +68,7 @@ const ContractDetailMenuLayout = () => {
         },
         {
             id: "tradePartner",
-            url: `contract-trade`,
+            url: `/contract/${selectedContractCode}/contractTrade`,
             label: "取引先",
             component: <TradePartnerContainer />,
         },
@@ -113,11 +141,11 @@ const ContractDetailMenuLayout = () => {
                     <TabsTab key={menu.id} value={menu.id} color="blue">
                         <NavLink
                             key={menu.id}
-                            href={`${menu.url}`}
+                            href={``}
                             isActive={activeMenu === menu.id}
                             onClick={() => {
                                 setActiveMenu(menu.id);
-                                router.push(menu.url);
+                                // router.push(menu.url);
                             }}
                         >
                             {menu.label}
@@ -125,6 +153,18 @@ const ContractDetailMenuLayout = () => {
                     </TabsTab>
                 ))}
             </TabsList>
+            <TabsPanel value="basic">{contractBasic}</TabsPanel>
+            <TabsPanel value="tradePartner">{contractTrade}</TabsPanel>
+            <TabsPanel value="file">{contractFile}</TabsPanel>
+            <TabsPanel value="details">{contractDetails}</TabsPanel>
+            <TabsPanel value="externalLink">{externalLink}</TabsPanel>
+            <TabsPanel value="section">{section}</TabsPanel>
+            <TabsPanel value="ownCompany">{ownCompany}</TabsPanel>
+            <TabsPanel value="authority">{contractAuthority}</TabsPanel>
+            <TabsPanel value="relatedInfo">{relatedInfo}</TabsPanel>
+            <TabsPanel value="workflow">{workflow}</TabsPanel>
+            <TabsPanel value="history">{contractHistory}</TabsPanel>
+            <TabsPanel value="businessForm">{businessForm}</TabsPanel>
         </Tabs>
     );
 };

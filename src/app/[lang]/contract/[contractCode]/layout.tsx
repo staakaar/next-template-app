@@ -1,4 +1,3 @@
-// "use client";
 import React, { ReactNode } from "react";
 import { Card, Button, Group, Box, Stack, Paper, Anchor } from "@mantine/core";
 import {
@@ -13,13 +12,39 @@ import ContractDetailMenuLayout from "@/components/common/ContractDetailMenuLayo
 import ContractDetailSection from "../_components/ContractDetailSection";
 import { ContractDetailUpdateButton } from "../_components/ContractDetailUpdateButton";
 
+interface ContractDetailTabProps {
+    children: ReactNode;
+    tabs: ReactNode;
+    contractBasic: ReactNode;
+    contractTrade: ReactNode;
+    contractAuthority: ReactNode;
+    contractDetails: ReactNode;
+    contractFile: ReactNode;
+    contractHistory: ReactNode;
+    externalLink: ReactNode;
+    ownCompany: ReactNode;
+    relatedInfo: ReactNode;
+    section: ReactNode;
+    workflow: ReactNode;
+    businessForm: ReactNode;
+}
+
 const Layout = ({
     children,
     tabs,
-}: Readonly<{
-    children: ReactNode;
-    tabs: ReactNode;
-}>) => {
+    contractBasic,
+    contractTrade,
+    contractAuthority,
+    contractDetails,
+    contractFile,
+    contractHistory,
+    externalLink,
+    ownCompany,
+    relatedInfo,
+    section,
+    workflow,
+    businessForm,
+}: Readonly<ContractDetailTabProps>) => {
     return (
         <>
             <Box className="min-h-full h-full">
@@ -85,13 +110,28 @@ const Layout = ({
                             {/* セクション */}
                             <ContractDetailSection />
                             {/* メニューレイアウト */}
-                            <ContractDetailMenuLayout />
+                            <ContractDetailMenuLayout
+                                contractBasic={contractBasic}
+                                contractTrade={contractTrade}
+                                contractAuthority={contractAuthority}
+                                contractDetails={contractDetails}
+                                contractFile={contractFile}
+                                contractHistory={contractHistory}
+                                externalLink={externalLink}
+                                ownCompany={ownCompany}
+                                relatedInfo={relatedInfo}
+                                section={section}
+                                workflow={workflow}
+                                businessForm={businessForm}
+                            />
                             {/* <Divider /> */}
                             <Box
                                 flex={1}
                                 className="flex-1 lg:max-w-2xl: bg-black-alpha-200"
                             >
-                                {tabs}
+                                {/* {tabs} */}
+                                {/* {contractBasic}
+                                {contractTrade} */}
                             </Box>
                             {children}
                         </Stack>

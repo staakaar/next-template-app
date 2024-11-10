@@ -1,4 +1,4 @@
-import { getStoryContext } from "@storybook/test-runner"
+import { getStoryContext } from "@storybook/test-runner";
 import { injectAxe, checkA11y, configureAxe } from "axe-playwright";
 
 module.exports = {
@@ -8,7 +8,7 @@ module.exports = {
         } else {
             page.setViewportSize({ width: 1280, height: 800 });
         }
-        await injectAxe(page)
+        await injectAxe(page);
     },
     async postRender(page, context) {
         const storyContext = await getStoryContext(page, context);

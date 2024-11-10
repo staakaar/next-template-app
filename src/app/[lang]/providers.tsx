@@ -2,8 +2,8 @@
 
 import React from "react";
 import { MantineProvider } from "@mantine/core";
-// import customTheme from "@/styles/theme";
+import theme from "@/styles/theme";
 
 export function MantineProviders({ children }: { children: React.ReactNode }) {
-    return <MantineProvider>{children}</MantineProvider>;
+    return <MantineProvider theme={theme}>{children}</MantineProvider>;
 }
