@@ -30,6 +30,7 @@ function getLocale(request: NextRequest): string | undefined {
 
 export function middleware(request: NextRequest) {
     const { pathname } = request.nextUrl;
+    console.log("🔥");
     const pathnameHasLocale = i18n.locales.some(
         (locale) =>
             pathname.startsWith(`/${locale}/`) || pathname === `/${locale}`
@@ -37,6 +38,7 @@ export function middleware(request: NextRequest) {
 
     if (pathnameHasLocale) return;
 
+    console.log("🔥🔥");
     // Redirect if there is no locale
     const locale = getLocale(request);
     request.nextUrl.pathname = `/${locale}${pathname}`;

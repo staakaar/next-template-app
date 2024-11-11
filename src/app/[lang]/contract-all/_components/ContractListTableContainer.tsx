@@ -22,7 +22,6 @@ import ContractSearchArea from "@/components/common/ContractSearchArea";
 // export const dynamic = "force-dynamic";
 
 const ContractListTableContainer = () => {
-    const [isOpen, setIsOpen] = useState(false);
     const [activeTab, setActiveTab] = useState("created");
     const [showSearch, setShowSearch] = useState(false);
     const [searchQuery, setSearchQuery] = useState("");

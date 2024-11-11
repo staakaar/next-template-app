@@ -10,5 +10,12 @@
         "typescript",
         "typescriptreact"
     ],
+    "cssVariables.lookupFiles": [
+        "**/*.css",
+        "**/*.scss",
+        "**/*.sass",
+        "**/*.less",
+        "node_modules/@mantine/core/styles.css"
+    ],
     "prettier.requireConfig": true
 }

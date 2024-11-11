@@ -1,3 +1,4 @@
+import "@mantine/core/styles.css";
 import type { Metadata } from "next";
 import { Inter as FontSans } from "next/font/google";
 import { MantineProviders } from "./providers";
@@ -5,7 +6,7 @@ import { cn } from "@/lib/utils";
 import "./globals.css";
 import React from "react";
 import Header from "@/components/organisms/Header";
-import { RecoilRootProvider } from "@/app/[lang]/recoil";
+import { RecoilRootProvider } from "./recoil";
 import "@mantine/core/styles.css";
 import { ColorSchemeScript } from "@mantine/core";
 import SideMenu from "@/components/organisms/SideMenu";
@@ -35,6 +36,11 @@ export default function RootLayout({
     return (
         <html lang={lang} suppressHydrationWarning>
             <head>
+                <meta charSet="UTF-8" />
+                <meta
+                    name="viewport"
+                    content="width=device-width, initial-scale=1.0"
+                />
                 <ColorSchemeScript />
             </head>
             <body

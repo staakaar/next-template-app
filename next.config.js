@@ -37,6 +37,11 @@ const nextConfig = {
                 destination: "/ja/contract-all",
                 permanent: true,
             },
+            {
+                source: "/ja",
+                destination: "/ja/contract-all",
+                permanent: true,
+            },
         ];
     },
     webpack: (config) => {
