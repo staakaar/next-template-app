@@ -2,13 +2,17 @@ import { NextResponse } from "next/server";
 import type { NextRequest } from "next/server";
 import { match as matchLocale } from "@formatjs/intl-localematcher";
 import Negotiator from "negotiator";
+import acceptLanguage from "accept-language";
 
 export const i18n = {
     defaultLocale: "ja",
     locales: ["ja", "en"],
-} as const;
+};
+const cookieName = "i18next";
 
 export type Locale = (typeof i18n)["locales"][number];
+
+acceptLanguage.languages(i18n.locales);
 
 function getLocale(request: NextRequest): string | undefined {
     // Negotiator expects plain object so we need to transform headers
@@ -30,21 +34,49 @@ function getLocale(request: NextRequest): string | undefined {
 
 export function middleware(request: NextRequest) {
     const { pathname } = request.nextUrl;
-    console.log("🔥");
-    const pathnameHasLocale = i18n.locales.some(
-        (locale) =>
-            pathname.startsWith(`/${locale}/`) || pathname === `/${locale}`
-    );
+    let lang;
+    if (request.cookies.has(cookieName))
+        lang = acceptLanguage.get(request.cookies.get(cookieName)?.value);
 
-    if (pathnameHasLocale) return;
+    if (!lang)
+        lang = acceptLanguage.get(request.headers.get("Accept-language"));
+    if (!lang) lang = i18n.defaultLocale;
 
-    console.log("🔥🔥");
-    // Redirect if there is no locale
-    const locale = getLocale(request);
-    request.nextUrl.pathname = `/${locale}${pathname}`;
-    // e.g. incoming request is /products
-    // The new URL is now /en-US/products
-    return NextResponse.redirect(request.nextUrl);
+    if (
+        !i18n.locales.some((locale) =>
+            request.nextUrl.pathname.startsWith(`/${locale}/`)
+        ) &&
+        !request.nextUrl.pathname.startsWith("/_next")
+    ) {
+        return NextResponse.redirect(
+            new URL(`/${lang}${request.nextUrl.pathname}`, request.url)
+        );
+    }
+
+    if (request.headers.has("referer")) {
+        const referer = new URL(request.headers.get("referer") as string);
+        const refererWithLang = i18n.locales.find((locale) =>
+            referer.pathname.startsWith(`/${locale}/`)
+        );
+        const response = NextResponse.next();
+        if (refererWithLang) response.cookies.set(cookieName, refererWithLang);
+
+        return response;
+    }
+
+    return NextResponse.next();
+
+    // const pathnameHasLocale = i18n.locales.some(
+    //     (locale) =>
+    //         pathname.startsWith(`/${locale}/`) || pathname === `/${locale}`
+    // );
+
+    // if (pathnameHasLocale) return;
+
+    // const locale = getLocale(request);
+    // request.nextUrl.pathname = `/${locale}${pathname}`;
+
+    // return NextResponse.redirect(request.nextUrl);
     // // `/_next/` and `/api/` are ignored by the watcher, but we need to ignore files in `public` manually.
     // // If you have one
     // if (

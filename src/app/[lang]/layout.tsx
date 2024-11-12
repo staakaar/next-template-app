@@ -11,6 +11,7 @@ import "@mantine/core/styles.css";
 import { ColorSchemeScript } from "@mantine/core";
 import SideMenu from "@/components/organisms/SideMenu";
 import { i18n, Locale } from "../../../middleware";
+import { dir } from "i18next";
 
 const fontSans = FontSans({
     subsets: ["latin"],
@@ -34,7 +35,7 @@ export default function RootLayout({
     params: { lang: Locale };
 }>) {
     return (
-        <html lang={lang} suppressHydrationWarning>
+        <html lang={lang} dir={dir(lang)} suppressHydrationWarning>
             <head>
                 <meta charSet="UTF-8" />
                 <meta
