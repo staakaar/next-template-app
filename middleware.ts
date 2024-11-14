@@ -35,8 +35,8 @@ function getLocale(request: NextRequest): string | undefined {
 export function middleware(request: NextRequest) {
     const { pathname } = request.nextUrl;
     let lang;
-    if (request.cookies.has(cookieName))
-        lang = acceptLanguage.get(request.cookies.get(cookieName)?.value);
+    // if (request.cookies.has(cookieName))
+    //     lang = acceptLanguage.get(request.cookies.get(cookieName)?.value);
 
     if (!lang)
         lang = acceptLanguage.get(request.headers.get("Accept-language"));
@@ -49,8 +49,19 @@ export function middleware(request: NextRequest) {
         !request.nextUrl.pathname.startsWith("/_next")
     ) {
         return NextResponse.redirect(
-            new URL(`/${lang}${request.nextUrl.pathname}`, request.url)
+            new URL(`/${lang}/${request.nextUrl.pathname}`, request.url)
         );
+    }
+
+    const segments = pathname.split("/").filter(Boolean);
+    const firstSegment = segments[0];
+
+    // 既に正しい形式のパスの場合はスキップ
+    if (
+        i18n.locales.includes(firstSegment as any) &&
+        segments[1] === "contract-all"
+    ) {
+        return NextResponse.next();
     }
 
     if (request.headers.has("referer")) {
@@ -110,5 +121,5 @@ export function middleware(request: NextRequest) {
 }
 
 export const config = {
-    matcher: ["/((?!api|_next/static|_next/image|favicon.ico).*)"],
+    matcher: ["/((?!api|_next/static|_next/image|favicon.ico|.*\\.).*)"],
 };

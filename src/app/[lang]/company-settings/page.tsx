@@ -1,19 +1,28 @@
-import Link from "next/link";
-import { Button } from "@/components/ui/button";
-import {
-    Card,
-    CardContent,
-    CardDescription,
-    CardFooter,
-    CardHeader,
-    CardTitle,
-} from "@/components/ui/card";
-import { Checkbox } from "@/components/ui/checkbox";
-import { Input } from "@/components/ui/input";
+import { Title, Stack, Group, AppShellMain, AppShell } from "@mantine/core";
+import CompanySettingNavigationWrapper from "./_components/CompanySettingNavigationWrapper";
 
 const CompanySettings = () => {
     return (
-        <main className="flex min-h-[calc(100vh_-_theme(spacing.16))] flex-1 flex-col gap-4 bg-muted/40 p-4 md:gap-8 md:p-10">
+        <AppShell>
+            <AppShellMain p="md" bg="gray.1">
+                <Stack mx="auto" maw={1200} p="md">
+                    <Title size="lg" order={2}>
+                        会社設定
+                    </Title>
+
+                    <Group align="flex-start">
+                        <CompanySettingNavigationWrapper />
+                    </Group>
+                </Stack>
+            </AppShellMain>
+        </AppShell>
+    );
+};
+
+export default CompanySettings;
+
+{
+    /* <main className="flex min-h-[calc(100vh_-_theme(spacing.16))] flex-1 flex-col gap-4 bg-muted/40 p-4 md:gap-8 md:p-10">
             <div className="mx-auto grid w-full max-w-6xl gap-2">
                 <h1 className="text-3xl font-semibold">Company Settings</h1>
             </div>
@@ -80,8 +89,5 @@ const CompanySettings = () => {
                     </Card>
                 </div>
             </div>
-        </main>
-    );
-};
-
-export default CompanySettings;
+        </main> */
+}

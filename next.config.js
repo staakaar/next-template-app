@@ -32,14 +32,16 @@ const nextConfig = {
     // },
     async redirects() {
         return [
+            // ルートパスからのリダイレクト
             {
                 source: "/",
                 destination: "/ja/contract-all",
                 permanent: true,
             },
+            // 言語パスのみの場合のリダイレクト
             {
-                source: "/ja",
-                destination: "/ja/contract-all",
+                source: "/:lang(ja|en)",
+                destination: "/:lang/contract-all",
                 permanent: true,
             },
         ];

@@ -1,6 +1,4 @@
 "use client";
-import "@mantine/core/styles.layer.css";
-import "mantine-datatable/styles.layer.css";
 import { sort } from "fast-sort";
 import React, { useState, useEffect } from "react";
 import { useRouter } from "next/navigation";
@@ -12,23 +10,7 @@ import {
     DataTableRowClickHandler,
     DataTableColumn,
 } from "mantine-datatable";
-import {
-    Card,
-    Text,
-    Group,
-    Button,
-    ActionIcon,
-    Tooltip,
-    TextInput,
-    Select,
-    Box,
-    Collapse,
-    Menu,
-    MenuItem,
-    MenuTarget,
-    MenuDropdown,
-    TableTrProps,
-} from "@mantine/core";
+import { Card, Text, Group, ActionIcon, TextInput } from "@mantine/core";
 import { IconTrash, IconEdit, IconEye, IconSearch } from "@tabler/icons-react";
 import { contractPageOptionsState } from "@/stores/contracts/atom";
 import { Contract } from "@/types/api/contract";
@@ -105,10 +87,10 @@ const ContractListTablePresentation = <T extends Contract>({
 
     const handlePageChange = async (newPage: number) => {
         try {
-            const result = await useFetchContracts(newPage, pageSize);
-            setRecords(result.contracts);
-            setTotalCount(result.totalCount);
-            setPage(newPage);
+            // const result = await useFetchContracts(newPage, pageSize);
+            // setRecords(result.contracts);
+            // setTotalCount(result.totalCount);
+            // setPage(newPage);
         } catch (error) {
             console.error("Failed to fetch contracts:", error);
             // エラーハンドリングをここに追加（例：ユーザーへの通知）
@@ -121,14 +103,14 @@ const ContractListTablePresentation = <T extends Contract>({
         const newSearchQuery = event.currentTarget.value;
         // setSearchQuery(newSearchQuery);
         try {
-            const result = await useFetchContracts(
-                page,
-                pageSize,
-                newSearchQuery
-            );
-            setRecords(result.contracts);
-            setTotalCount(result.totalCount);
-            setPage(1);
+            // const result = await useFetchContracts(
+            //     page,
+            //     pageSize,
+            //     newSearchQuery
+            // );
+            // setRecords(result.contracts);
+            // setTotalCount(result.totalCount);
+            // setPage(1);
         } catch (error) {
             console.error("Failed to fetch contracts:", error);
             // エラーハンドリングをここに追加
@@ -138,11 +120,11 @@ const ContractListTablePresentation = <T extends Contract>({
     const handleSortStatusChange = async (
         newSortStatus: DataTableSortStatus<T>
     ) => {
-        setSortStatus(newSortStatus);
+        // setSortStatus(newSortStatus);
         try {
-            const result = await useFetchContracts(page, pageSize);
-            setRecords(result.contracts);
-            setTotalCount(result.totalCount);
+            // const result = await useFetchContracts(page, pageSize);
+            // setRecords(result.contracts);
+            // setTotalCount(result.totalCount);
         } catch (error) {
             console.error("Failed to fetch contracts:", error);
             // エラーハンドリングをここに追加

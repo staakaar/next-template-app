@@ -1,14 +1,14 @@
-import "@mantine/core/styles.css";
+import "./globals.css";
+import "mantine-datatable/styles.layer.css";
+import "@mantine/core/styles.layer.css";
+import { MantineProviders } from "./providers";
+import { ColorSchemeScript } from "@mantine/core";
 import type { Metadata } from "next";
 import { Inter as FontSans } from "next/font/google";
-import { MantineProviders } from "./providers";
 import { cn } from "@/lib/utils";
-import "./globals.css";
 import React from "react";
 import Header from "@/components/organisms/Header";
 import { RecoilRootProvider } from "./recoil";
-import "@mantine/core/styles.css";
-import { ColorSchemeScript } from "@mantine/core";
 import SideMenu from "@/components/organisms/SideMenu";
 import { i18n, Locale } from "../../../middleware";
 import { dir } from "i18next";
@@ -42,7 +42,7 @@ export default function RootLayout({
                     name="viewport"
                     content="width=device-width, initial-scale=1.0"
                 />
-                <ColorSchemeScript />
+                <ColorSchemeScript defaultColorScheme="light" />
             </head>
             <body
                 className={cn(
