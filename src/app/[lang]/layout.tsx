@@ -9,7 +9,7 @@ import { cn } from "@/lib/utils";
 import React from "react";
 import Header from "@/components/organisms/Header";
 import { RecoilRootProvider } from "./recoil";
-import SideMenu from "@/components/organisms/SideMenu";
+import SideMenu from "@/components/organisms/ContractSideMenu/ContractSideMenu";
 import { i18n, Locale } from "../../../middleware";
 import { dir } from "i18next";
 

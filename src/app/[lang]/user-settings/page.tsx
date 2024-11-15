@@ -1,15 +1,5 @@
 import Link from "next/link";
-import { Button } from "@/components/ui/button";
-import {
-    Card,
-    CardContent,
-    CardDescription,
-    CardFooter,
-    CardHeader,
-    CardTitle,
-} from "@/components/ui/card";
-import { Checkbox } from "@/components/ui/checkbox";
-import { Input } from "@/components/ui/input";
+import { Button, TextInput, Checkbox, Card, Text, Title } from "@mantine/core";
 
 const UserSettings = () => {
     return (
@@ -18,10 +8,7 @@ const UserSettings = () => {
                 <h1 className="text-3xl font-semibold">User Settings</h1>
             </div>
             <div className="mx-auto grid w-full max-w-6xl items-start gap-6 md:grid-cols-[180px_1fr] lg:grid-cols-[250px_1fr]">
-                <nav
-                    className="grid gap-4 text-sm text-muted-foreground"
-                    x-chunk="dashboard-04-chunk-0"
-                >
+                <nav className="grid gap-4 text-sm text-muted-foreground">
                     <Link href="#" className="font-semibold text-primary">
                         General
                     </Link>
@@ -32,51 +19,56 @@ const UserSettings = () => {
                     <Link href="#">Advanced</Link>
                 </nav>
                 <div className="grid gap-6">
-                    <Card x-chunk="dashboard-04-chunk-1">
-                        <CardHeader>
-                            <CardTitle>Store Name</CardTitle>
-                            <CardDescription>
-                                Used to identify your store in the marketplace.
-                            </CardDescription>
-                        </CardHeader>
-                        <CardContent>
-                            <form>
-                                <Input placeholder="Store Name" />
-                            </form>
-                        </CardContent>
-                        <CardFooter className="border-t px-6 py-4">
-                            <Button>Save</Button>
-                        </CardFooter>
+                    <Card shadow="sm" padding="lg" className="bg-white">
+                        <Title order={2} className="text-xl font-semibold">
+                            Store Name
+                        </Title>
+                        <Text size="sm" className="text-gray-500 mt-1">
+                            Used to identify your store in the marketplace.
+                        </Text>
+                        <form className="mt-4">
+                            <TextInput placeholder="Store Name" />
+                        </form>
+                        <div className="border-t mt-4 pt-4">
+                            <Button className="bg-blue-500 text-white hover:bg-blue-600">
+                                Save
+                            </Button>
+                        </div>
                     </Card>
-                    <Card x-chunk="dashboard-04-chunk-2">
-                        <CardHeader>
-                            <CardTitle>Plugins Directory</CardTitle>
-                            <CardDescription>
-                                The directory within your project, in which your
-                                plugins are located.
-                            </CardDescription>
-                        </CardHeader>
-                        <CardContent>
-                            <form className="flex flex-col gap-4">
-                                <Input
-                                    placeholder="Project Name"
-                                    defaultValue="/content/plugins"
+
+                    <Card shadow="sm" padding="lg" className="bg-white">
+                        <Title order={2} className="text-xl font-semibold">
+                            Plugins Directory
+                        </Title>
+                        <Text size="sm" className="text-gray-500 mt-1">
+                            The directory within your project, in which your
+                            plugins are located.
+                        </Text>
+                        <form className="flex flex-col gap-4 mt-4">
+                            <TextInput
+                                placeholder="Project Name"
+                                defaultValue="/content/plugins"
+                            />
+                            <div className="flex items-center space-x-2">
+                                <Checkbox
+                                    id="include"
+                                    defaultChecked
+                                    className="cursor-pointer"
                                 />
-                                <div className="flex items-center space-x-2">
-                                    <Checkbox id="include" defaultChecked />
-                                    <label
-                                        htmlFor="include"
-                                        className="text-sm font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70"
-                                    >
-                                        Allow administrators to change the
-                                        directory.
-                                    </label>
-                                </div>
-                            </form>
-                        </CardContent>
-                        <CardFooter className="border-t px-6 py-4">
-                            <Button>Save</Button>
-                        </CardFooter>
+                                <label
+                                    htmlFor="include"
+                                    className="text-sm font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70"
+                                >
+                                    Allow administrators to change the
+                                    directory.
+                                </label>
+                            </div>
+                        </form>
+                        <div className="border-t mt-4 pt-4">
+                            <Button className="bg-blue-500 text-white hover:bg-blue-600">
+                                Save
+                            </Button>
+                        </div>
                     </Card>
                 </div>
             </div>

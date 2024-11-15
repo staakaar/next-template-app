@@ -1,18 +1,54 @@
 "use client";
 
 import { useEffect, useRef, useState } from "react";
-import { Menu, Divider, MenuItem, Drawer } from "@mantine/core";
 import {
-    IconSettings,
-    IconFileText,
-    IconBuildingSkyscraper,
-    IconUserCircle,
-    IconAdjustments,
-} from "@tabler/icons-react";
+    Menu,
+    Divider,
+    MenuItem,
+    Drawer,
+    Group,
+    Code,
+    ScrollArea,
+    rem,
+    Title,
+    Box,
+} from "@mantine/core";
+import { IconNotes, IconCalendarStats } from "@tabler/icons-react";
+import classes from "./ContractSideMenu.module.css";
 import Link from "next/link";
 import { useViewportSize } from "@mantine/hooks";
+import { NavigationLinksGroup } from "../NavigationLinksGroup/NavigationLinksGroup";
+
+const contractMenu = [
+    {
+        label: "管理メニュー",
+        icon: IconNotes,
+        initiallyOpened: true,
+        links: [
+            { label: "契約書一覧", link: "/contract-all" },
+            { label: "契約書【A】", link: "/" },
+            { label: "契約書【B】", link: "/" },
+            { label: "WF", link: "/workflow-all" },
+        ],
+    },
+    {
+        label: "設定メニュー",
+        icon: IconCalendarStats,
+        initiallyOpened: true,
+        links: [
+            { label: "デフォルト", link: "/" },
+            { label: "セクション", link: "/" },
+            { label: "帳票", link: "/" },
+            { label: "個人設定", link: "/user-settings" },
+            { label: "会社設定", link: "/company-settings" },
+        ],
+    },
+];
 
 const SideMenu = () => {
+    const links = contractMenu.map((item) => (
+        <NavigationLinksGroup {...item} key={item.label} />
+    ));
     const [drawerOpened, setDrawerOpened] = useState(false);
     const { width } = useViewportSize();
     const sidebarTriggerRef = useRef<HTMLDivElement>(null);
@@ -69,7 +105,15 @@ const SideMenu = () => {
                 //     },
                 // })}
             >
-                <Menu shadow="md">
+                <nav className={classes.navbar}>
+                    <Box className={classes.header}>
+                        <Title size="xl">契約メニュー</Title>
+                    </Box>
+                    <ScrollArea className={classes.links}>
+                        <div className={classes.linksInner}>{links}</div>
+                    </ScrollArea>
+                </nav>
+                {/* <Menu shadow="md">
                     <MenuItem
                         variant="subtle"
                         leftSection={<IconSettings size="1.2rem" />}
@@ -142,7 +186,7 @@ const SideMenu = () => {
                         会社設定
                     </MenuItem>
                     <Divider />
-                </Menu>
+                </Menu> */}
             </Drawer>
         </>
     );
