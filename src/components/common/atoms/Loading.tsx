@@ -1,3 +1,4 @@
+import "@mantine/core/styles/Loader.css";
 import { Center, Stack, Loader, Text } from "@mantine/core";
 
 const Loading = () => {

@@ -1,3 +1,4 @@
+import path from "node:path";
 import bundleAnalyzer from "@next/bundle-analyzer";
 
 const withBundleAnalyzer = bundleAnalyzer({
@@ -20,7 +21,18 @@ const nextConfig = {
                 ".json",
             ],
         },
-        optimizePackageImports: ["@mantine/core", "@mantine/hooks"],
+        optimizePackageImports: [
+            "@mantine/core",
+            "@mantine/hooks",
+            "@mantine/dates",
+            "@mantine/datatable",
+            "mantine-datatable",
+        ],
+    },
+    sassOptions: {
+        implementation: "sass-embedded",
+        additionalData: `@use "${path.join(process.cwd(), "_mantine")}" as mantine;`,
+        includePaths: ["./src/styles", "./src/components"],
     },
     // async rewrites() {
     //     return [

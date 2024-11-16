@@ -1,21 +1,9 @@
 "use client";
 
 import { useEffect, useRef, useState } from "react";
-import {
-    Menu,
-    Divider,
-    MenuItem,
-    Drawer,
-    Group,
-    Code,
-    ScrollArea,
-    rem,
-    Title,
-    Box,
-} from "@mantine/core";
+import { Drawer, ScrollArea, Title, Box } from "@mantine/core";
 import { IconNotes, IconCalendarStats } from "@tabler/icons-react";
 import classes from "./ContractSideMenu.module.css";
-import Link from "next/link";
 import { useViewportSize } from "@mantine/hooks";
 import { NavigationLinksGroup } from "../NavigationLinksGroup/NavigationLinksGroup";
 

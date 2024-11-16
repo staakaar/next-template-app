@@ -1,8 +1,8 @@
-import "./globals.css";
-import "mantine-datatable/styles.layer.css";
-import "@mantine/core/styles.layer.css";
 import { MantineProviders } from "./providers";
 import { ColorSchemeScript } from "@mantine/core";
+import "@mantine/core/styles.layer.css";
+import "mantine-datatable/styles.layer.css";
+import "./globals.css";
 import type { Metadata } from "next";
 import { Inter as FontSans } from "next/font/google";
 import { cn } from "@/lib/utils";
@@ -29,11 +29,12 @@ export const metadata: Metadata = {
 
 export default function RootLayout({
     children,
-    params: { lang },
+    params,
 }: Readonly<{
     children: React.ReactNode;
-    params: { lang: Locale };
+    params: any;
 }>) {
+    const { lang }: any = React.use(params);
     return (
         <html lang={lang} dir={dir(lang)} suppressHydrationWarning>
             <head>

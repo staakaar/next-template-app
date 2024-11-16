@@ -1,292 +1,315 @@
 "use client";
 
-import {
-    CardContent,
-    CardFooter,
-    CardHeader,
-    CardTitle,
-} from "@/components/ui/card";
-import {
-    Select,
-    SelectContent,
-    SelectItem,
-    SelectTrigger,
-    SelectValue,
-} from "@/components/ui/select";
-import {
-    Table,
-    TableBody,
-    TableCell,
-    TableHead,
-    TableHeader,
-    TableRow,
-} from "@/components/ui/table";
-import { Box, Button } from "@chakra-ui/react";
-import {
-    ChevronLeftIcon,
-    ChevronRightIcon,
-    DoubleArrowLeftIcon,
-    DoubleArrowRightIcon,
-} from "@radix-ui/react-icons";
-import {
-    ColumnDef,
-    ColumnFiltersState,
-    flexRender,
-    getCoreRowModel,
-    getFilteredRowModel,
-    getPaginationRowModel,
-    getSortedRowModel,
-    useReactTable,
-    VisibilityState,
-} from "@tanstack/react-table";
-import { useRouter } from "next/navigation";
-import React from "react";
+import React, { useEffect } from "react";
 import { useState } from "react";
+import { useRouter } from "next/navigation";
+import { useSetRecoilState } from "recoil";
+import {
+    DataTable,
+    useDataTableColumns,
+    DataTableSortStatus,
+    DataTableRowClickHandler,
+    DataTableColumn,
+} from "mantine-datatable";
+import { Card, Text, Group, ActionIcon, TextInput } from "@mantine/core";
+import { IconTrash, IconEdit, IconEye, IconSearch } from "@tabler/icons-react";
+import { contractPageOptionsState } from "@/stores/contracts/atom";
+import VTooltip from "@/components/common/atoms/Tooltip";
+import { sort } from "fast-sort";
+import { TradePartnerPerson } from "@/types/api/tradePartner";
 
-export type TradePartnerPersonTableProps<TData, TValue> = {
-    data: TData[];
-    columns: ColumnDef<TData, TValue>[];
-    // onPageChange?: (newPage: number) => void;
-    // onPageSizeChange?: (newPageSize: number) => void;
-    // onSearch?: (keyword: string) => void;
-    totalCount: number;
+export type TradePartnerPersonTableProps<T extends TradePartnerPerson> = {
+    tradePartnerPerson: T[];
+    initialTotalCount: number;
 };
 
-/** 取引先一覧ソート */
-type ColumnSort = {
-    id: string;
-    desc: boolean;
-};
-type SortingState = ColumnSort[];
+const PAGE_SIZES = [10, 15, 20, 50, 75, 100];
 
-const TradePartnerPersonDrawerPresentation = <TData, TValue>({
-    data,
-    columns,
-    totalCount,
-}: TradePartnerPersonTableProps<TData, TValue>) => {
+const TradePartnerPersonDrawerPresentation = <T extends TradePartnerPerson>({
+    tradePartnerPerson,
+    initialTotalCount,
+}: TradePartnerPersonTableProps<T>) => {
     const router = useRouter();
-    const [sorting, setSorting] = useState<SortingState>([]);
-    const [columnFilters, setColumnFilters] = useState<ColumnFiltersState>([]);
-    const [columnVisibility, setColumnVisibility] = useState<VisibilityState>(
-        {}
-    );
-    const [pagination, setPagination] = useState({
-        pageIndex: 1,
-        pageSize: 50,
+    const [pageSize, setPageSize] = useState(PAGE_SIZES[2]);
+
+    useEffect(() => {
+        setPage(1);
+    }, [pageSize]);
+
+    const [sortStatus, setSortStatus] = useState<
+        DataTableSortStatus<TradePartnerPerson>
+    >({
+        columnAccessor: "contractCode",
+        direction: "asc",
     });
 
-    const table = useReactTable({
-        data,
+    const [page, setPage] = useState(1);
+    const [records, setRecords] = useState<TradePartnerPerson[]>(
+        tradePartnerPerson.slice(0, pageSize)
+    );
+
+    useEffect(() => {
+        const from = (page - 1) * pageSize;
+        const to = from + pageSize;
+        console.log(from);
+        console.log(to);
+        setRecords(tradePartnerPerson.slice(from, to));
+    }, [tradePartnerPerson, page, pageSize]);
+
+    useEffect(() => {
+        const sortedContracts = sort(tradePartnerPerson).by([
+            { asc: (t) => t.tradePersonId },
+        ]) as TradePartnerPerson[];
+        /**
+        setRecords(
+            sortStatus.direction === "desc"
+                ? sortedContracts.reverse()
+                : sortedContracts
+        );
+         */
+    }, [tradePartnerPerson, sortStatus]);
+
+    const [totalCount, setTotalCount] = useState(initialTotalCount);
+    const setPageOptions = useSetRecoilState(contractPageOptionsState);
+
+    const navigateToContractDetail: DataTableRowClickHandler<
+        TradePartnerPerson
+    > = ({ record }) => {
+        router.push(`/contract/`);
+    };
+
+    const handleDelete = (rowData: TradePartnerPerson) => {
+        console.log("Delete", rowData);
+    };
+
+    const handleEdit = (rowData: TradePartnerPerson) => {
+        console.log("Edit", rowData);
+    };
+
+    const handlePageChange = async (newPage: number) => {
+        try {
+            // const result = await useFetchContracts(newPage, pageSize);
+            // setRecords(result.contracts);
+            // setTotalCount(result.totalCount);
+            // setPage(newPage);
+        } catch (error) {
+            console.error("Failed to fetch contracts:", error);
+            // エラーハンドリングをここに追加（例：ユーザーへの通知）
+        }
+    };
+
+    const handleSearchChange = async (
+        event: React.ChangeEvent<HTMLInputElement>
+    ) => {
+        const newSearchQuery = event.currentTarget.value;
+        // setSearchQuery(newSearchQuery);
+        try {
+            // const result = await useFetchContracts(
+            //     page,
+            //     pageSize,
+            //     newSearchQuery
+            // );
+            // setRecords(result.contracts);
+            // setTotalCount(result.totalCount);
+            // setPage(1);
+        } catch (error) {
+            console.error("Failed to fetch contracts:", error);
+            // エラーハンドリングをここに追加
+        }
+    };
+
+    const handleSortStatusChange = async (
+        newSortStatus: DataTableSortStatus<T>
+    ) => {
+        // setSortStatus(newSortStatus);
+        try {
+            // const result = await useFetchContracts(page, pageSize);
+            // setRecords(result.contracts);
+            // setTotalCount(result.totalCount);
+        } catch (error) {
+            console.error("Failed to fetch contracts:", error);
+            // エラーハンドリングをここに追加
+        }
+    };
+
+    const columns: DataTableColumn<TradePartnerPerson>[] = [
+        {
+            accessor: "tradePersonId",
+            title: "取引先担当者ID",
+            sortable: true,
+            render: (tradePartnerPerson: TradePartnerPerson) => (
+                <VTooltip
+                    content={tradePartnerPerson.tradePersonId}
+                    tooltip={`取引先担当者ID: ${tradePartnerPerson.tradePersonId}`}
+                    maxWidth={"100"}
+                />
+            ),
+        },
+        {
+            accessor: "tradePersonName",
+            title: "取引先担当者名",
+            sortable: true,
+            render: (tradePartnerPerson: TradePartnerPerson) => (
+                <VTooltip
+                    content={tradePartnerPerson.tradePersonName}
+                    tooltip={`タイトル: ${tradePartnerPerson.tradePersonName}`}
+                    maxWidth={"100"}
+                />
+            ),
+        },
+        {
+            accessor: "contractStatus",
+            title: "取引先担当者メールアドレス",
+            sortable: true,
+            render: (tradePartnerPerson: TradePartnerPerson) => (
+                <VTooltip
+                    content={tradePartnerPerson.tradePersonEmailAddress}
+                    tooltip={`取引先担当者メールアドレス: ${tradePartnerPerson.tradePersonEmailAddress}`}
+                    maxWidth={"100"}
+                />
+            ),
+        },
+        {
+            accessor: "tradePartner",
+            title: "取引先担当部署ID",
+            sortable: true,
+            render: (tradePartnerPerson: TradePartnerPerson) => (
+                <VTooltip
+                    content={tradePartnerPerson.tradePartnerDepartmentId}
+                    tooltip={`取引先担当部署ID: ${tradePartnerPerson.tradePartnerDepartmentId}`}
+                    maxWidth={"100"}
+                />
+            ),
+        },
+        {
+            accessor: "contractPersonInCharge",
+            title: "取引先担当部署名",
+            sortable: true,
+            render: (tradePartnerPerson: TradePartnerPerson) => (
+                <VTooltip
+                    content={tradePartnerPerson.tradePartnerDepartmentName}
+                    tooltip={`取引先担当部署名: ${tradePartnerPerson.tradePartnerDepartmentName}`}
+                    maxWidth={"100"}
+                />
+            ),
+        },
+        {
+            accessor: "actions",
+            title: "",
+            textAlign: "right",
+            render: (tradePartnerPerson: TradePartnerPerson) => (
+                <Group gap={4} justify="right" wrap="nowrap">
+                    <ActionIcon size="sm" variant="subtle" color="green">
+                        <IconEye size={16} />
+                    </ActionIcon>
+                    <ActionIcon
+                        size="sm"
+                        variant="subtle"
+                        color="blue"
+                        onClick={() => handleEdit(tradePartnerPerson)}
+                    >
+                        <IconEdit size={16} />
+                    </ActionIcon>
+                    <ActionIcon
+                        size="sm"
+                        variant="subtle"
+                        color="red"
+                        onClick={() => handleDelete(tradePartnerPerson)}
+                    >
+                        <IconTrash size={16} />
+                    </ActionIcon>
+                </Group>
+            ),
+        },
+    ];
+
+    const { effectiveColumns } = useDataTableColumns<TradePartnerPerson>({
+        key: "tradePersonId",
         columns,
-        getCoreRowModel: getCoreRowModel(),
-        getPaginationRowModel: getPaginationRowModel(),
-        onSortingChange: setSorting,
-        getSortedRowModel: getSortedRowModel(),
-        onColumnFiltersChange: setColumnFilters,
-        getFilteredRowModel: getFilteredRowModel(),
-        onPaginationChange: setPagination,
-        onColumnVisibilityChange: setColumnVisibility,
-        state: {
-            sorting,
-            columnFilters,
-            columnVisibility,
-            pagination,
-        },
-        initialState: {
-            pagination: {
-                pageIndex: 1,
-                pageSize: 50,
-            },
-        },
-        autoResetPageIndex: true,
-        manualPagination: true,
-        pageCount: Math.ceil(totalCount / pagination.pageSize),
     });
 
     return (
         <>
-            <CardHeader>
-                <CardTitle>取引先一覧</CardTitle>
-                {/* <Box className="relative ml-auto flex-1 md:grow-0">
-                    <Search className="absolute left-2.5 top-2.5 h-4 w-4 text-muted-foreground" />
-                    <Input
-                        type="search"
+            <Card withBorder>
+                <Group mb="md">
+                    <Text size="lg">取引先一覧</Text>
+                    <TextInput
+                        className="ml-64"
                         placeholder="Search..."
-                        className="w-full rounded-lg bg-background pl-8 md:w-[200px] lg:w-[336px]"
+                        leftSection={<IconSearch size="1rem" />}
+                        style={{ width: "600px" }}
                     />
-                </Box> */}
-            </CardHeader>
-            <CardContent>
-                <div className="rounded-md border">
-                    <div className="h-[600px]">
-                        <Table>
-                            <TableHeader className="sticky top-0 z-10">
-                                {table.getHeaderGroups().map((headerGroup) => (
-                                    <TableRow key={headerGroup.id}>
-                                        {headerGroup.headers.map((header) => {
-                                            return (
-                                                <TableHead key={header.id}>
-                                                    {header.isPlaceholder
-                                                        ? null
-                                                        : flexRender(
-                                                              header.column
-                                                                  .columnDef
-                                                                  .header,
-                                                              header.getContext()
-                                                          )}
-                                                </TableHead>
-                                            );
-                                        })}
-                                    </TableRow>
-                                ))}
-                            </TableHeader>
-                        </Table>
-                        <div
-                            className="overflow-auto"
-                            style={{ height: "calc(100% - 40px)" }}
-                        >
-                            <Table>
-                                <TableBody>
-                                    {table.getRowModel().rows?.length ? (
-                                        table
-                                            .getRowModel()
-                                            .rows.slice(0, pagination.pageSize)
-                                            .map((row) => (
-                                                <TableRow
-                                                    key={row.id}
-                                                    data-state={
-                                                        row.getIsSelected() &&
-                                                        "selected"
-                                                    }
-                                                >
-                                                    {row
-                                                        .getVisibleCells()
-                                                        .map((cell) => (
-                                                            <TableCell
-                                                                key={cell.id}
-                                                            >
-                                                                {flexRender(
-                                                                    cell.column
-                                                                        .columnDef
-                                                                        .cell,
-                                                                    cell.getContext()
-                                                                )}
-                                                            </TableCell>
-                                                        ))}
-                                                </TableRow>
-                                            ))
-                                    ) : (
-                                        <TableRow>
-                                            <TableCell
-                                                colSpan={columns.length}
-                                                className="h-24 text-center"
-                                            >
-                                                該当するデータが存在しません。
-                                            </TableCell>
-                                        </TableRow>
-                                    )}
-                                </TableBody>
-                            </Table>
-                        </div>
-                    </div>
-                </div>
-            </CardContent>
-            <CardFooter className="flex items-center justify-end">
-                <Box className="flex items-center justify-end px-2">
-                    {/* ページネーションコンポーネント */}
-                    <Box className="flex items-center justify-between px-2">
-                        <Box className="flex items-center space-x-6 lg:space-x-8">
-                            <Box className="flex items-center space-x-2">
-                                <Select
-                                    value={`${table.getState().pagination.pageSize}`}
-                                    onValueChange={(value) => {
-                                        table.setPageSize(Number(value));
-                                    }}
-                                >
-                                    <SelectTrigger className="h-8 w-[70px]">
-                                        <SelectValue
-                                            placeholder={
-                                                table.getState().pagination
-                                                    .pageSize
-                                            }
-                                        />
-                                    </SelectTrigger>
-                                    <SelectContent side="top">
-                                        {[50, 75, 100].map((pageSize) => (
-                                            <SelectItem
-                                                key={pageSize}
-                                                value={`${pageSize}`}
-                                            >
-                                                {pageSize}
-                                            </SelectItem>
-                                        ))}
-                                    </SelectContent>
-                                </Select>
-                                <p className="text-sm font-medium">件</p>
-                            </Box>
-                            <Box className="flex w-[100px] items-center justify-center text-sm font-medium">
-                                {table.getState().pagination.pageIndex + 1}
-                                {" / "}
-                                {table.getPageCount()}
-                            </Box>
-                            <Box className="flex items-center space-x-2">
-                                <Button
-                                    size={"2"}
-                                    variant="outline"
-                                    className="hidden h-8 w-8 p-0 lg:flex"
-                                    onClick={() => table.setPageIndex(0)}
-                                    disabled={!table.getCanPreviousPage()}
-                                >
-                                    <span className="sr-only">
-                                        Go to first page
-                                    </span>
-                                    <DoubleArrowLeftIcon className="h-4 w-4" />
-                                </Button>
-                                <Button
-                                    size={"2"}
-                                    variant="outline"
-                                    className="h-8 w-8 p-0"
-                                    onClick={() => table.previousPage()}
-                                    disabled={!table.getCanPreviousPage()}
-                                >
-                                    <span className="sr-only">
-                                        Go to previous page
-                                    </span>
-                                    <ChevronLeftIcon className="h-4 w-4" />
-                                </Button>
-                                <Button
-                                    size={"2"}
-                                    variant="outline"
-                                    className="h-8 w-8 p-0"
-                                    onClick={() => table.nextPage()}
-                                    disabled={!table.getCanNextPage()}
-                                >
-                                    <span className="sr-only">
-                                        Go to next page
-                                    </span>
-                                    <ChevronRightIcon className="h-4 w-4" />
-                                </Button>
-                                <Button
-                                    size={"2"}
-                                    variant="outline"
-                                    className="hidden h-8 w-8 p-0 lg:flex"
-                                    onClick={() =>
-                                        table.setPageIndex(
-                                            table.getPageCount() - 1
-                                        )
-                                    }
-                                    disabled={!table.getCanNextPage()}
-                                >
-                                    <span className="sr-only">
-                                        Go to last page
-                                    </span>
-                                    <DoubleArrowRightIcon className="h-4 w-4" />
-                                </Button>
-                            </Box>
-                        </Box>
-                    </Box>
-                </Box>
-            </CardFooter>
+                </Group>
+
+                <DataTable
+                    striped
+                    highlightOnHover
+                    // highlightOnHoverColor="gray.100"
+                    columns={effectiveColumns}
+                    records={records}
+                    noRecordsText={
+                        records.length === 0
+                            ? "該当のレコードが存在しません。"
+                            : ""
+                    }
+                    emptyState={records.length !== 0}
+                    loadingText="読み込み中です..."
+                    totalRecords={totalCount}
+                    recordsPerPage={pageSize}
+                    recordsPerPageLabel=""
+                    paginationActiveBackgroundColor="blue"
+                    page={page}
+                    recordsPerPageOptions={PAGE_SIZES}
+                    sortStatus={sortStatus}
+                    onSortStatusChange={setSortStatus}
+                    onRowClick={navigateToContractDetail}
+                    onPageChange={(p) => setPage(p)}
+                    onRecordsPerPageChange={setPageSize}
+                    idAccessor="contractCode"
+                    styles={{
+                        pagination: {
+                            display: "flex",
+                            justifyContent: "flex-end",
+                            alignItems: "center",
+                            padding: "1rem",
+                            gap: "1rem",
+
+                            ".mantineGroupRoot": {
+                                dispaly: "flex",
+                                alignItems: "center",
+                                gap: "1rem",
+                                flex: 1,
+                            },
+
+                            "[dataRecordsPerPage]": {
+                                order: 1,
+                            },
+
+                            ".mantinePaginationRoot": {
+                                order: 2,
+                            },
+
+                            "[dataPaginationText]": {
+                                marginLeft: "auto",
+                                whiteSpace: "nowrap",
+                                order: 3,
+                            },
+
+                            tr: {
+                                cursor: "pointer",
+                                position: "relative",
+                                transition: "all 0.2s ease",
+                                "&:hover": {
+                                    backgroundColor: "blue",
+                                    boxShadow: `0 4px 8px `,
+                                    transform: "translateY(-1px)",
+                                    zIndex: 1, // 他の行より上に表示
+                                },
+                            },
+                        },
+                    }}
+                />
+            </Card>
         </>
     );
 };

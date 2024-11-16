@@ -2,12 +2,16 @@ import type { Config } from "tailwindcss";
 import { fontFamily } from "tailwindcss/defaultTheme";
 
 const config = {
+    important: true,
+    corePlugins: {
+        preflight: false,
+    },
     darkMode: ["class"],
     content: [
-        "./pages/**/*.{ts,tsx}",
-        "./components/**/*.{ts,tsx}",
-        "./app/**/*.{ts,tsx}",
-        "./src/**/*.{ts,tsx}",
+        "./pages/**/*.{ts,tsx,jsx,js,mdx}",
+        "./components/**/*.{ts,tsx,jsx,js,mdx}",
+        "./app/**/*.{ts,tsx,jsx,js,mdx}",
+        "./src/**/*.{ts,tsx,jsx,js,mdx}",
     ],
     prefix: "",
     theme: {

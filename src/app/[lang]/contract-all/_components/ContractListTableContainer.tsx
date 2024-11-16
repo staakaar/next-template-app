@@ -1,4 +1,5 @@
 "use client";
+import React, { Suspense } from "react";
 import { useState } from "react";
 import Link from "next/link";
 import {
@@ -13,13 +14,31 @@ import {
 } from "@mantine/core";
 import { IconFilter, IconPlus } from "@tabler/icons-react";
 import ContractListTablePresentation from "./ContractListTablePresentational";
-import React from "react";
 import { useRecoilValue } from "recoil";
 import { contractListState } from "@/stores/contracts/atom";
 import ContractSearchArea from "@/components/common/ContractSearchArea";
+import ContractAllLoading from "../loading";
+import { ErrorBoundary } from "react-error-boundary";
+import { useFetchContracts } from "@/lib/contract/api";
+import { ContractResponse } from "@/types/api/contract";
 
 /** 常に最新情報を取得 */
 // export const dynamic = "force-dynamic";
+
+const generateMockContracts = (count: number): ContractResponse => {
+    const contracts = Array.from({ length: count }, (_, index) => ({
+        contractCode: `C${index + 1}`,
+        contractName: `Contract ${index + 1}`,
+        contractStatus: `${index % 2 == 0 ? "CREATE" : "UNDER_CONSTRUCTION"}`,
+        tradePartner: `Partner ${index + 1}`,
+        contractPersonInCharge: `Person ${index + 1}`,
+    }));
+
+    return {
+        contracts,
+        totalCount: count,
+    };
+};
 
 const ContractListTableContainer = () => {
     const [activeTab, setActiveTab] = useState("created");
@@ -27,9 +46,8 @@ const ContractListTableContainer = () => {
     const [searchQuery, setSearchQuery] = useState("");
     const [isSearchAreaOpen, setIsSearchAreaOpen] = useState(false);
 
-    const contracts = useRecoilValue(contractListState);
-
-    // const data = useFetchContracts(page, pageSize, search);
+    // const contracts = useRecoilValue(contractListState);
+    const contracts = generateMockContracts(100);
 
     // useEffect(() => {
     //     if (data) {
@@ -44,11 +62,11 @@ const ContractListTableContainer = () => {
                     <Stack gap="md" p="md">
                         <Tabs value={activeTab} defaultValue="created">
                             <TabsList>
-                                <TabsTab value="under_construction">
+                                <TabsTab value="underConstruction">
                                     作成中
                                 </TabsTab>
                                 <TabsTab value="created">作成済み</TabsTab>
-                                <TabsTab value="internal_approved">
+                                <TabsTab value="internalApproved">
                                     承認中
                                 </TabsTab>
                                 <TabsTab value="revised">差し戻し</TabsTab>
@@ -94,10 +112,21 @@ const ContractListTableContainer = () => {
                                 onClose={() => setIsSearchAreaOpen(false)}
                             />
                             <TabsPanel value="created">
-                                <ContractListTablePresentation
-                                    contracts={contracts.contracts}
-                                    initialTotalCount={contracts.totalCount}
-                                />
+                                {/* トースターにする */}
+                                <ErrorBoundary
+                                    fallback={
+                                        <p>契約書一覧取得に失敗しました</p>
+                                    }
+                                >
+                                    <Suspense fallback={<ContractAllLoading />}>
+                                        <ContractListTablePresentation
+                                            contracts={contracts.contracts}
+                                            initialTotalCount={
+                                                contracts.totalCount
+                                            }
+                                        />
+                                    </Suspense>
+                                </ErrorBoundary>
                             </TabsPanel>
                         </Tabs>
                     </Stack>

@@ -1,11 +1,8 @@
 "use client";
-import { Anchor, Card } from "@mantine/core";
-import { Separator } from "@/components/ui/separator";
-import { Box, Title } from "@mantine/core";
+import { Button, Divider, Anchor, Card, Box, Title } from "@mantine/core";
 import Link from "next/link";
 import { useState } from "react";
 import { redirect, useRouter } from "next/navigation";
-import { Button } from "@mantine/core";
 import ContractNewStepper from "@/components/common/ContractNewStepper";
 import dynamic from "next/dynamic";
 import ContractNewConfirmDialog from "@/components/ContractNewModal";
@@ -39,7 +36,7 @@ const ContractSteps: ContractStep[] = [
 // 動的にインポートするコンポーネントを定義
 const ContractBasicContainer = dynamic(
     () => import("@/components/common/container/ContractBasicContainer"),
-    { loading: () => <VLoading /> }
+    { ssr: false, loading: () => <VLoading /> }
 );
 const ContractFileContainer = dynamic(
     () => import("@/components/common/container/ContractFileContainer"),
@@ -174,7 +171,7 @@ const ContractNewPage = () => {
                                     新規作成画面
                                 </Title>
                             </Box>
-                            <Separator />
+                            <Divider />
                             <Box
                                 className="overflow-auto mx-2"
                                 style={{ maxHeight: "calc(100vh - 200px)" }}

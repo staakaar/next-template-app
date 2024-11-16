@@ -14,7 +14,6 @@ import { Card, Text, Group, ActionIcon, TextInput } from "@mantine/core";
 import { IconTrash, IconEdit, IconEye, IconSearch } from "@tabler/icons-react";
 import { contractPageOptionsState } from "@/stores/contracts/atom";
 import { Contract } from "@/types/api/contract";
-import { useFetchContracts } from "@/lib/contract/api";
 import VTooltip from "@/components/common/atoms/Tooltip";
 
 export type ContractListTableProps<T extends Contract> = {
@@ -255,7 +254,7 @@ const ContractListTablePresentation = <T extends Contract>({
             <DataTable
                 striped
                 highlightOnHover
-                highlightOnHoverColor="gray.100"
+                // highlightOnHoverColor="gray.100"
                 columns={effectiveColumns}
                 records={records}
                 noRecordsText={

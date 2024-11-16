@@ -11,14 +11,13 @@ const TradePartnerPersonTableContainer = () => {
     const [search, setSearch] = useState("");
     const [isOpen, setIsOpen] = useState(false);
 
-    const data = useFetchTraderPartnerPerson(page, pageSize, search);
+    const taradePartner = useFetchTraderPartnerPerson(page, pageSize, search);
 
     return (
         <>
             <TradePartnerPersonDrawerPresentation
-                data={data.tradePartnerPersons}
-                columns={columns}
-                totalCount={data.totalCount}
+                data={taradePartner.tradePartnerPersons}
+                totalCount={taradePartner.totalCount}
             />
         </>
     );

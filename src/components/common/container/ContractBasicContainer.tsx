@@ -10,7 +10,7 @@ import {
 } from "@mantine/core";
 import { notifications } from "@mantine/notifications";
 import ContractBasicPresentationalForm from "../presentational/ContractBasicPresentationalForm";
-import { useEffect } from "react";
+import { Suspense, useEffect } from "react";
 import {
     saveContractBasic,
     updateContractBasic,
@@ -27,6 +27,8 @@ import {
     contractBasicFormSchema,
 } from "@/lib/contractBasic/schema";
 import { z } from "zod";
+import { ErrorBoundary } from "react-error-boundary";
+import Loading from "../atoms/Loading";
 
 export type ContractBasicContainerProps = {
     isEdit: boolean;
@@ -133,7 +135,11 @@ const ContractBasicContainer = ({
             </Stack>
             <Divider className="mt-2" />
             <Box className="grid gap-3">
-                <ContractBasicPresentationalForm form={form} />
+                <ErrorBoundary fallback={<p>契約書基本情報</p>}>
+                    <Suspense fallback={<Loading />}>
+                        <ContractBasicPresentationalForm form={form} />
+                    </Suspense>
+                </ErrorBoundary>
             </Box>
         </Paper>
     );

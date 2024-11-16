@@ -72,7 +72,7 @@ export function LinksGroup({
 
 export function NavigationLinksGroup(item: LinksGroupProps) {
     return (
-        <Box mih={220} p="md">
+        <Box p="md">
             <LinksGroup {...item} />
         </Box>
     );
