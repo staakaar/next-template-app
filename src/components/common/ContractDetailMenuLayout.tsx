@@ -1,4 +1,5 @@
 "use client";
+import { useRecoilValue } from "recoil";
 import NavLink from "@/components/atoms/NavigationLink/NavigationLink";
 import ContractAuthorityContainer from "@/components/common/container/ContractAuthorityContainer";
 import ContractDetailsContainer from "@/components/common/container/contractDetails/ContractDetailsContainer";
@@ -13,8 +14,7 @@ import WorkflowContainer from "@/components/common/container/WorkflowContainer";
 import { useParams, useRouter } from "next/navigation";
 import { ReactNode, useState } from "react";
 import ContractBasicContainer from "./container/ContractBasicContainer";
-import { selectedContractCodeState } from "@/stores/contracts/atom";
-import { useRecoilValue } from "recoil";
+import { selectedContractCodeState } from "@/stores/contracts/contract";
 import { Tabs, TabsList, TabsPanel, TabsTab } from "@mantine/core";
 import BusinessFormContainer from "./container/businessForm/BusinessFormContainer";
 

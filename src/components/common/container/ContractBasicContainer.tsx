@@ -1,4 +1,6 @@
 "use client";
+import { useEffect } from "react";
+import { useRecoilValue, useSetRecoilState } from "recoil";
 import {
     Button,
     Paper,
@@ -10,14 +12,12 @@ import {
 } from "@mantine/core";
 import { notifications } from "@mantine/notifications";
 import ContractBasicPresentationalForm from "../presentational/ContractBasicPresentationalForm";
-import { Suspense, useEffect } from "react";
 import {
     saveContractBasic,
     updateContractBasic,
 } from "@/lib/contractBasic/api";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
-import { useRecoilValue, useSetRecoilState } from "recoil";
 import {
     contractBasicFormState,
     defaultContractBasicForm,
@@ -27,8 +27,6 @@ import {
     contractBasicFormSchema,
 } from "@/lib/contractBasic/schema";
 import { z } from "zod";
-import { ErrorBoundary } from "react-error-boundary";
-import Loading from "../atoms/Loading";
 
 export type ContractBasicContainerProps = {
     isEdit: boolean;
@@ -109,7 +107,6 @@ const ContractBasicContainer = ({
             <Stack>
                 <Group align="center" justify="space-between">
                     <Title className="mt-4">基本情報</Title>
-                    {/* 詳細時は更新ボタン */}
                     <Group>
                         {isEdit ? (
                             <Button
@@ -120,28 +117,23 @@ const ContractBasicContainer = ({
                                 更新
                             </Button>
                         ) : (
-                            <>
-                                <Button
-                                    type="submit"
-                                    onClick={form.handleSubmit(onSubmit)}
-                                    className="bg-blue-500 hover:bg-blue-600 text-white font-bold py-2 px-4 rounded hover:shadow-lg transition-all duration-200"
-                                >
-                                    登録
-                                </Button>
-                            </>
+                            <Button
+                                type="submit"
+                                onClick={form.handleSubmit(onSubmit)}
+                                className="bg-blue-500 hover:bg-blue-600 text-white font-bold py-2 px-4 rounded hover:shadow-lg transition-all duration-200"
+                            >
+                                登録
+                            </Button>
                         )}
                     </Group>
                 </Group>
             </Stack>
             <Divider className="mt-2" />
             <Box className="grid gap-3">
-                <ErrorBoundary fallback={<p>契約書基本情報</p>}>
-                    <Suspense fallback={<Loading />}>
-                        <ContractBasicPresentationalForm form={form} />
-                    </Suspense>
-                </ErrorBoundary>
+                <ContractBasicPresentationalForm form={form} />
             </Box>
         </Paper>
     );
 };
+
 export default ContractBasicContainer;

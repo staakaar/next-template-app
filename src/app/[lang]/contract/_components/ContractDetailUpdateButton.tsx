@@ -1,9 +1,9 @@
 "use client";
 import { useState } from "react";
 import { Button } from "@mantine/core";
-import updateContractDetails from "@/lib/contractDetails/api";
 import updateContractFiles from "@/lib/contractFile/api";
 import { updateContractBasic } from "@/lib/contractBasic/api";
+import { updateContractDetails } from "@/lib/contractDetails/api";
 
 export function ContractDetailUpdateButton({
     activeTab,

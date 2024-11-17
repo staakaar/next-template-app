@@ -65,7 +65,7 @@ const Layout = ({
                         style={{
                             width: "100%",
                             padding: "1rem",
-                            "@media (min-width: 768px)": {
+                            "@media (minWidth: 768px)": {
                                 padding: "1rem 2rem",
                             },
                         }}

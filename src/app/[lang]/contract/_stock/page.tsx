@@ -1,7 +1,7 @@
 "use client";
 import { redirect, useParams } from "next/navigation";
 import { useSetRecoilState } from "recoil";
-import { selectedContractCodeState } from "@/stores/contracts/atom";
+import { selectedContractCodeState } from "@/stores/contracts/contract";
 import { useEffect } from "react";
 
 const ContractDetailsPage = () => {

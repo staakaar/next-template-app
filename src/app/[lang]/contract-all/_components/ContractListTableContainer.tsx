@@ -14,12 +14,9 @@ import {
 } from "@mantine/core";
 import { IconFilter, IconPlus } from "@tabler/icons-react";
 import ContractListTablePresentation from "./ContractListTablePresentational";
-import { useRecoilValue } from "recoil";
-import { contractListState } from "@/stores/contracts/atom";
 import ContractSearchArea from "@/components/common/ContractSearchArea";
 import ContractAllLoading from "../loading";
 import { ErrorBoundary } from "react-error-boundary";
-import { useFetchContracts } from "@/lib/contract/api";
 import { ContractResponse } from "@/types/api/contract";
 
 /** 常に最新情報を取得 */

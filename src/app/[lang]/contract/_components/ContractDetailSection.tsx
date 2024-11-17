@@ -1,12 +1,12 @@
-"use client";
+// "use client";
 import { Title } from "@mantine/core";
 import { useRecoilValue } from "recoil";
-import { selectedContractSelector } from "@/stores/contracts/atom";
+import { selectedContractSelector } from "@/stores/contracts/contract";
 
 const ContractDetailSection = () => {
-    const contract = useRecoilValue(selectedContractSelector);
-    console.log(contract);
-    if (!contract) return;
+    // const contract = useRecoilValue(selectedContractSelector);
+    // console.log(contract);
+    // if (!contract) return;
 
     return (
         <Title className="text-3xl font-bold flex justify-start">

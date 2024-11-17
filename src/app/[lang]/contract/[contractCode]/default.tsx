@@ -1,5 +1,5 @@
 "use client";
-import { selectedContractCodeState } from "@/stores/contracts/atom";
+import { selectedContractCodeState } from "@/stores/contracts/contract";
 import { redirect, useParams } from "next/navigation";
 import { useEffect } from "react";
 import { useSetRecoilState } from "recoil";

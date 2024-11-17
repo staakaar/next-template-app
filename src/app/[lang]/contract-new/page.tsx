@@ -1,22 +1,13 @@
 "use client";
-import { Button, Divider, Anchor, Card, Box, Title } from "@mantine/core";
+import { Suspense, useState } from "react";
+import dynamic from "next/dynamic";
 import Link from "next/link";
-import { useState } from "react";
 import { redirect, useRouter } from "next/navigation";
 import ContractNewStepper from "@/components/common/ContractNewStepper";
-import dynamic from "next/dynamic";
+import { Divider, Anchor, Card, Box, Title } from "@mantine/core";
 import ContractNewConfirmDialog from "@/components/ContractNewModal";
-import VLoading from "../loading";
-// const CONTRACT_NEW_STEPS: ContractNewStep[] = [
-//     { name: "ContractBasic", label: "基本情報" },
-//     { name: "ContractFile", label: "契約書ファイル" },
-//     { name: "ContractTradeCompany", label: "取引先" },
-//     { name: "ContractDetails", label: "明細" },
-//     { name: "ContractAuthority", label: "権限" },
-//     { name: "RelatedInfo", label: "関連情報" },
-//     { name: "Section", label: "セクション" },
-//     { name: "Workflow", label: "ワークフロー" },
-// ];
+import { ErrorBoundary } from "react-error-boundary";
+import Loading from "@/components/common/atoms/Loading";
 
 export type ContractStep = {
     title: String;
@@ -36,45 +27,48 @@ const ContractSteps: ContractStep[] = [
 // 動的にインポートするコンポーネントを定義
 const ContractBasicContainer = dynamic(
     () => import("@/components/common/container/ContractBasicContainer"),
-    { ssr: false, loading: () => <VLoading /> }
+    {
+        ssr: false,
+        loading: () => <Loading />,
+    }
 );
 const ContractFileContainer = dynamic(
     () => import("@/components/common/container/ContractFileContainer"),
-    { loading: () => <VLoading /> }
+    { loading: () => <Loading /> }
 );
 const TradePartnerCompanyTableContainer = dynamic(
     () =>
         import(
             "@/components/common/container/tradePartner/TradePartnerCompanyTableContainer"
         ),
-    { loading: () => <VLoading /> }
+    { loading: () => <Loading /> }
 );
 const ContractDetailsContainer = dynamic(
     () =>
         import(
             "@/components/common/container/contractDetails/ContractDetailsContainer"
         ),
-    { loading: () => <VLoading /> }
+    { loading: () => <Loading /> }
 );
 const ContractAuthorityContainer = dynamic(
     () => import("@/components/common/container/ContractAuthorityContainer"),
-    { loading: () => <VLoading /> }
+    { loading: () => <Loading /> }
 );
 const ExternalLinkContainer = dynamic(
     () => import("@/components/common/container/ExternalLinkContainer"),
-    { loading: () => <VLoading /> }
+    { loading: () => <Loading /> }
 );
 const RelatedContractContainer = dynamic(
     () => import("@/components/common/container/RelatedContractContainer"),
-    { loading: () => <VLoading /> }
+    { loading: () => <Loading /> }
 );
 const ContractSectionContainer = dynamic(
     () => import("@/components/common/container/ContractSectionContainer"),
-    { loading: () => <VLoading /> }
+    { loading: () => <Loading /> }
 );
 const WorkflowContainer = dynamic(
     () => import("@/components/common/container/WorkflowContainer"),
-    { loading: () => <VLoading /> }
+    { loading: () => <Loading /> }
 );
 
 /** 新規作成ページ */
@@ -146,8 +140,6 @@ const ContractNewPage = () => {
 
     return (
         <>
-            {/* 詳細タブ表示(各ドメイン) */}
-            {/* タブに応じて新規作成ページを切り替える 契約書情報を一番最初に入力する必要あり */}
             <Card className="flex min-h-screen w-full flex-col bg-muted/40">
                 <div className="flex flex-col sm:gap-4 sm:py-4 sm:pl-8">
                     <main className="grid flex-1 items-start gap-4 p-4 sm:px-6 sm:py-0 md:gap-8">
@@ -176,7 +168,11 @@ const ContractNewPage = () => {
                                 className="overflow-auto mx-2"
                                 style={{ maxHeight: "calc(100vh - 200px)" }}
                             >
-                                {renderComponent()}
+                                <ErrorBoundary fallback={<p>error...</p>}>
+                                    <Suspense fallback={<Loading />}>
+                                        {renderComponent()}
+                                    </Suspense>
+                                </ErrorBoundary>
                             </Box>
                         </Card>
                     </main>

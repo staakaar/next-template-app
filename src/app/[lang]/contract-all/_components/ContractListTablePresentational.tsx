@@ -12,7 +12,7 @@ import {
 } from "mantine-datatable";
 import { Card, Text, Group, ActionIcon, TextInput } from "@mantine/core";
 import { IconTrash, IconEdit, IconEye, IconSearch } from "@tabler/icons-react";
-import { contractPageOptionsState } from "@/stores/contracts/atom";
+import { contractPageOptionsState } from "@/stores/contracts/contract";
 import { Contract } from "@/types/api/contract";
 import VTooltip from "@/components/common/atoms/Tooltip";
 

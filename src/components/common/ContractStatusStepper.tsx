@@ -21,7 +21,7 @@ const ContractStatusStepper = () => {
                 styles={(theme) => ({
                     root: {
                         padding: "0 1rem",
-                        "@media (min-width: 768px)": {
+                        "@media (minWidth: 768px)": {
                             padding: "0 2rem",
                         },
                     },
@@ -38,7 +38,7 @@ const ContractStatusStepper = () => {
                             ? theme.colors.blue[6]
                             : undefined,
                         color: activeStep ? theme.white : undefined,
-                        "&[data-completed]": {
+                        "&[dataCompleted]": {
                             backgroundColor: theme.colors.blue[6],
                             color: theme.white,
                         },
