@@ -13,7 +13,7 @@ import {
 } from "mantine-datatable";
 import { Card, Text, Group, ActionIcon, TextInput } from "@mantine/core";
 import { IconTrash, IconEdit, IconEye, IconSearch } from "@tabler/icons-react";
-import { contractPageOptionsState } from "@/stores/contracts/contract";
+import { contractPageOptionsState } from "@/stores/contracts/ContractStore";
 import VTooltip from "@/components/common/atoms/Tooltip";
 import { sort } from "fast-sort";
 import { TradePartnerPerson } from "@/types/api/tradePartner";

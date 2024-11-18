@@ -2,7 +2,6 @@
 import { sort } from "fast-sort";
 import React, { useState, useEffect } from "react";
 import { useRouter } from "next/navigation";
-import { useSetRecoilState } from "recoil";
 import {
     DataTable,
     useDataTableColumns,
@@ -12,7 +11,7 @@ import {
 } from "mantine-datatable";
 import { Card, Text, Group, ActionIcon, TextInput } from "@mantine/core";
 import { IconTrash, IconEdit, IconEye, IconSearch } from "@tabler/icons-react";
-import { contractPageOptionsState } from "@/stores/contracts/contract";
+import { usePaginationStore } from "@/stores/pagination/PaginationStore";
 import { Contract } from "@/types/api/contract";
 import VTooltip from "@/components/common/atoms/Tooltip";
 
@@ -68,7 +67,7 @@ const ContractListTablePresentation = <T extends Contract>({
     }, [contracts, sortStatus]);
 
     const [totalCount, setTotalCount] = useState(initialTotalCount);
-    const setPageOptions = useSetRecoilState(contractPageOptionsState);
+    const { setContractPageOptions } = usePaginationStore();
 
     const navigateToContractDetail: DataTableRowClickHandler<Contract> = ({
         record,

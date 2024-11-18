@@ -1,7 +1,6 @@
 "use client";
 import { redirect, useParams } from "next/navigation";
-import { useSetRecoilState } from "recoil";
-import { selectedContractCodeState } from "@/stores/contracts/contract";
+import { useContractStore } from "@/stores/contracts/ContractStore";
 import { useEffect } from "react";
 
 const ContractDetailsPage = () => {
@@ -13,9 +12,7 @@ const ContractDetailsPage = () => {
         redirect("/contract-all");
     }
 
-    const setSelectedContractCode = useSetRecoilState(
-        selectedContractCodeState
-    );
+    const { setSelectedContractCode } = useContractStore();
 
     console.log("contractDetailContainer", contractCode);
 

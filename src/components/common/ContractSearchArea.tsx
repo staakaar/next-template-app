@@ -61,7 +61,7 @@ const ContractSearchArea = ({ isOpen, onClose }: ContractSearchAreaProps) => {
         departmentId: "",
     } as ContractSearchCondition);
 
-    // 検索条件の状態管理Recoil
+    // 検索条件の状態管理Zustand
 
     // 検索条件をリセット
     const handleReset = () => {};

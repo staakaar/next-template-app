@@ -8,7 +8,7 @@ import { Inter as FontSans } from "next/font/google";
 import { cn } from "@/lib/utils";
 import React from "react";
 import Header from "@/components/organisms/Header";
-import { RecoilRootProvider } from "./recoil";
+// import { RecoilRootProvider } from "./recoil";
 import SideMenu from "@/components/organisms/ContractSideMenu/ContractSideMenu";
 import { i18n, Locale } from "../../../middleware";
 import { dir } from "i18next";
@@ -52,12 +52,12 @@ export default function RootLayout({
                 )}
             >
                 <MantineProviders>
-                    <RecoilRootProvider>
-                        <Header />
-                        <SideMenu />
+                    {/* <RecoilRootProvider> */}
+                    <Header />
+                    <SideMenu />
 
-                        {children}
-                    </RecoilRootProvider>
+                    {children}
+                    {/* </RecoilRootProvider> */}
                 </MantineProviders>
             </body>
         </html>

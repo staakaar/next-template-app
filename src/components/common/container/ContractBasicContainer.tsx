@@ -1,6 +1,5 @@
 "use client";
 import { useEffect } from "react";
-import { useRecoilValue, useSetRecoilState } from "recoil";
 import {
     Button,
     Paper,
@@ -19,9 +18,9 @@ import {
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
 import {
-    contractBasicFormState,
+    useContractBasicStore,
     defaultContractBasicForm,
-} from "@/stores/contractBasic/atom";
+} from "@/stores/contractBasic/ContractBasicStore";
 import {
     ContractBasicFormData,
     contractBasicFormSchema,
@@ -42,8 +41,7 @@ const ContractBasicContainer = ({
     handlePrevious,
 }: ContractBasicContainerProps) => {
     // 状態管理
-    const contractBasic = useRecoilValue(contractBasicFormState);
-    const setContractData = useSetRecoilState(contractBasicFormState);
+    const { contractBasic, setContractBasic } = useContractBasicStore();
 
     const form = useForm<z.infer<typeof contractBasicFormSchema>>({
         resolver: zodResolver(contractBasicFormSchema),

@@ -1,12 +1,12 @@
-"use client";
+// "use client";
 
-import React from "react";
-import { RecoilRoot } from "recoil";
+// import React from "react";
+// import { RecoilRoot } from "recoil";
 
-export function RecoilRootProvider({
-    children,
-}: {
-    children: React.ReactNode;
-}) {
-    return <RecoilRoot>{children}</RecoilRoot>;
-}
+// export function RecoilRootProvider({
+//     children,
+// }: {
+//     children: React.ReactNode;
+// }) {
+//     return <RecoilRoot>{children}</RecoilRoot>;
+// }

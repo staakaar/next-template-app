@@ -1,6 +1,6 @@
 "use client";
 import "@mantine/dropzone/styles.css";
-import { uploadFilesState } from "@/stores/contractFile/atom";
+import { useContractFileStore } from "@/stores/contractFile/ContractFileStore";
 import {
     Box,
     Text,
@@ -25,14 +25,13 @@ import {
     PDF_MIME_TYPE,
 } from "@mantine/dropzone";
 import { useCallback, useEffect, useRef, useState } from "react";
-import { useRecoilState } from "recoil";
 import { Viewer, Worker } from "@react-pdf-viewer/core";
 import { defaultLayoutPlugin } from "@react-pdf-viewer/default-layout";
 import "@react-pdf-viewer/core/lib/styles/index.css";
 import "@react-pdf-viewer/default-layout/lib/styles/index.css";
 import { TrashIcon } from "lucide-react";
 
-interface UploadFile extends FileWithPath {
+interface UploadContractFile extends FileWithPath {
     id: string;
     progress: number;
     status: "uploading" | "done" | "error";
@@ -42,8 +41,7 @@ interface UploadFile extends FileWithPath {
 
 const ContractFilePresentational = (props: Partial<DropzoneProps>) => {
     const openRef = useRef<() => void>(null);
-    const [uploadFiles, setUploadFiles] =
-        useRecoilState<Array<UploadFile>>(uploadFilesState);
+    const { contractFiles, setContractFiles } = useContractFileStore();
     const [selectedFileIndex, setSelectedFileIndex] = useState<number | null>(
         null
     );
@@ -52,7 +50,7 @@ const ContractFilePresentational = (props: Partial<DropzoneProps>) => {
     const defaultLayoutPluginInstance = defaultLayoutPlugin();
 
     /** ファイルのアップロード */
-    const uploadFile = async (file: UploadFile) => {
+    const uploadFile = async (file: UploadContractFile) => {
         const formData = new FormData();
         formData.append("file", file);
 
@@ -68,10 +66,15 @@ const ContractFilePresentational = (props: Partial<DropzoneProps>) => {
                     id: crypto.randomUUID(),
                     progress: 0,
                     status: "uploading" as const,
-                }) as UploadFile
+                }) as UploadContractFile
         );
 
-        setUploadFiles((uploadedFile) => [...uploadedFile, ...newFiles]);
+        const allContractFiles = [
+            ...contractFiles,
+            ...newFiles,
+        ] as UploadContractFile[];
+
+        setContractFiles(allContractFiles);
         setIsUploading(true);
 
         for (const file of newFiles) {
@@ -85,23 +88,25 @@ const ContractFilePresentational = (props: Partial<DropzoneProps>) => {
     /** ファイルの削除 */
     const removeFile = useCallback(
         (index: number) => {
-            setUploadFiles((v) => v.filter((_, i) => i !== index));
+            const filteredFiles = contractFiles.filter((_, i) => i !== index);
+            setContractFiles(filteredFiles);
+
             if (selectedFileIndex === index) {
                 setSelectedFileIndex(null);
             }
         },
-        [selectedFileIndex, setUploadFiles]
+        [selectedFileIndex, setContractFiles]
     );
 
     // クリーンアップ関数
     useEffect(() => {
         return () => {
             // ファイルのプレビューURLを解放
-            uploadFiles.forEach((file) => {
+            contractFiles.forEach((file) => {
                 URL.revokeObjectURL(file.preview);
             });
         };
-    }, [uploadFiles]);
+    }, [contractFiles]);
 
     const handleFileSelect = useCallback((index: number) => {
         setSelectedFileIndex(index);
@@ -164,7 +169,7 @@ const ContractFilePresentational = (props: Partial<DropzoneProps>) => {
             </Dropzone>
 
             <Stack mt={4} align="stretch">
-                {uploadFiles.map((file, index) => (
+                {contractFiles.map((file, index) => (
                     <Group
                         key={file.file.name + index}
                         p={2}
@@ -198,7 +203,7 @@ const ContractFilePresentational = (props: Partial<DropzoneProps>) => {
                 <Box>
                     <Worker workerUrl="https://unpkg.com/pdfjs-dist@3.4.120/build/pdf.worker.min.js">
                         <Viewer
-                            fileUrl={uploadFiles[selectedFileIndex].preview}
+                            fileUrl={contractFiles[selectedFileIndex].preview}
                             plugins={[defaultLayoutPluginInstance]}
                         ></Viewer>
                     </Worker>
