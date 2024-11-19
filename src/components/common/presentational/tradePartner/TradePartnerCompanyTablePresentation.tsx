@@ -11,11 +11,8 @@ import {
     useDataTableColumns,
 } from "mantine-datatable";
 import { useRouter } from "next/navigation";
-import {
-    defaultTradePartnerForm,
-    tradePartnerPageOptionsState,
-} from "@/stores/tradePartner/atom";
-import { useSetRecoilState } from "recoil";
+import { defaultTradePartnerForm } from "@/stores/tradePartner/TradePartnerStore";
+import { usePaginationStore } from "@/stores/pagination/PaginationStore";
 import VTooltip from "../../atoms/Tooltip";
 import { ActionIcon, Group } from "@mantine/core";
 import { IconEdit, IconEye, IconTrash } from "@tabler/icons-react";
@@ -78,7 +75,7 @@ const TradePartnerCompanyTablePresentation = <T extends TradePartner>({
     }, [tradePartnerCompany, sortStatus]);
 
     const [totalCount, setTotalCount] = useState(initialTotalCount);
-    const setPageOptions = useSetRecoilState(tradePartnerPageOptionsState);
+    const setPageOptions = usePaginationStore();
 
     const navigateToTradePartnerPerson: DataTableRowClickHandler<
         TradePartner

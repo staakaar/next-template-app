@@ -1,6 +1,6 @@
 "use client";
 import { useEffect, useState } from "react";
-import { itemPageOptionsState } from "@/stores/contractDetails/atom";
+import { usePaginationStore } from "@/stores/pagination/PaginationStore";
 import { Item } from "@/types/api/contractDetails";
 import { ActionIcon, Group } from "@mantine/core";
 import { IconEdit, IconEye, IconTrash } from "@tabler/icons-react";
@@ -10,7 +10,6 @@ import {
     DataTableSortStatus,
     useDataTableColumns,
 } from "mantine-datatable";
-import { useSetRecoilState } from "recoil";
 import VTooltip from "../../atoms/Tooltip";
 import { sort } from "fast-sort";
 import { useRouter } from "next/navigation";
@@ -65,7 +64,7 @@ const ContractDetailsPresentational = <T extends Item>({
     }, [items, sortStatus]);
 
     const [totalCount, setTotalCount] = useState(initialTotalCount);
-    const setPageOptions = useSetRecoilState(itemPageOptionsState);
+    const setPageOptions = usePaginationStore();
 
     const columns: DataTableColumn<Item>[] = [
         {

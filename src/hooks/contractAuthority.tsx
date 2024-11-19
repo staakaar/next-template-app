@@ -1,9 +1,7 @@
-import { useToast } from "@chakra-ui/react";
 import { useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
-import { useRecoilValue } from "recoil";
+import { useUserProfileStore } from "@/stores/user/userStore";
 import axios from "axios";
-import { userProfileState } from "@/stores/user/userStore";
 
 export type Permission = "edit" | "view";
 export type UserRole = {
@@ -19,9 +17,8 @@ export type DepartmentRole = {
 export const useContractAuthorityCheck = (contractCode: string) => {
     const [permission, setPermission] = useState<Permission>("view");
     // ユーザー情報をstoreに設定
-    const userProfile = useRecoilValue(userProfileState);
+    const { userProfile } = useUserProfileStore();
     const router = useRouter();
-    const toast = useToast();
 
     useEffect(() => {
         const checkPermission = async () => {
@@ -50,24 +47,24 @@ export const useContractAuthorityCheck = (contractCode: string) => {
 
                 // 全社権限設定
 
-                //部署権限設定
+                // 部署権限設定
 
                 // ユーザー権限設定
 
                 // 最も高い権限を設定
-                if (
-                    userPermission === "EDIT" ||
-                    departmentPermission === "EDIT"
-                ) {
-                    setPermission("edit");
-                } else if (
-                    userPermission === "READ" ||
-                    departmentPermission === "READ"
-                ) {
-                    setPermission("view");
-                } else {
-                    setPermission("view"); // デフォルトは'view'
-                }
+                // if (
+                //     userPermission === "EDIT" ||
+                //     departmentPermission === "EDIT"
+                // ) {
+                //     setPermission("edit");
+                // } else if (
+                //     userPermission === "READ" ||
+                //     departmentPermission === "READ"
+                // ) {
+                //     setPermission("view");
+                // } else {
+                //     setPermission("view"); // デフォルトは'view'
+                // }
             } catch (error) {
                 console.error("Error checking permission:", error);
                 setPermission("view");

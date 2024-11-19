@@ -3,7 +3,6 @@
 import React, { useEffect } from "react";
 import { useState } from "react";
 import { useRouter } from "next/navigation";
-import { useSetRecoilState } from "recoil";
 import {
     DataTable,
     useDataTableColumns,
@@ -13,7 +12,7 @@ import {
 } from "mantine-datatable";
 import { Card, Text, Group, ActionIcon, TextInput } from "@mantine/core";
 import { IconTrash, IconEdit, IconEye, IconSearch } from "@tabler/icons-react";
-import { contractPageOptionsState } from "@/stores/contracts/ContractStore";
+import { usePaginationStore } from "@/stores/pagination/PaginationStore";
 import VTooltip from "@/components/common/atoms/Tooltip";
 import { sort } from "fast-sort";
 import { TradePartnerPerson } from "@/types/api/tradePartner";
@@ -70,7 +69,7 @@ const TradePartnerPersonDrawerPresentation = <T extends TradePartnerPerson>({
     }, [tradePartnerPerson, sortStatus]);
 
     const [totalCount, setTotalCount] = useState(initialTotalCount);
-    const setPageOptions = useSetRecoilState(contractPageOptionsState);
+    const setPageOptions = usePaginationStore();
 
     const navigateToContractDetail: DataTableRowClickHandler<
         TradePartnerPerson

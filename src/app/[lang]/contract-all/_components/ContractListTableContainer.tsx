@@ -18,6 +18,7 @@ import ContractSearchArea from "@/components/common/ContractSearchArea";
 import ContractAllLoading from "../loading";
 import { ErrorBoundary } from "react-error-boundary";
 import { ContractResponse } from "@/types/api/contract";
+import { useTranslation } from "@/app/i18n";
 
 /** 常に最新情報を取得 */
 // export const dynamic = "force-dynamic";
