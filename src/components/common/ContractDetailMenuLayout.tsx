@@ -13,7 +13,7 @@ import WorkflowContainer from "@/components/common/container/WorkflowContainer";
 import { useParams, useRouter } from "next/navigation";
 import { ReactNode, useState } from "react";
 import ContractBasicContainer from "./container/ContractBasicContainer";
-import { useContractStore } from "@/stores/contracts/ContractStore";
+import useContractStore from "@/stores/contracts/ContractStore";
 import { Tabs, TabsList, TabsPanel, TabsTab } from "@mantine/core";
 import BusinessFormContainer from "./container/businessForm/BusinessFormContainer";
 

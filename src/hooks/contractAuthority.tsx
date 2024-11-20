@@ -1,6 +1,6 @@
 import { useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
-import { useUserProfileStore } from "@/stores/user/userStore";
+import useUserProfileStore from "@/stores/user/UserStore";
 import axios from "axios";
 
 export type Permission = "edit" | "view";

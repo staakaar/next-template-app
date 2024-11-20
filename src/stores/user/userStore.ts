@@ -25,7 +25,7 @@ export type UserProfileState = {
     resetUserProfile: () => void;
 };
 
-export const useUserProfileStore = create<UserProfileState>()(
+const useUserProfileStore = create<UserProfileState>()(
     persist(
         (set) => ({
             userProfile: {
@@ -50,3 +50,5 @@ export const useUserProfileStore = create<UserProfileState>()(
         }
     )
 );
+
+export default useUserProfileStore;

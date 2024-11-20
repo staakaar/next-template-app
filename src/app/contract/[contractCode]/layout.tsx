@@ -124,15 +124,10 @@ const Layout = ({
                                 workflow={workflow}
                                 businessForm={businessForm}
                             />
-                            {/* <Divider /> */}
                             <Box
                                 flex={1}
                                 className="flex-1 lg:max-w-2xl: bg-black-alpha-200"
-                            >
-                                {/* {tabs} */}
-                                {/* {contractBasic}
-                                {contractTrade} */}
-                            </Box>
+                            ></Box>
                             {children}
                         </Stack>
                     </Box>

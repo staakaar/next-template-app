@@ -1,6 +1,6 @@
 // "use client";
 import { Title } from "@mantine/core";
-import { useContractStore } from "@/stores/contracts/ContractStore";
+import useContractStore from "@/stores/contracts/ContractStore";
 
 const ContractDetailSection = () => {
     const contract = useContractStore();

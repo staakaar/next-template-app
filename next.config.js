@@ -1,5 +1,8 @@
 import path from "node:path";
 import bundleAnalyzer from "@next/bundle-analyzer";
+import { createNextIntlPlugin } from "next-intl/plugin";
+
+const withNextIntl = createNextIntlPlugin();
 
 const withBundleAnalyzer = bundleAnalyzer({
     enabled: process.env.ANALYZE == "true",
@@ -47,13 +50,7 @@ const nextConfig = {
             // ルートパスからのリダイレクト
             {
                 source: "/",
-                destination: "/ja/contract-all",
-                permanent: true,
-            },
-            // 言語パスのみの場合のリダイレクト
-            {
-                source: "/:lang(ja|en)",
-                destination: "/:lang/contract-all",
+                destination: "/contract-all",
                 permanent: true,
             },
         ];
@@ -67,4 +64,4 @@ const nextConfig = {
     },
 };
 
-export default withBundleAnalyzer(nextConfig);
+export default withNextIntl(withBundleAnalyzer(nextConfig));

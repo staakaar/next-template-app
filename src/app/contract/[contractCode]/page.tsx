@@ -1,9 +1,9 @@
 "use client";
+import useContractStore from "@/stores/contracts/ContractStore";
 import { redirect, useParams } from "next/navigation";
-import { useContractStore } from "@/stores/contracts/ContractStore";
 import { useEffect } from "react";
 
-const ContractDetailsPage = () => {
+const ContractDetail = () => {
     const params = useParams();
     const contractCode = params.contractCode;
     console.log(contractCode);
@@ -21,8 +21,7 @@ const ContractDetailsPage = () => {
     useEffect(() => {
         setSelectedContractCode(contractCode);
     }, [contractCode, setSelectedContractCode]);
-
-    return <></>;
+    return null;
 };
 
-export default ContractDetailsPage;
+export default ContractDetail;

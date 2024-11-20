@@ -12,18 +12,12 @@ import {
 import { IconChevronDown } from "@tabler/icons-react";
 import classes from "./LanguagePicker.module.css";
 
-const data = [
-    { label: "English" },
-    { label: "German" },
-    { label: "Italian" },
-    { label: "French" },
-    { label: "Polish" },
-];
+const languages = [{ label: "日本語" }, { label: "英語" }];
 
-export function LanguagePicker() {
+const LanguagePicker = () => {
     const [opened, setOpened] = useState(false);
-    const [selected, setSelected] = useState(data[0]);
-    const items = data.map((item) => (
+    const [selected, setSelected] = useState(languages[0]);
+    const items = languages.map((item) => (
         <MenuItem onClick={() => setSelected(item)} key={item.label}>
             {item.label}
         </MenuItem>
@@ -55,4 +49,6 @@ export function LanguagePicker() {
             <MenuDropdown>{items}</MenuDropdown>
         </Menu>
     );
-}
+};
+
+export default LanguagePicker;

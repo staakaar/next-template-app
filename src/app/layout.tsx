@@ -1,3 +1,5 @@
+import { NextIntlClientProvider } from "next-intl";
+import { getLocale, getMessages } from "next-intl/server";
 import { MantineProviders } from "./providers";
 import { ColorSchemeScript } from "@mantine/core";
 import "@mantine/core/styles.layer.css";
@@ -8,35 +10,33 @@ import { Inter as FontSans } from "next/font/google";
 import { cn } from "@/lib/utils";
 import React from "react";
 import Header from "@/components/organisms/Header";
-// import { RecoilRootProvider } from "./recoil";
 import SideMenu from "@/components/organisms/ContractSideMenu/ContractSideMenu";
-import { i18n, Locale } from "../../../middleware";
-import { dir } from "i18next";
 
 const fontSans = FontSans({
     subsets: ["latin"],
     variable: "--font-sans",
 });
 
-export async function generateStaticParams() {
-    return i18n.locales.map((locale) => ({ lang: locale }));
-}
+// export async function generateStaticParams() {
+//     return i18n.locales.map((locale) => ({ lang: locale }));
+// }
 
 export const metadata: Metadata = {
     title: "Contract",
     description: "contract app",
 };
 
-export default function RootLayout({
+export default async function RootLayout({
     children,
-    params,
 }: Readonly<{
     children: React.ReactNode;
-    params: any;
 }>) {
-    const { lang }: any = React.use(params);
+    const locale = await getLocale();
+
+    const messages = await getMessages();
+
     return (
-        <html lang={lang} dir={dir(lang)} suppressHydrationWarning>
+        <html lang={locale} suppressHydrationWarning>
             <head>
                 <meta charSet="UTF-8" />
                 <meta
@@ -51,14 +51,14 @@ export default function RootLayout({
                     fontSans.variable
                 )}
             >
-                <MantineProviders>
-                    {/* <RecoilRootProvider> */}
-                    <Header />
-                    <SideMenu />
+                <NextIntlClientProvider messages={messages}>
+                    <MantineProviders>
+                        <Header />
+                        <SideMenu />
 
-                    {children}
-                    {/* </RecoilRootProvider> */}
-                </MantineProviders>
+                        {children}
+                    </MantineProviders>
+                </NextIntlClientProvider>
             </body>
         </html>
     );

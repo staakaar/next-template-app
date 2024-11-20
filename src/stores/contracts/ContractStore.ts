@@ -1,4 +1,3 @@
-// import { useFetchContracts } from "@/lib/contract/api";
 import { Contract } from "@/types/api/contract";
 import { create } from "zustand";
 import { createJSONStorage, persist } from "zustand/middleware";
@@ -16,7 +15,7 @@ export type ContractState = {
     resetSelectedContractCode: () => void;
 };
 
-export const useContractStore = create<ContractState>()(
+const useContractStore = create<ContractState>()(
     persist(
         (set) => ({
             contracts: [],
@@ -40,3 +39,5 @@ export const useContractStore = create<ContractState>()(
         }
     )
 );
+
+export default useContractStore;

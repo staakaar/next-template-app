@@ -14,7 +14,7 @@ export type Locale = (typeof i18n)["locales"][number];
 
 acceptLanguage.languages(i18n.locales);
 
-function getLocale(request: NextRequest): string | undefined {
+export function getLocale(request: NextRequest): string | undefined {
     // Negotiator expects plain object so we need to transform headers
     const negotiatorHeaders: Record<string, string> = {};
     request.headers.forEach((value, key) => (negotiatorHeaders[key] = value));
