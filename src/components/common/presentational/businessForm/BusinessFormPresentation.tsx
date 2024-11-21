@@ -3,7 +3,13 @@ import { Tabs, TabsList, TabsTab, TabsPanel } from "@mantine/core";
 const BusinessFormPresentation = () => {
     return (
         <>
-            <Tabs orientation="horizontal" defaultValue="list">
+            <Tabs
+                className="mt-6"
+                autoContrast
+                variant="pills"
+                orientation="horizontal"
+                defaultValue="businessFormContract"
+            >
                 <TabsList>
                     <TabsTab value="businessFormContract">契約情報</TabsTab>
                     <TabsTab value="businessFormPartner">取引先</TabsTab>

@@ -5,7 +5,13 @@ import TradePartnerCompanyTableContainer from "../container/tradePartner/TradePa
 const TradePartnerPresentational = () => {
     return (
         <>
-            <Tabs orientation="horizontal" defaultValue="list">
+            <Tabs
+                autoContrast
+                variant="pills"
+                orientation="horizontal"
+                defaultValue="list"
+                className="mt-4"
+            >
                 <TabsList>
                     <TabsTab value="list">一覧</TabsTab>
                     <TabsTab value="add">取引先追加</TabsTab>

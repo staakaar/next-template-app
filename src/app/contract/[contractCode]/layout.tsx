@@ -124,10 +124,7 @@ const Layout = ({
                                 workflow={workflow}
                                 businessForm={businessForm}
                             />
-                            <Box
-                                flex={1}
-                                className="flex-1 lg:max-w-2xl: bg-black-alpha-200"
-                            ></Box>
+                            <Box className="flex-1 lg:max-w-2xl: bg-black-alpha-200"></Box>
                             {children}
                         </Stack>
                     </Box>

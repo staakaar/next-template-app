@@ -27,7 +27,7 @@ import {
     IconQuestionMark,
 } from "@tabler/icons-react";
 import Link from "next/link";
-import LanguagePicker from "./LanguagePicker/LanguagePicker";
+import LocaleSwitcher from "./LocaleSwitcher";
 
 const Header = () => {
     return (
@@ -163,7 +163,7 @@ const Header = () => {
 
                     {/* 右側: ヘルプ、会社名、ユーザーメニュー */}
                     <Group>
-                        <LanguagePicker />
+                        <LocaleSwitcher />
                         <ActionIcon
                             variant="subtle"
                             size="lg"

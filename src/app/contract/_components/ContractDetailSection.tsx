@@ -1,4 +1,4 @@
-// "use client";
+"use client";
 import { Title } from "@mantine/core";
 import useContractStore from "@/stores/contracts/ContractStore";
 

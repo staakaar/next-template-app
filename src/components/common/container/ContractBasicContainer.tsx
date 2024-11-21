@@ -101,7 +101,7 @@ const ContractBasicContainer = ({
     };
 
     return (
-        <Paper shadow="xs" p="md">
+        <Paper shadow="xs" p="md" className="mt-4">
             <Stack>
                 <Group align="center" justify="space-between">
                     <Title className="mt-4">基本情報</Title>

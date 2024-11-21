@@ -1,8 +1,8 @@
 import path from "node:path";
 import bundleAnalyzer from "@next/bundle-analyzer";
-import { createNextIntlPlugin } from "next-intl/plugin";
+import createNextIntlPlugin from "next-intl/plugin";
 
-const withNextIntl = createNextIntlPlugin();
+const withNextIntl = createNextIntlPlugin("./src/app/i18n/request.ts");
 
 const withBundleAnalyzer = bundleAnalyzer({
     enabled: process.env.ANALYZE == "true",
@@ -41,7 +41,7 @@ const nextConfig = {
     //     return [
     //         {
     //             source: "",
-    //             destination: "/ja/contract-all"
+    //             destination: "/contract-all"
     //         }
     //     ]
     // },

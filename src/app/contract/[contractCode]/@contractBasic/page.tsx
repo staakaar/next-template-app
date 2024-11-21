@@ -1,4 +1,4 @@
-// "use client";
+"use client";
 import Loading from "@/components/common/atoms/Loading";
 import ContractBasicContainer from "@/components/common/container/ContractBasicContainer";
 import useContractStore from "@/stores/contracts/ContractStore";

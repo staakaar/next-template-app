@@ -161,7 +161,7 @@ const ContractFilePresentational = (props: Partial<DropzoneProps>) => {
                         </Text>
                         <Group justify="center" mt="md">
                             <Button onClick={() => openRef.current?.()}>
-                                Select files
+                                ファイルを選択
                             </Button>
                         </Group>
                     </div>
