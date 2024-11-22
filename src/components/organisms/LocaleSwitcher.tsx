@@ -1,5 +1,5 @@
 import { useLocale, useTranslations } from "next-intl";
-import LocaleSwitcherSelect from "./LocaleSwitcherSelect";
+import LocaleSwitcherMenu from "./LocaleSwitcherMenu";
 
 const LocaleSwitcher = () => {
     const t = useTranslations("LocaleSwitcher");
@@ -11,7 +11,7 @@ const LocaleSwitcher = () => {
     ];
 
     return (
-        <LocaleSwitcherSelect
+        <LocaleSwitcherMenu
             defaultValue={locale}
             items={items}
             label={t("label")}

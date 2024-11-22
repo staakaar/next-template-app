@@ -1,1 +1,28 @@
-{}
+{
+    "AppLayout": {
+        "home": "ホーム",
+        "logout": "ログアウト",
+        "profile": "プロフィール"
+    },
+    "Header": {
+        "title": "ホーム"
+    },
+    "LocaleSwitcher": {
+        "en": "英語",
+        "ja": "日本語",
+        "label": "言語"
+    },
+    "ContractAllPage": {
+        "credentials": "クレデンシャル",
+        "description": "説明",
+        "email": "メール",
+        "invalidEmail": "無効なメールアドレスです。",
+        "invalidPassword": "無効なパスワードです。",
+        "login": "サインイン",
+        "password": "パスワード",
+        "title": "タイトル"
+    },
+    "ProfilePage": {
+        "title": "プロフィール"
+    }
+}

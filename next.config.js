@@ -12,6 +12,7 @@ const withBundleAnalyzer = bundleAnalyzer({
 const nextConfig = {
     reactStrictMode: true,
     // experimental: { esmExternals: true },
+    transpilePackages: ["@mantine/core", "@mantine/hooks"],
     experimental: {
         turbo: {
             resolveExtensions: [

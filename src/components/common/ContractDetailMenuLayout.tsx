@@ -3,7 +3,8 @@ import NavLink from "@/components/atoms/NavigationLink/NavigationLink";
 import { useParams, useRouter } from "next/navigation";
 import { ReactNode, useState } from "react";
 import useContractStore from "@/stores/contracts/ContractStore";
-import { Tabs, TabsList, TabsPanel, TabsTab } from "@mantine/core";
+import { rem, Tabs, TabsList, TabsPanel, TabsTab } from "@mantine/core";
+import { IconSettings } from "@tabler/icons-react";
 
 interface ContractDetailMenuProps {
     contractBasic: ReactNode;
@@ -34,73 +35,85 @@ const ContractDetailMenuLayout = ({
     workflow,
     businessForm,
 }: ContractDetailMenuProps) => {
-    const params = useParams();
-    const contractCode = params.contractCode;
-    const router = useRouter();
     const { selectedContractCode } = useContractStore();
     console.log("contractDetailMenuLayout", selectedContractCode);
 
+    const iconStyle = { width: rem(12), height: rem(12) };
+
     const [activeMenu, setActiveMenu] = useState("basic");
+    /** TODO: セクション連携した場合はこちらの配列の該当箇所に追加する */
     const sideMenu = [
         {
             id: "basic",
             url: `/contract/${selectedContractCode}/contractBasic`,
             label: "基本情報",
+            icon: <IconSettings style={iconStyle} />,
         },
         {
             id: "tradePartner",
             url: `/contract/${selectedContractCode}/contractTrade`,
             label: "取引先",
+            icon: <IconSettings style={iconStyle} />,
         },
         {
             id: "file",
             url: `contract-file`,
             label: "ファイル",
+            icon: <IconSettings style={iconStyle} />,
         },
         {
             id: "details",
             url: `contract-details`,
             label: "明細",
+            icon: <IconSettings style={iconStyle} />,
         },
         {
             id: "externalLink",
             url: `external-link`,
             label: "外部連携",
+            icon: <IconSettings style={iconStyle} />,
         },
         {
             id: "section",
             url: `section`,
             label: "セクション",
+            icon: <IconSettings style={iconStyle} />,
         },
         {
             id: "ownCompany",
             url: `own-company`,
             label: "自社情報",
+            icon: <IconSettings style={iconStyle} />,
         },
         {
             id: "authority",
             url: `contract-authority`,
             label: "権限",
+            icon: <IconSettings style={iconStyle} />,
         },
         {
             id: "relatedInfo",
             url: `related-info`,
             label: "関連情報",
+            icon: <IconSettings style={iconStyle} />,
         },
         {
             id: "workflow",
             url: `workflow`,
             label: "WF",
+            icon: <IconSettings style={iconStyle} />,
         },
         {
             id: "history",
             url: `contract-history`,
             label: "履歴",
+            icon: <IconSettings style={iconStyle} />,
         },
         {
             id: "businessForm",
             url: `business-form`,
             label: "帳票",
+            icon: <IconSettings style={iconStyle} />,
         },
     ];
 
@@ -113,6 +126,7 @@ const ContractDetailMenuLayout = ({
                         value={menu.id}
                         color="blue"
                         onClick={() => setActiveMenu(menu.id)}
+                        leftSection={menu.icon}
                     >
                         {/* <NavLink
                             key={menu.id}
