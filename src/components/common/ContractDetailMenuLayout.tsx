@@ -127,17 +127,11 @@ const ContractDetailMenuLayout = ({
                         color="blue"
                         onClick={() => setActiveMenu(menu.id)}
                         leftSection={menu.icon}
+                        className={
+                            activeMenu === menu.id ? "text-blue-500" : ""
+                        }
                     >
-                        {/* <NavLink
-                            key={menu.id}
-                            href={``}
-                            isActive={activeMenu === menu.id}
-                            onClick={() => {
-                                setActiveMenu(menu.id);
-                            }}
-                        > */}
                         {menu.label}
-                        {/* </NavLink> */}
                     </TabsTab>
                 ))}
             </TabsList>

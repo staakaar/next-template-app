@@ -119,24 +119,6 @@ const TradePartnerTablePresentation = <T extends TradePartner>({
                 />
             ),
         },
-        {
-            accessor: "actions",
-            title: "",
-            textAlign: "right",
-            render: (tradePartner: TradePartner) => (
-                <Group gap={4} justify="right" wrap="nowrap">
-                    <ActionIcon size="sm" variant="subtle" color="green">
-                        <IconEye size={16} />
-                    </ActionIcon>
-                    <ActionIcon size="sm" variant="subtle" color="blue">
-                        <IconEdit size={16} />
-                    </ActionIcon>
-                    <ActionIcon size="sm" variant="subtle" color="red">
-                        <IconTrash size={16} />
-                    </ActionIcon>
-                </Group>
-            ),
-        },
     ];
 
     const { effectiveColumns } = useDataTableColumns<TradePartner>({

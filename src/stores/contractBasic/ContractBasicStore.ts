@@ -7,6 +7,7 @@ export type Role = "admin" | "user" | "manager";
 export type ContractBasic = {
     contractCode: string;
     contractName: string;
+    status: string;
     firstName: string;
     lastName: string;
     email: string;
@@ -21,6 +22,7 @@ export type ContractBasic = {
 export const defaultContractBasicForm: ContractBasicFormData = Object.freeze({
     contractCode: "",
     contractName: "",
+    status: "",
     firstName: "",
     lastName: "",
     email: "",

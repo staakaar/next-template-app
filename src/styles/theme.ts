@@ -1,7 +1,8 @@
 import { createTheme } from "@mantine/core";
 
 const theme = createTheme({
-    fontFamily: "serif",
+    fontFamily: "Arial sans-serif",
+    fontFamilyMonospace: "Courier New, monospace",
     colors: {
         blue: [
             "#e7f5ff",
