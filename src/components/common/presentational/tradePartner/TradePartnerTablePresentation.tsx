@@ -156,7 +156,7 @@ const TradePartnerTablePresentation = <T extends TradePartner>({
             onSortStatusChange={setSortStatus}
             onPageChange={(p) => setPage(p)}
             onRecordsPerPageChange={setPageSize}
-            key={"tradePersonId"}
+            idAccessor="tradePersonId"
             styles={{
                 pagination: {
                     display: "flex",

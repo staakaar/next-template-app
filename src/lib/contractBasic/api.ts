@@ -1,6 +1,6 @@
 "use server";
 
-import { contractBasicFormSchema, ContractBasicFormData } from "./schema";
+import { contractBasicFormSchema, ContractBasicForm } from "./schema";
 
 export type ContractBasicRequest = {
     contractCode: string;
@@ -13,7 +13,7 @@ export type ResponseMessage = {
 };
 
 export async function saveContractBasic(
-    formData: ContractBasicFormData
+    formData: ContractBasicForm
 ): Promise<ResponseMessage | void> {
     const validatedData = contractBasicFormSchema.parse(formData);
 

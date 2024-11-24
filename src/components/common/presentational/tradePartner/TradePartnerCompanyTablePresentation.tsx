@@ -186,6 +186,7 @@ const TradePartnerCompanyTablePresentation = <T extends TradePartner>({
                 onRowClick={navigateToTradePartnerPerson}
                 onPageChange={(p) => setPage(p)}
                 onRecordsPerPageChange={setPageSize}
+                idAccessor="tradePersonId"
                 styles={{
                     pagination: {
                         display: "flex",

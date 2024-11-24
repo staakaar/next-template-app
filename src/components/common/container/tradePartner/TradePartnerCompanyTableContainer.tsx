@@ -1,8 +1,9 @@
 "use client";
 import { useFetchTradePartner } from "@/lib/tradePartner/api";
-import { useState } from "react";
+import { Suspense, useState } from "react";
 import TradePartnerCompanyTablePresentation from "../../presentational/tradePartner/TradePartnerCompanyTablePresentation";
 import React from "react";
+import Loading from "../../atoms/Loading";
 
 const TradePartnerCompanyTableContainer = () => {
     const [page, setPage] = useState(0);
@@ -14,10 +15,12 @@ const TradePartnerCompanyTableContainer = () => {
 
     return (
         <>
-            <TradePartnerCompanyTablePresentation
-                tradePartnerCompany={data.tradePartner}
-                initialTotalCount={data.totalCount}
-            />
+            <Suspense fallback={<Loading />}>
+                <TradePartnerCompanyTablePresentation
+                    tradePartnerCompany={data.tradePartner}
+                    initialTotalCount={data.totalCount}
+                />
+            </Suspense>
         </>
     );
 };

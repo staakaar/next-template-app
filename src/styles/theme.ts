@@ -3,6 +3,7 @@ import { createTheme } from "@mantine/core";
 const theme = createTheme({
     fontFamily: "Arial sans-serif",
     fontFamilyMonospace: "Courier New, monospace",
+    cursorType: "pointer",
     colors: {
         blue: [
             "#e7f5ff",

@@ -1,5 +1,4 @@
 "use client";
-import { useEffect } from "react";
 import {
     Button,
     Paper,
@@ -22,10 +21,11 @@ import {
     defaultContractBasicForm,
 } from "@/stores/contractBasic/ContractBasicStore";
 import {
-    ContractBasicFormData,
+    ContractBasicForm,
     contractBasicFormSchema,
 } from "@/lib/contractBasic/schema";
 import { z } from "zod";
+import { useContractBasic } from "@/api/contract-basic/contract-basic";
 
 export type ContractBasicContainerProps = {
     isEdit: boolean;
@@ -40,49 +40,54 @@ const ContractBasicContainer = ({
     handleNext,
     handlePrevious,
 }: ContractBasicContainerProps) => {
+    // fetch
+    const { contractBasic, isLoading, isError, mutate } =
+        useContractBasic(contractCode);
     // 状態管理
-    const { contractBasic, setContractBasic } = useContractBasicStore();
+    // const { setContractBasic } = useContractBasicStore();
 
     const form = useForm<z.infer<typeof contractBasicFormSchema>>({
         resolver: zodResolver(contractBasicFormSchema),
         defaultValues: isEdit ? contractBasic : defaultContractBasicForm,
     });
 
-    useEffect(() => {
-        if (isEdit && contractCode) {
-            const fetchContractBasic = async () => {
-                try {
-                    const response = await fetch(
-                        `api/contracts/${contractCode}`
-                    );
-                    const data = await response.json();
-                    form.reset(data);
-                } catch (error) {
-                    console.log("基本情報の取得に失敗しました。", error);
-                    notifications.show({
-                        title: "エラー",
-                        message: "エラーが発生しました。",
-                        color: "red",
-                    });
-                }
-            };
+    // useEffect(() => {
+    //     if (isEdit && contractCode) {
+    //         const fetchContractBasic = async () => {
+    //             try {
+    //                 const response = await fetch(
+    //                     `api/contracts/${contractCode}`
+    //                 );
+    //                 const data = await response.json();
+    //                 form.reset(data);
+    //             } catch (error) {
+    //                 console.log("基本情報の取得に失敗しました。", error);
+    //                 notifications.show({
+    //                     title: "エラー",
+    //                     message: "エラーが発生しました。",
+    //                     color: "red",
+    //                 });
+    //             }
+    //         };
 
-            fetchContractBasic();
-        }
-    }, [isEdit, contractCode, form]);
+    //         fetchContractBasic();
+    //     }
+    // }, [isEdit, contractCode, form]);
 
     const save = () => {};
 
     const update = () => {};
 
     // 新規作成と更新時
-    const onSubmit = async (request: ContractBasicFormData) => {
+    const onSubmit = async (request: ContractBasicForm) => {
         let result;
         if (isEdit) {
             result = await updateContractBasic(contractCode);
         } else {
             result = await saveContractBasic(request);
         }
+
+        await mutate();
 
         if (result) {
             // 成功後の処理（例：次のステップに進む、リダイレクトするなど）

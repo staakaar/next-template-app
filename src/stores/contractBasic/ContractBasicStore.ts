@@ -1,6 +1,6 @@
 import { create } from "zustand";
 import { createJSONStorage, persist } from "zustand/middleware";
-import { ContractBasicFormData } from "@/lib/contractBasic/schema";
+import { ContractBasicForm } from "@/lib/contractBasic/schema";
 
 export type Role = "admin" | "user" | "manager";
 
@@ -19,19 +19,18 @@ export type ContractBasic = {
     comments: string;
 };
 
-export const defaultContractBasicForm: ContractBasicFormData = Object.freeze({
+export const defaultContractBasicForm: ContractBasicForm = Object.freeze({
     contractCode: "",
     contractName: "",
+    issuanceType: "",
     status: "",
-    firstName: "",
-    lastName: "",
-    email: "",
-    phone: "",
+    contractConclusionDate: "",
+    contractStartDate: "",
+    contractEndDate: "",
+    placeholder: "",
     role: "admin",
-    department: "",
-    startDate: "",
-    salary: "0",
-    comments: "",
+    isCancel: false,
+    remarks: "",
 });
 
 export type ContractBasicState = {
