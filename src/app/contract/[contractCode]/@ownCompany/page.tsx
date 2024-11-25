@@ -4,11 +4,11 @@ import useOwnCompanyStore from "@/stores/ownCompany/OwnCompanyStore";
 import { Suspense } from "react";
 
 const OwnCompanyTab = () => {
-    const { ownCompany } = useOwnCompanyStore();
+    // const { ownCompany } = useOwnCompanyStore();
 
     return (
         <Suspense fallback={<Loading />}>
-            <OwnCompanyContainer isEdit={true} contractCode={""} />
+            <OwnCompanyContainer isEdit={true} />
         </Suspense>
     );
 };

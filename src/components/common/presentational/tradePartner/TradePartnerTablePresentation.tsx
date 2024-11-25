@@ -26,8 +26,6 @@ const TradePartnerTablePresentation = <T extends TradePartner>({
     tradePartner,
     initialTotalCount,
 }: TradePartnerTableProps<T>) => {
-    const router = useRouter();
-
     const [pageSize, setPageSize] = useState(PAGE_SIZES[2]);
 
     useEffect(() => {
@@ -68,7 +66,7 @@ const TradePartnerTablePresentation = <T extends TradePartner>({
     }, [tradePartner, sortStatus]);
 
     const [totalCount, setTotalCount] = useState(initialTotalCount);
-    const setPageOptions = usePaginationStore();
+    const { setTradePartnerPageOptions } = usePaginationStore();
 
     const columns: DataTableColumn<TradePartner>[] = [
         {

@@ -38,7 +38,7 @@ const TradePartnerPersonDrawerPresentation = <T extends TradePartnerPerson>({
     const [sortStatus, setSortStatus] = useState<
         DataTableSortStatus<TradePartnerPerson>
     >({
-        columnAccessor: "contractCode",
+        columnAccessor: "tradePersonId",
         direction: "asc",
     });
 
@@ -69,7 +69,7 @@ const TradePartnerPersonDrawerPresentation = <T extends TradePartnerPerson>({
     }, [tradePartnerPerson, sortStatus]);
 
     const [totalCount, setTotalCount] = useState(initialTotalCount);
-    const setPageOptions = usePaginationStore();
+    const { setTradePartnerPageOptions } = usePaginationStore();
 
     const navigateToContractDetail: DataTableRowClickHandler<
         TradePartnerPerson
@@ -157,7 +157,7 @@ const TradePartnerPersonDrawerPresentation = <T extends TradePartnerPerson>({
             ),
         },
         {
-            accessor: "contractStatus",
+            accessor: "tradePersonEmailAddress",
             title: "取引先担当者メールアドレス",
             sortable: true,
             render: (tradePartnerPerson: TradePartnerPerson) => (
@@ -169,7 +169,7 @@ const TradePartnerPersonDrawerPresentation = <T extends TradePartnerPerson>({
             ),
         },
         {
-            accessor: "tradePartner",
+            accessor: "tradePartnerDepartmentId",
             title: "取引先担当部署ID",
             sortable: true,
             render: (tradePartnerPerson: TradePartnerPerson) => (
@@ -181,7 +181,7 @@ const TradePartnerPersonDrawerPresentation = <T extends TradePartnerPerson>({
             ),
         },
         {
-            accessor: "contractPersonInCharge",
+            accessor: "tradePartnerDepartmentName",
             title: "取引先担当部署名",
             sortable: true,
             render: (tradePartnerPerson: TradePartnerPerson) => (
@@ -264,7 +264,7 @@ const TradePartnerPersonDrawerPresentation = <T extends TradePartnerPerson>({
                     onRowClick={navigateToContractDetail}
                     onPageChange={(p) => setPage(p)}
                     onRecordsPerPageChange={setPageSize}
-                    idAccessor="contractCode"
+                    idAccessor="tradePersonId"
                     styles={{
                         pagination: {
                             display: "flex",

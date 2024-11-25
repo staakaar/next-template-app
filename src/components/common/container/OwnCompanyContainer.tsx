@@ -1,3 +1,4 @@
+"use client";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { z } from "zod";
@@ -16,21 +17,23 @@ import {
 import { notifications } from "@mantine/notifications";
 import { saveOwnCompany, updateOwnCompany } from "@/lib/ownCompany/api";
 import OwnCompanyPresentationalForm from "../presentational/OwnCompanyPresentationalForm";
+import useContractStore from "@/stores/contracts/ContractStore";
 
 export type OwnCompanyContainerProps = {
     isEdit: boolean;
-    contractCode: string; // 新規作成時は空
+    // contractCode: string; // 新規作成時は空
     // handleNext?: () => void;
     // handlePrevious?: () => void;
 };
 
 const OwnCompanyContainer = ({
     isEdit,
-    contractCode = "",
+    // contractCode = "",
 }: OwnCompanyContainerProps) => {
+    const { selectedContractCode } = useContractStore();
     // fetch
     const { ownCompany, isLoading, isError, mutate } =
-        useOwnCompany(contractCode);
+        useOwnCompany(selectedContractCode);
 
     const form = useForm<z.infer<typeof ownCompanyFormSchema>>({
         resolver: zodResolver(ownCompanyFormSchema),
@@ -45,7 +48,7 @@ const OwnCompanyContainer = ({
     const onSubmit = async (request: OwnCompanyForm) => {
         let result;
         if (isEdit) {
-            result = await updateOwnCompany(contractCode);
+            result = await updateOwnCompany(selectedContractCode);
         } else {
             result = await saveOwnCompany(request);
         }

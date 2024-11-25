@@ -32,7 +32,6 @@ const TradePartnerCompanyTablePresentation = <T extends TradePartner>({
     /** ドロワー */
     const [opened, { open, close }] = useDisclosure(false);
 
-    const router = useRouter();
     const [selectedRow, setSelectedRow] = useState(defaultTradePartnerForm);
 
     const [pageSize, setPageSize] = useState(PAGE_SIZES[2]);
@@ -75,7 +74,7 @@ const TradePartnerCompanyTablePresentation = <T extends TradePartner>({
     }, [tradePartnerCompany, sortStatus]);
 
     const [totalCount, setTotalCount] = useState(initialTotalCount);
-    const setPageOptions = usePaginationStore();
+    const { setTradePartnerPageOptions } = usePaginationStore();
 
     const navigateToTradePartnerPerson: DataTableRowClickHandler<
         TradePartner
