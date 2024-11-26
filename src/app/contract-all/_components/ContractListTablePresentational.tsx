@@ -28,10 +28,8 @@ const ContractListTablePresentation = <T extends Contract>({
 }: ContractListTableProps<T>) => {
     const router = useRouter();
     const [pageSize, setPageSize] = useState(PAGE_SIZES[2]);
-
-    useEffect(() => {
-        setPage(1);
-    }, [pageSize]);
+    const [totalCount, setTotalCount] = useState(initialTotalCount);
+    const { setContractPageOptions } = usePaginationStore();
 
     const [sortStatus, setSortStatus] = useState<DataTableSortStatus<Contract>>(
         {
@@ -44,6 +42,10 @@ const ContractListTablePresentation = <T extends Contract>({
     const [records, setRecords] = useState<Contract[]>(
         contracts.slice(0, pageSize)
     );
+
+    useEffect(() => {
+        setPage(1);
+    }, [pageSize]);
 
     useEffect(() => {
         const from = (page - 1) * pageSize;
@@ -65,9 +67,6 @@ const ContractListTablePresentation = <T extends Contract>({
         );
          */
     }, [contracts, sortStatus]);
-
-    const [totalCount, setTotalCount] = useState(initialTotalCount);
-    const { setContractPageOptions } = usePaginationStore();
 
     const navigateToContractDetail: DataTableRowClickHandler<Contract> = ({
         record,

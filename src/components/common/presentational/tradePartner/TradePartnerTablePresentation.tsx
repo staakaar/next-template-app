@@ -27,10 +27,12 @@ const TradePartnerTablePresentation = <T extends TradePartner>({
     initialTotalCount,
 }: TradePartnerTableProps<T>) => {
     const [pageSize, setPageSize] = useState(PAGE_SIZES[2]);
-
-    useEffect(() => {
-        setPage(1);
-    }, [pageSize]);
+    const [page, setPage] = useState(1);
+    const [records, setRecords] = useState<TradePartner[]>(
+        tradePartner.slice(0, pageSize)
+    );
+    const [totalCount, setTotalCount] = useState(initialTotalCount);
+    const { setTradePartnerPageOptions } = usePaginationStore();
 
     const [sortStatus, setSortStatus] = useState<
         DataTableSortStatus<TradePartner>
@@ -39,10 +41,9 @@ const TradePartnerTablePresentation = <T extends TradePartner>({
         direction: "asc",
     });
 
-    const [page, setPage] = useState(1);
-    const [records, setRecords] = useState<TradePartner[]>(
-        tradePartner.slice(0, pageSize)
-    );
+    useEffect(() => {
+        setPage(1);
+    }, [pageSize]);
 
     useEffect(() => {
         const from = (page - 1) * pageSize;
@@ -64,9 +65,6 @@ const TradePartnerTablePresentation = <T extends TradePartner>({
         );
          */
     }, [tradePartner, sortStatus]);
-
-    const [totalCount, setTotalCount] = useState(initialTotalCount);
-    const { setTradePartnerPageOptions } = usePaginationStore();
 
     const columns: DataTableColumn<TradePartner>[] = [
         {

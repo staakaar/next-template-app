@@ -25,15 +25,7 @@ const ContractDetailsPresentational = <T extends Item>({
     items,
     initialTotalCount,
 }: ContractDetailsTableProps<T>) => {
-    const router = useRouter();
-    console.log(items);
-
     const [pageSize, setPageSize] = useState(PAGE_SIZES[2]);
-
-    useEffect(() => {
-        setPage(1);
-    }, [pageSize]);
-
     const [sortStatus, setSortStatus] = useState<DataTableSortStatus<Item>>({
         columnAccessor: "itemId",
         direction: "asc",
@@ -41,6 +33,12 @@ const ContractDetailsPresentational = <T extends Item>({
 
     const [page, setPage] = useState(1);
     const [records, setRecords] = useState<Item[]>(items.slice(0, pageSize));
+    const [totalCount, setTotalCount] = useState(initialTotalCount);
+    const setPageOptions = usePaginationStore();
+
+    useEffect(() => {
+        setPage(1);
+    }, [pageSize]);
 
     useEffect(() => {
         const from = (page - 1) * pageSize;
@@ -62,9 +60,6 @@ const ContractDetailsPresentational = <T extends Item>({
         );
          */
     }, [items, sortStatus]);
-
-    const [totalCount, setTotalCount] = useState(initialTotalCount);
-    const setPageOptions = usePaginationStore();
 
     const columns: DataTableColumn<Item>[] = [
         {
@@ -201,7 +196,7 @@ const ContractDetailsPresentational = <T extends Item>({
             onSortStatusChange={setSortStatus}
             onPageChange={(p) => setPage(p)}
             onRecordsPerPageChange={setPageSize}
-            key={"tradePersonId"}
+            idAccessor="itemId"
             styles={{
                 pagination: {
                     display: "flex",

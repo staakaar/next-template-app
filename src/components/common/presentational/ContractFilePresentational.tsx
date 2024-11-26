@@ -160,9 +160,7 @@ const ContractFilePresentational = (props: Partial<DropzoneProps>) => {
                             ファイルをドラッグ＆ドロップするか、クリックして選択してください
                         </Text>
                         <Group justify="center" mt="md">
-                            <Button onClick={() => openRef.current?.()}>
-                                ファイルを選択
-                            </Button>
+                            <Button onClick={() => {}}>ファイルを選択</Button>
                         </Group>
                     </div>
                 </Group>

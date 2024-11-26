@@ -69,7 +69,7 @@ const OwnCompanyPresentationalForm = ({ form }: OwnCompanyFormProps) => {
                     />
                     <Tooltip
                         label="契約書の解約済みであるかを確認するフラグです。"
-                        refProp="rootRef"
+                        // refProp="rootRef"
                     >
                         <Checkbox
                             label="解除要項"
@@ -90,14 +90,16 @@ const OwnCompanyPresentationalForm = ({ form }: OwnCompanyFormProps) => {
                 <Stack mt="lg">
                     <Tooltip
                         label="契約書の解約済みであるかを確認するフラグです。"
-                        refProp="rootRef"
+                        // refProp="rootRef"
                     >
                         <Checkbox label="解約済み" onChange={(value) => {}} />
                     </Tooltip>
-                    <Tooltip label="テスト1フラグです。" refProp="rootRef">
+                    <Tooltip
+                        label="テスト1フラグです。" /** refProp="rootRef" */
+                    >
                         <Checkbox label="テスト1" onChange={(value) => {}} />
                     </Tooltip>
-                    <Tooltip label="テスト2フラグです。" refProp="rootRef">
+                    <Tooltip label="テスト2フラグです。" /**refProp="rootRef"*/>
                         <Checkbox label="テスト2" onChange={(value) => {}} />
                     </Tooltip>
                 </Stack>
