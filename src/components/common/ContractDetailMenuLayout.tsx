@@ -35,8 +35,8 @@ const ContractDetailMenuLayout = ({
     workflow,
     businessForm,
 }: ContractDetailMenuProps) => {
-    const { selectedContractCode } = useContractStore();
-    console.log("contractDetailMenuLayout", selectedContractCode);
+    // const { selectedContractCode } = useContractStore();
+    // console.log("contractDetailMenuLayout", selectedContractCode);
 
     const iconStyle = { width: rem(12), height: rem(12) };
 
@@ -45,73 +45,73 @@ const ContractDetailMenuLayout = ({
     const sideMenu = [
         {
             id: "basic",
-            url: `/contract/${selectedContractCode}/contractBasic`,
+            // url: `/contract/${selectedContractCode}/contractBasic`,
             label: "基本情報",
             icon: <IconSettings style={iconStyle} />,
         },
         {
             id: "tradePartner",
-            url: `/contract/${selectedContractCode}/contractTrade`,
+            // url: `/contract/${selectedContractCode}/contractTrade`,
             label: "取引先",
             icon: <IconSettings style={iconStyle} />,
         },
         {
             id: "file",
-            url: `contract-file`,
+            // url: `contract-file`,
             label: "ファイル",
             icon: <IconSettings style={iconStyle} />,
         },
         {
             id: "details",
-            url: `contract-details`,
+            // url: `contract-details`,
             label: "明細",
             icon: <IconSettings style={iconStyle} />,
         },
         {
             id: "externalLink",
-            url: `external-link`,
+            // url: `external-link`,
             label: "外部連携",
             icon: <IconSettings style={iconStyle} />,
         },
         {
             id: "section",
-            url: `section`,
+            // url: `section`,
             label: "セクション",
             icon: <IconSettings style={iconStyle} />,
         },
         {
             id: "ownCompany",
-            url: `own-company`,
+            // url: `own-company`,
             label: "自社情報",
             icon: <IconSettings style={iconStyle} />,
         },
         {
             id: "authority",
-            url: `contract-authority`,
+            // url: `contract-authority`,
             label: "権限",
             icon: <IconSettings style={iconStyle} />,
         },
         {
             id: "relatedInfo",
-            url: `related-info`,
+            // url: `related-info`,
             label: "関連情報",
             icon: <IconSettings style={iconStyle} />,
         },
         {
             id: "workflow",
-            url: `workflow`,
+            // url: `workflow`,
             label: "WF",
             icon: <IconSettings style={iconStyle} />,
         },
         {
             id: "history",
-            url: `contract-history`,
+            // url: `contract-history`,
             label: "履歴",
             icon: <IconSettings style={iconStyle} />,
         },
         {
             id: "businessForm",
-            url: `business-form`,
+            // url: `business-form`,
             label: "帳票",
             icon: <IconSettings style={iconStyle} />,
         },

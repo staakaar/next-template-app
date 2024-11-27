@@ -36,10 +36,6 @@ const TradePartnerCompanyTablePresentation = <T extends TradePartner>({
 
     const [pageSize, setPageSize] = useState(PAGE_SIZES[2]);
 
-    useEffect(() => {
-        setPage(1);
-    }, [pageSize]);
-
     const [sortStatus, setSortStatus] = useState<
         DataTableSortStatus<TradePartner>
     >({
@@ -51,6 +47,10 @@ const TradePartnerCompanyTablePresentation = <T extends TradePartner>({
     const [records, setRecords] = useState<TradePartner[]>(
         tradePartnerCompany.slice(0, pageSize)
     );
+
+    useEffect(() => {
+        setPage(1);
+    }, [pageSize]);
 
     useEffect(() => {
         const from = (page - 1) * pageSize;

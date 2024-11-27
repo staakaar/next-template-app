@@ -12,9 +12,8 @@ const ContractDetail = () => {
         redirect("/contract-all");
     }
 
-    const { setSelectedContractCode } = useContractStore();
-
-    console.log("contractDetailContainer", contractCode);
+    const { selectedContractCode, setSelectedContractCode } =
+        useContractStore();
 
     // 権限チェック
 

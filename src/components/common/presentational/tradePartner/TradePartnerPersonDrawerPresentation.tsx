@@ -31,10 +31,6 @@ const TradePartnerPersonDrawerPresentation = <T extends TradePartnerPerson>({
     const router = useRouter();
     const [pageSize, setPageSize] = useState(PAGE_SIZES[2]);
 
-    useEffect(() => {
-        setPage(1);
-    }, [pageSize]);
-
     const [sortStatus, setSortStatus] = useState<
         DataTableSortStatus<TradePartnerPerson>
     >({
@@ -46,6 +42,10 @@ const TradePartnerPersonDrawerPresentation = <T extends TradePartnerPerson>({
     const [records, setRecords] = useState<TradePartnerPerson[]>(
         tradePartnerPerson.slice(0, pageSize)
     );
+
+    useEffect(() => {
+        setPage(1);
+    }, [pageSize]);
 
     useEffect(() => {
         const from = (page - 1) * pageSize;

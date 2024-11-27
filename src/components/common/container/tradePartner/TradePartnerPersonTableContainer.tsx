@@ -1,7 +1,6 @@
 import { useState } from "react";
 import { useFetchTraderPartnerPerson } from "@/lib/tradePartner/api";
 import TradePartnerPersonDrawerPresentation from "../../presentational/tradePartner/TradePartnerPersonDrawerPresentation";
-import { columns } from "./TradePartnerPersonTableColumn";
 import React from "react";
 
 const TradePartnerPersonTableContainer = () => {
@@ -16,8 +15,8 @@ const TradePartnerPersonTableContainer = () => {
     return (
         <>
             <TradePartnerPersonDrawerPresentation
-                data={taradePartner.tradePartnerPersons}
-                totalCount={taradePartner.totalCount}
+                tradePartnerPerson={taradePartner.tradePartnerPersons}
+                initialTotalCount={taradePartner.totalCount}
             />
         </>
     );
