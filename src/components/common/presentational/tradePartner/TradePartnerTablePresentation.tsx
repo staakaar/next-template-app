@@ -1,6 +1,6 @@
 "use client";
 import { usePaginationStore } from "@/stores/pagination/PaginationStore";
-import { TradePartner } from "@/types/api/tradePartner";
+import { TradingPartnerPerson } from "@/types/api/tradePartner";
 import { sort } from "fast-sort";
 import {
     DataTable,
@@ -15,29 +15,29 @@ import VTooltip from "../../atoms/Tooltip";
 import { ActionIcon, Card, Group, Text } from "@mantine/core";
 import { IconEdit, IconEye, IconTrash } from "@tabler/icons-react";
 
-export type TradePartnerTableProps<T extends TradePartner> = {
-    tradePartner: T[];
+export type TradePartnerTableProps<T extends TradingPartnerPerson> = {
+    tradingPartnerPersons: T[];
     initialTotalCount: number;
 };
 
 const PAGE_SIZES = [10, 15, 20, 50, 75, 100];
 
-const TradePartnerTablePresentation = <T extends TradePartner>({
-    tradePartner,
+const TradePartnerTablePresentation = <T extends TradingPartnerPerson>({
+    tradingPartnerPersons,
     initialTotalCount,
 }: TradePartnerTableProps<T>) => {
     const [pageSize, setPageSize] = useState(PAGE_SIZES[2]);
     const [page, setPage] = useState(1);
-    const [records, setRecords] = useState<TradePartner[]>(
-        tradePartner.slice(0, pageSize)
+    const [records, setRecords] = useState<TradingPartnerPerson[]>(
+        tradingPartnerPersons.slice(0, pageSize)
     );
     const [totalCount, setTotalCount] = useState(initialTotalCount);
     const { setTradePartnerPageOptions } = usePaginationStore();
 
     const [sortStatus, setSortStatus] = useState<
-        DataTableSortStatus<TradePartner>
+        DataTableSortStatus<TradingPartnerPerson>
     >({
-        columnAccessor: "tradePersonId",
+        columnAccessor: "tradingPersonId",
         direction: "asc",
     });
 
@@ -50,13 +50,13 @@ const TradePartnerTablePresentation = <T extends TradePartner>({
         const to = from + pageSize;
         console.log(from);
         console.log(to);
-        setRecords(tradePartner.slice(from, to));
-    }, [tradePartner, page, pageSize]);
+        setRecords(tradingPartnerPersons.slice(from, to));
+    }, [tradingPartnerPersons, page, pageSize]);
 
     useEffect(() => {
-        const sortedContracts = sort(tradePartner).by([
-            { asc: (t: TradePartner) => t.tradeCompanyId },
-        ]) as TradePartner[];
+        const sortedContracts = sort(tradingPartnerPersons).by([
+            { asc: (t: TradingPartnerPerson) => t.tradingPersonId },
+        ]) as TradingPartnerPerson[];
         /**
         setRecords(
             sortStatus.direction === "desc"
@@ -64,61 +64,73 @@ const TradePartnerTablePresentation = <T extends TradePartner>({
                 : sortedContracts
         );
          */
-    }, [tradePartner, sortStatus]);
+    }, [tradingPartnerPersons, sortStatus]);
 
-    const columns: DataTableColumn<TradePartner>[] = [
+    const columns: DataTableColumn<TradingPartnerPerson>[] = [
         {
-            accessor: "tradeCompanyName",
-            title: "取引先会社名",
+            accessor: "tradingPersonId",
+            title: "取引先担当者ID",
             sortable: true,
-            render: (tradePartner: TradePartner) => (
+            render: (tradingPartnerPerson: TradingPartnerPerson) => (
                 <VTooltip
-                    content={tradePartner.tradeCompanyName}
-                    tooltip={`取引先会社名: ${tradePartner.tradeCompanyName}`}
+                    content={tradingPartnerPerson.tradingPersonId}
+                    tooltip={`取引先担当者ID: ${tradingPartnerPerson.tradingPersonId}`}
                     maxWidth={"100"}
                 />
             ),
         },
         {
-            accessor: "tradePartnerDepartmentName",
-            title: "取引先担当部署",
+            accessor: "tradingPersonName",
+            title: "取引先担当名",
             sortable: true,
-            render: (tradePartner: TradePartner) => (
+            render: (tradingPartnerPerson: TradingPartnerPerson) => (
                 <VTooltip
-                    content={tradePartner.tradePartnerDepartmentName}
-                    tooltip={`取引先担当部署: ${tradePartner.tradePartnerDepartmentName}`}
+                    content={tradingPartnerPerson.tradingPersonName}
+                    tooltip={`取引先担当名: ${tradingPartnerPerson.tradingPersonName}`}
                     maxWidth={"100"}
                 />
             ),
         },
         {
-            accessor: "tradePersonName",
-            title: "取引先担当者",
+            accessor: "tradingPersonEmailAddress",
+            title: "取引先担当者メールアドレス",
             sortable: true,
-            render: (tradePartner: TradePartner) => (
+            render: (tradingPartnerPerson: TradingPartnerPerson) => (
                 <VTooltip
-                    content={tradePartner.tradePersonName}
-                    tooltip={`取引先担当者: ${tradePartner.tradePersonName}`}
+                    content={tradingPartnerPerson.tradingPersonEmailAddress}
+                    tooltip={`メールアドレス: ${tradingPartnerPerson.tradingPersonEmailAddress}`}
                     maxWidth={"100"}
                 />
             ),
         },
         {
-            accessor: "tradeCompanyAddress",
-            title: "取引先メールアドレス",
+            accessor: "tradingPartnerDepartmentId",
+            title: "取引先担当者部署ID",
             sortable: true,
-            render: (tradePartner: TradePartner) => (
+            render: (tradingPartnerPerson: TradingPartnerPerson) => (
                 <VTooltip
-                    content={tradePartner.tradeCompanyAddress}
-                    tooltip={`取引先メールアドレス: ${tradePartner.tradeCompanyAddress}`}
+                    content={tradingPartnerPerson.tradingPartnerDepartmentId}
+                    tooltip={`取引先担当者部署ID: ${tradingPartnerPerson.tradingPartnerDepartmentId}`}
+                    maxWidth={"100"}
+                />
+            ),
+        },
+        {
+            accessor: "tradingPartnerDepartmentName",
+            title: "取引先担当者部署名",
+            sortable: true,
+            render: (tradingPartnerPerson: TradingPartnerPerson) => (
+                <VTooltip
+                    content={tradingPartnerPerson.tradingPartnerDepartmentName}
+                    tooltip={`取引先担当者部署名: ${tradingPartnerPerson.tradingPartnerDepartmentName}`}
                     maxWidth={"100"}
                 />
             ),
         },
     ];
 
-    const { effectiveColumns } = useDataTableColumns<TradePartner>({
-        key: "tradePersonId",
+    const { effectiveColumns } = useDataTableColumns<TradingPartnerPerson>({
+        key: "tradingPersonId",
         columns,
     });
 

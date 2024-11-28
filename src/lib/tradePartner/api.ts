@@ -1,51 +1,53 @@
 import { ApiContext } from "@/types/api";
 import {
-    TradePartnerPersonResponse,
-    TradePartnerResponse,
+    TradingPartnerPersonResponse,
+    TradingPartnerCompanyResponse,
 } from "@/types/api/tradePartner";
 
 /** axios */
 const fetchTradePartner = (
     url: string
-): Promise<TradePartnerResponse[] | undefined> => {
+): Promise<TradingPartnerCompanyResponse[] | undefined> => {
     fetch(url).then((res) => res.json());
 };
 
 /** 取引先企業 */
-export function useFetchTradePartner(
+export function useFetchTradingPartnerCompanies(
     pageNumber: number,
     pageSize?: number,
     searchKeyword?: string
-): TradePartnerResponse {
+): TradingPartnerCompanyResponse {
     const context: ApiContext = {
         apiRootUrl: process.env.API_BASE_URL || "http://localhost:8000",
     };
 
-    const tradePartner = generateMockTradePartner(2);
+    const tradingPartnerCompanies = generateMockTradingPartnerCompanies(2);
 
-    return tradePartner;
+    return tradingPartnerCompanies;
 }
 
 /** ダミーデータを用意 */
-const generateMockTradePartner = (count: number): TradePartnerResponse => {
-    const tradePartner = Array.from({ length: count }, (_, index) => ({
-        tradeCompanyId: `tradeCompany ${index + 1}`,
-        tradeCompanyName: `tradeCompany ${index + 1}`,
-        tradeCompanyAddress: `tradeCompany ${index + 1}`,
-        tradePersonId: `tradeCompany ${index + 1}`,
-        tradePersonName: `tradeCompany ${index + 1}`,
-        tradePartnerDepartmentId: `tradeCompany ${index + 1}`,
-        tradePartnerDepartmentName: `tradeCompany ${index + 1}`,
-    }));
+const generateMockTradingPartnerCompanies = (
+    count: number
+): TradingPartnerCompanyResponse => {
+    const tradingPartnerCompanies = Array.from(
+        { length: count },
+        (_, index) => ({
+            tradingCompanyId: `tradeCompany ${index + 1}`,
+            tradingCompanyName: `tradeCompany ${index + 1}`,
+            tradingCompanyAddress: `tradeCompany ${index + 1}`,
+            tradingCompanyEmailAddress: `tradeCompany ${index + 1}`,
+        })
+    );
 
     return {
-        tradePartner,
+        tradingPartnerCompanies,
         totalCount: count,
     };
 };
 
 /** 取引先担当者 */
-export function useFetchTraderPartnerPerson(
+export function useFetchTradingPartnerPersons(
     pageNumber: number,
     pageSize?: number,
     searchKeyword?: string
@@ -54,25 +56,25 @@ export function useFetchTraderPartnerPerson(
         apiRootUrl: process.env.API_BASE_URL || "http://localhost:8000",
     };
 
-    const tradePartner = generateMockTradePartnerPerson(100);
+    const tradingPartnerPersons = generateMockTradingPartnerPersons(100);
 
-    return tradePartner;
+    return tradingPartnerPersons;
 }
 
 /** ダミーデータを用意 */
-const generateMockTradePartnerPerson = (
+const generateMockTradingPartnerPersons = (
     count: number
-): TradePartnerPersonResponse => {
-    const tradePartnerPersons = Array.from({ length: count }, (_, index) => ({
-        tradePersonId: `tradeCompany ${index + 1}`,
-        tradePersonName: `tradeCompany ${index + 1}`,
-        tradePersonEmailAddress: `tradePersonEmailAddress ${index + 1}`,
-        tradePartnerDepartmentId: `tradeCompany ${index + 1}`,
-        tradePartnerDepartmentName: `tradeCompany ${index + 1}`,
+): TradingPartnerPersonResponse => {
+    const tradingPartnerPersons = Array.from({ length: count }, (_, index) => ({
+        tradingPersonId: `tradeCompany ${index + 1}`,
+        tradingPersonName: `tradeCompany ${index + 1}`,
+        tradingPersonEmailAddress: `tradePersonEmailAddress ${index + 1}`,
+        tradingPartnerDepartmentId: `tradeCompany ${index + 1}`,
+        tradingPartnerDepartmentName: `tradeCompany ${index + 1}`,
     }));
 
     return {
-        tradePartnerPersons,
+        tradingPartnerPersons,
         totalCount: count,
     };
 };

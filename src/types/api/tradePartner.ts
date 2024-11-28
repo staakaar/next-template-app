@@ -1,28 +1,25 @@
 // You can use a Zod schema here if you want.
-export type TradePartner = {
-    tradeCompanyId: string;
-    tradeCompanyName: string;
-    tradeCompanyAddress: string;
-    tradePersonId: string;
-    tradePersonName: string;
-    tradePartnerDepartmentId: string;
-    tradePartnerDepartmentName: string;
+export type TradingPartnerCompany = {
+    tradingCompanyId: string;
+    tradingCompanyName: string;
+    tradingCompanyAddress: string;
+    tradingCompanyEmailAddress: string;
 };
 
-export type TradePartnerResponse = {
-    tradePartner: TradePartner[];
+export type TradingPartnerCompanyResponse = {
+    tradingPartnerCompanies: TradingPartnerCompany[];
     totalCount: number;
 };
 
-export type TradePartnerPerson = {
-    tradePersonId: string;
-    tradePersonName: string;
-    tradePersonEmailAddress: string;
-    tradePartnerDepartmentId: string;
-    tradePartnerDepartmentName: string;
+export type TradingPartnerPerson = {
+    tradingPersonId: string;
+    tradingPersonName: string;
+    tradingPersonEmailAddress: string;
+    tradingPartnerDepartmentId: string;
+    tradingPartnerDepartmentName: string;
 };
 
-export type TradePartnerPersonResponse = {
-    tradePartnerPersons: TradePartnerPerson[];
+export type TradingPartnerPersonResponse = {
+    tradingPartnerPersons: TradingPartnerPerson[];
     totalCount: number;
 };

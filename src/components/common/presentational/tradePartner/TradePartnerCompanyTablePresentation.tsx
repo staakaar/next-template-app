@@ -1,7 +1,7 @@
 "use client";
 import TradePartnerPersonDrawerContainer from "../../container/tradePartner/TradePartnerPersonDrawerContainer";
 import React, { useEffect, useState } from "react";
-import { TradePartner } from "@/types/api/tradePartner";
+import { TradingPartnerCompany } from "@/types/api/tradePartner";
 import { useDisclosure } from "@mantine/hooks";
 import {
     DataTable,
@@ -11,41 +11,43 @@ import {
     useDataTableColumns,
 } from "mantine-datatable";
 import { useRouter } from "next/navigation";
-import { defaultTradePartnerForm } from "@/stores/tradePartner/TradePartnerStore";
+import { defaultTradingPartnerCompanyForm } from "@/stores/tradePartner/TradePartnerCompanyStore";
 import { usePaginationStore } from "@/stores/pagination/PaginationStore";
 import VTooltip from "../../atoms/Tooltip";
 import { ActionIcon, Group } from "@mantine/core";
 import { IconEdit, IconEye, IconTrash } from "@tabler/icons-react";
 import { sort } from "fast-sort";
 
-export type TradePartnerTableProps<T extends TradePartner> = {
-    tradePartnerCompany: T[];
+export type TradePartnerTableProps<T extends TradingPartnerCompany> = {
+    tradingPartnerCompanies: T[];
     initialTotalCount: number;
 };
 
 const PAGE_SIZES = [10, 15, 20, 50, 75, 100];
 
-const TradePartnerCompanyTablePresentation = <T extends TradePartner>({
-    tradePartnerCompany,
+const TradePartnerCompanyTablePresentation = <T extends TradingPartnerCompany>({
+    tradingPartnerCompanies,
     initialTotalCount,
 }: TradePartnerTableProps<T>) => {
     /** ドロワー */
     const [opened, { open, close }] = useDisclosure(false);
 
-    const [selectedRow, setSelectedRow] = useState(defaultTradePartnerForm);
+    const [selectedRow, setSelectedRow] = useState(
+        defaultTradingPartnerCompanyForm
+    );
 
     const [pageSize, setPageSize] = useState(PAGE_SIZES[2]);
 
     const [sortStatus, setSortStatus] = useState<
-        DataTableSortStatus<TradePartner>
+        DataTableSortStatus<TradingPartnerCompany>
     >({
-        columnAccessor: "tradePersonId",
+        columnAccessor: "tradingCompanyId",
         direction: "asc",
     });
 
     const [page, setPage] = useState(1);
-    const [records, setRecords] = useState<TradePartner[]>(
-        tradePartnerCompany.slice(0, pageSize)
+    const [records, setRecords] = useState<TradingPartnerCompany[]>(
+        tradingPartnerCompanies.slice(0, pageSize)
     );
 
     useEffect(() => {
@@ -57,13 +59,13 @@ const TradePartnerCompanyTablePresentation = <T extends TradePartner>({
         const to = from + pageSize;
         console.log(from);
         console.log(to);
-        setRecords(tradePartnerCompany.slice(from, to));
-    }, [tradePartnerCompany, page, pageSize]);
+        setRecords(tradingPartnerCompanies.slice(from, to));
+    }, [tradingPartnerCompanies, page, pageSize]);
 
     useEffect(() => {
-        const sortedContracts = sort(tradePartnerCompany).by([
-            { asc: (t: TradePartner) => t.tradeCompanyId },
-        ]) as TradePartner[];
+        const sortedContracts = sort(tradingPartnerCompanies).by([
+            { asc: (t: TradingPartnerCompany) => t.tradingCompanyId },
+        ]) as TradingPartnerCompany[];
         /**
         setRecords(
             sortStatus.direction === "desc"
@@ -71,64 +73,52 @@ const TradePartnerCompanyTablePresentation = <T extends TradePartner>({
                 : sortedContracts
         );
          */
-    }, [tradePartnerCompany, sortStatus]);
+    }, [tradingPartnerCompanies, sortStatus]);
 
     const [totalCount, setTotalCount] = useState(initialTotalCount);
     const { setTradePartnerPageOptions } = usePaginationStore();
 
     const navigateToTradePartnerPerson: DataTableRowClickHandler<
-        TradePartner
+        TradingPartnerCompany
     > = ({ record }) => {
         console.log(record);
         setSelectedRow(record);
         open;
     };
 
-    const columns: DataTableColumn<TradePartner>[] = [
+    const columns: DataTableColumn<TradingPartnerCompany>[] = [
         {
             accessor: "tradeCompanyName",
             title: "取引先会社名",
             sortable: true,
-            render: (tradePartner: TradePartner) => (
+            render: (tradingPartnerCompany: TradingPartnerCompany) => (
                 <VTooltip
-                    content={tradePartner.tradeCompanyName}
-                    tooltip={`取引先会社名: ${tradePartner.tradeCompanyName}`}
-                    maxWidth={"100"}
-                />
-            ),
-        },
-        {
-            accessor: "tradePartnerDepartmentName",
-            title: "取引先担当部署",
-            sortable: true,
-            render: (tradePartner: TradePartner) => (
-                <VTooltip
-                    content={tradePartner.tradePartnerDepartmentName}
-                    tooltip={`取引先担当部署: ${tradePartner.tradePartnerDepartmentName}`}
-                    maxWidth={"100"}
-                />
-            ),
-        },
-        {
-            accessor: "tradePersonName",
-            title: "取引先担当者",
-            sortable: true,
-            render: (tradePartner: TradePartner) => (
-                <VTooltip
-                    content={tradePartner.tradePersonName}
-                    tooltip={`取引先担当者: ${tradePartner.tradePersonName}`}
+                    content={tradingPartnerCompany.tradingCompanyName}
+                    tooltip={`取引先会社名: ${tradingPartnerCompany.tradingCompanyName}`}
                     maxWidth={"100"}
                 />
             ),
         },
         {
             accessor: "tradeCompanyAddress",
-            title: "取引先メールアドレス",
+            title: "取引先企業住所",
             sortable: true,
-            render: (tradePartner: TradePartner) => (
+            render: (tradingPartnerCompany: TradingPartnerCompany) => (
                 <VTooltip
-                    content={tradePartner.tradeCompanyAddress}
-                    tooltip={`取引先メールアドレス: ${tradePartner.tradeCompanyAddress}`}
+                    content={tradingPartnerCompany.tradingCompanyAddress}
+                    tooltip={`取引先企業住所: ${tradingPartnerCompany.tradingCompanyAddress}`}
+                    maxWidth={"100"}
+                />
+            ),
+        },
+        {
+            accessor: "tradingCompanyEmailAddress",
+            title: "取引先企業メールアドレス",
+            sortable: true,
+            render: (tradingPartnerCompany: TradingPartnerCompany) => (
+                <VTooltip
+                    content={tradingPartnerCompany.tradingCompanyEmailAddress}
+                    tooltip={`メールアドレス: ${tradingPartnerCompany.tradingCompanyEmailAddress}`}
                     maxWidth={"100"}
                 />
             ),
@@ -137,7 +127,7 @@ const TradePartnerCompanyTablePresentation = <T extends TradePartner>({
             accessor: "actions",
             title: "",
             textAlign: "right",
-            render: (tradePartner: TradePartner) => (
+            render: (tradingPartnerCompany: TradingPartnerCompany) => (
                 <Group gap={4} justify="right" wrap="nowrap">
                     <ActionIcon size="sm" variant="subtle" color="green">
                         <IconEye size={16} />
@@ -153,7 +143,7 @@ const TradePartnerCompanyTablePresentation = <T extends TradePartner>({
         },
     ];
 
-    const { effectiveColumns } = useDataTableColumns<TradePartner>({
+    const { effectiveColumns } = useDataTableColumns<TradingPartnerCompany>({
         key: "tradePersonId",
         columns,
     });
@@ -185,7 +175,7 @@ const TradePartnerCompanyTablePresentation = <T extends TradePartner>({
                 onRowClick={navigateToTradePartnerPerson}
                 onPageChange={(p) => setPage(p)}
                 onRecordsPerPageChange={setPageSize}
-                idAccessor="tradePersonId"
+                idAccessor="tradingCompanyId"
                 styles={{
                     pagination: {
                         display: "flex",

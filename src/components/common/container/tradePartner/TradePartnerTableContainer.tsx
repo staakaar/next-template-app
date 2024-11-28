@@ -1,6 +1,6 @@
 "use client";
 import { useState } from "react";
-import { useFetchTradePartner } from "@/lib/tradePartner/api";
+import { useFetchTradingPartnerPersons } from "@/lib/tradePartner/api";
 import TradePartnerTablePresentation from "../../presentational/tradePartner/TradePartnerTablePresentation";
 
 const TradePartnerTableContainer = () => {
@@ -9,13 +9,19 @@ const TradePartnerTableContainer = () => {
     const [search, setSearch] = useState("");
     const [isOpen, setIsOpen] = useState(false);
 
-    const tradePartner = useFetchTradePartner(page, pageSize, search);
+    const tradePartnerPersons = useFetchTradingPartnerPersons(
+        page,
+        pageSize,
+        search
+    );
 
     return (
         <>
             <TradePartnerTablePresentation
-                tradePartner={tradePartner.tradePartner}
-                initialTotalCount={tradePartner.totalCount}
+                tradingPartnerPersons={
+                    tradePartnerPersons.tradingPartnerPersons
+                }
+                initialTotalCount={tradePartnerPersons.totalCount}
             />
         </>
     );
