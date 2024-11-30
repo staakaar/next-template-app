@@ -85,7 +85,7 @@ axios use SWR
 
 ![Vercel Otel](https://img.shields.io/badge/Vercel_Otel-000000?style=for-the-badge&logo=vercel&logoColor=white)
 
-## はじめに
+## 🔰はじめに
 
 こちらのプロジェクトに参画された方は[こちら](./CONTRIBUTING.md)の資料を参照ください。
 

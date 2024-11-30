@@ -1,0 +1,38 @@
+{
+    "recommendations": [
+        "christian-kohler.path-intellisense",
+        "ms-vscode.vscode-typescript-next",
+        "ms-ceintl.vscode-language-pack-ja",
+        "ms-vscode-remote.vscode-remote-extensionpack",
+        "alefragnani.bookmarks",
+        "chrmarti.regex",
+        "42crunch.vscode-openapi",
+        "hediet.vscode-drawio",
+
+        "PKief.material-icon-theme",
+        "MS-CEINTL.vscode-language-pack-ja",
+        "dbaeumer.vscode-eslint",
+        "EditorConfig.EditorConfig",
+        "oven.bun-vscode",
+        "alefragnani.Bookmarks",
+        "formulahendry.auto-rename-tag",
+        "kevinkyang.auto-comment-blocks",
+        "bierner.emojisense",
+        "formulahendry.auto-close-tag",
+        "streetsidesoftware.code-spell-checker",
+        "saikou9901.evilinspector",
+        "editorconfig.editorconfig",
+        "dbaeumer.vscode-eslint",
+
+        "rvest.vs-code-prettier-eslint",
+        "esbenp.prettier-vscode",
+        "donjayamanne.git-extension-pack",
+        "mhutchie.git-graph",
+        "psykosoldi3r.vscode-git-flow",
+
+        "formulahendry.auto-complete-tag",
+        "vincaslt.highlight-matching-tag",
+        "eg2.vscode-npm-script",
+        "mikestead.dotenv"
+    ]
+}
