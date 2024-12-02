@@ -6,11 +6,21 @@ import { DataTable, DataTableSortStatus } from "mantine-datatable";
 import dayjs from "dayjs";
 import clsx from "clsx";
 import { useEffect, useState } from "react";
-import { User } from "../../container/tradePartner/TradingPartnerCompanyNestedContainer";
+import { delay, useIsMounted } from "@/hooks/mantine";
+import { companyData } from "@/api/company/company";
+import { departmentData } from "@/api/department/department";
+import { userData } from "@/api/user/user";
+import {
+    type TradingCompany,
+    type TradingCompanyDepartment,
+    type TradingCompanyUser,
+} from "@/types/api/tradePartner";
+
+type CompanyWithUserCount = TradingCompany & { employees: number };
 
 type TradingUsersTableProps = {
     departmentId: number;
-    sortStatus?: DataTableSortStatus<User>;
+    sortStatus?: DataTableSortStatus<CompanyWithUserCount>;
 };
 
 const TradingUsersTable = ({
@@ -18,7 +28,7 @@ const TradingUsersTable = ({
     sortStatus,
 }: TradingUsersTableProps) => {
     const isMounted = useIsMounted();
-    const [records, setRecords] = useState<User[]>([]);
+    const [records, setRecords] = useState<typeof userData>([]);
     const [loading, setLoading] = useState(true);
 
     useEffect(() => {
@@ -27,19 +37,17 @@ const TradingUsersTable = ({
                 setLoading(true);
                 await delay({ min: 500, max: 800 });
                 if (isMounted()) {
-                    let newRecords = users.filter(
-                        (user: User) => user.department.id === departmentId
+                    let newRecords = userData.filter(
+                        (user: any) =>
+                            user.tradingDepartment.id === departmentId
                     );
                     if (sortStatus) {
-                        newRecords =
-                            sort(newRecords)[
+                        newRecords = sort(newRecords).by(
+                            (record: TradingCompanyUser) =>
                                 sortStatus.columnAccessor === "name"
-                                    ? {
-                                          by: (record: any) =>
-                                              `${record.firstName} ${record.lastName}`,
-                                      }
-                                    : { by: "birthDate" }
-                            ];
+                                    ? `${record.firstName} ${record.lastName}`
+                                    : record.birthDate
+                        );
                         if (sortStatus.direction === "desc")
                             newRecords.reverse();
                     }

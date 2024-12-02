@@ -12,9 +12,7 @@
         "PKief.material-icon-theme",
         "MS-CEINTL.vscode-language-pack-ja",
         "dbaeumer.vscode-eslint",
-        "EditorConfig.EditorConfig",
         "oven.bun-vscode",
-        "alefragnani.Bookmarks",
         "formulahendry.auto-rename-tag",
         "kevinkyang.auto-comment-blocks",
         "bierner.emojisense",
@@ -22,7 +20,6 @@
         "streetsidesoftware.code-spell-checker",
         "saikou9901.evilinspector",
         "editorconfig.editorconfig",
-        "dbaeumer.vscode-eslint",
 
         "rvest.vs-code-prettier-eslint",
         "esbenp.prettier-vscode",

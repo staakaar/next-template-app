@@ -10,6 +10,7 @@ import {
 import clsx from "clsx";
 import dayjs from "dayjs";
 import classes from "./NestedTablesAsyncExample.module.css";
+import TradingUsersTable from "./TradingUsersTable";
 
 type CompanyDepartmentTableProps = {
     companyId: string;
