@@ -7,19 +7,16 @@ import dayjs from "dayjs";
 import clsx from "clsx";
 import { useEffect, useState } from "react";
 import { delay, useIsMounted } from "@/hooks/mantine";
-import { companyData } from "@/api/company/company";
-import { departmentData } from "@/api/department/department";
 import { userData } from "@/api/user/user";
 import {
     type TradingCompany,
-    type TradingCompanyDepartment,
     type TradingCompanyUser,
 } from "@/types/api/tradePartner";
 
-type CompanyWithUserCount = TradingCompany & { employees: number };
+type CompanyWithUserCount = TradingCompany & { users: number };
 
 type TradingUsersTableProps = {
-    departmentId: number;
+    departmentId: string;
     sortStatus?: DataTableSortStatus<CompanyWithUserCount>;
 };
 
@@ -84,8 +81,11 @@ const TradingUsersTable = ({
                 },
                 {
                     accessor: "birthDate",
-                    render: ({ birthDate }: { birthDate: string }) =>
-                        dayjs(birthDate).format("DD MMM YYYY"),
+                    render: ({ birthDate }: { birthDate: string }) => {
+                        return (
+                            <Box>{dayjs(birthDate).format("DD MMM YYYY")}</Box>
+                        );
+                    },
                     textAlign: "right",
                     width: 200,
                 },

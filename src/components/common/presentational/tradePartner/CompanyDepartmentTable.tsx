@@ -1,24 +1,67 @@
+"use client";
+import { sort } from "fast-sort";
 import { Box } from "@mantine/core";
 import { DataTable, DataTableSortStatus } from "mantine-datatable";
-import { useState } from "react";
-import {
-    IconBuilding,
-    IconChevronRight,
-    IconUser,
-    IconUsers,
-} from "@tabler/icons-react";
+import { useEffect, useState } from "react";
+import { IconChevronRight, IconUsers } from "@tabler/icons-react";
 import clsx from "clsx";
-import dayjs from "dayjs";
 import classes from "./NestedTablesAsyncExample.module.css";
 import TradingUsersTable from "./TradingUsersTable";
+import { delay, useIsMounted } from "@/hooks/mantine";
+import { departments } from "@/types/api/tradePartner";
+import { type TradingCompany } from "@/types/api/tradePartner";
+
+type CompanyWithUserCount = TradingCompany & { users: number };
 
 type CompanyDepartmentTableProps = {
     companyId: string;
+    sortStatus?: DataTableSortStatus<CompanyWithUserCount>;
 };
 
-const CompanyDepartmentTable = ({ companyId }: CompanyDepartmentTableProps) => {
-    const { records, loading } = useDepartmentsAsync({ companyId });
+const CompanyDepartmentTable = ({
+    companyId,
+    sortStatus,
+}: CompanyDepartmentTableProps) => {
     const [expandedRecordIds, setExpandedRecordIds] = useState<string[]>([]);
+    const isMounted = useIsMounted();
+    const [records, setRecords] = useState<typeof departments>([]);
+    const [loading, setLoading] = useState(true);
+
+    useEffect(() => {
+        if (isMounted()) {
+            (async () => {
+                setLoading(true);
+                await delay({ min: 500, max: 800 });
+                if (isMounted()) {
+                    let newRecords = departments.filter(
+                        (department) =>
+                            department.tradingCompany.id === companyId
+                    );
+                    if (sortStatus) {
+                        newRecords = sort(records).by(() =>
+                            sortStatus.columnAccessor === "details"
+                                ? "users"
+                                : sortStatus.columnAccessor
+                        );
+                        if (sortStatus.direction === "desc")
+                            newRecords.reverse();
+                    }
+                    // if (sortStatus) {
+                    //     newRecords = sortBy(
+                    //         newRecords,
+                    //         sortStatus.columnAccessor === "details"
+                    //             ? "employees"
+                    //             : sortStatus.columnAccessor
+                    //     );
+                    //     if (sortStatus.direction === "desc")
+                    //         newRecords.reverse();
+                    // }
+                    setRecords(newRecords);
+                    setLoading(false);
+                }
+            })();
+        }
+    }, [companyId, isMounted, records, sortStatus]);
 
     return (
         <DataTable
@@ -57,7 +100,10 @@ const CompanyDepartmentTable = ({ companyId }: CompanyDepartmentTableProps) => {
                     onRecordIdsChange: setExpandedRecordIds,
                 },
                 content: ({ record }) => (
-                    <TradingUsersTable departmentId={record.id} />
+                    <TradingUsersTable
+                        departmentId={record.id}
+                        sortStatus={sortStatus}
+                    />
                 ),
             }}
         />
