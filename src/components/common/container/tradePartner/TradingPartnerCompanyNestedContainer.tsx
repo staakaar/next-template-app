@@ -1,3 +1,4 @@
+import { companyData } from "@/api/company/company";
 import TradingPartnerCompanyNestedPresentation from "../../presentational/tradePartner/TradingPartnerCompanyNestedPresentation";
 
 // 型定義別ファイルへ
@@ -33,7 +34,7 @@ import TradingPartnerCompanyNestedPresentation from "../../presentational/tradeP
 //         )
 //         .reduce((sum, department) => sum + department.users, 0),
 // }));
-import { tradingCompanies } from "@/types/api/tradePartner";
+import { departments, tradingCompanies } from "@/types/api/tradePartner";
 
 // user department company情報を本来はフェッチする
 const TradingPartnerCompanyNestedContainer = () => {

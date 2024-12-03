@@ -38,13 +38,19 @@ const CompanyDepartmentTable = ({
                             department.tradingCompany.id === companyId
                     );
                     if (sortStatus) {
-                        newRecords = sort(records).by(() =>
-                            sortStatus.columnAccessor === "details"
-                                ? "users"
-                                : sortStatus.columnAccessor
-                        );
+                        const newRecords = sort(records).by([
+                            { asc: (r) => r.id },
+                            { desc: (r) => r.id },
+                        ]);
                         if (sortStatus.direction === "desc")
                             newRecords.reverse();
+                        //     newRecords = sort(records).by(() =>
+                        //         sortStatus.columnAccessor === "details"
+                        //             ? "users"
+                        //             : sortStatus.columnAccessor
+                        //     );
+                        //     if (sortStatus.direction === "desc")
+                        //         newRecords.reverse();
                     }
                     // if (sortStatus) {
                     //     newRecords = sortBy(
