@@ -6,7 +6,7 @@ const CompanySettings = () => {
         <AppShell>
             <AppShellMain p="md" bg="gray.1">
                 <Stack mx="auto" maw={1200} p="md">
-                    <Title size="lg" order={2}>
+                    <Title size="xl" order={2}>
                         会社設定
                     </Title>
 

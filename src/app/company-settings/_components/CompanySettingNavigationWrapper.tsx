@@ -12,18 +12,30 @@ import {
     TabsPanel,
     Tabs,
     TabsList,
+    rem,
 } from "@mantine/core";
 import { useState } from "react";
-import CompanySettingNavigationMenu from "./CompanySettingNavigationMenu";
+import { IconSettings } from "@tabler/icons-react";
 
-// const companySettingTabs = [
-//     { label: "テスト1", path: "test1" },
-//     { label: "テスト2", path: "test2" },
-//     { label: "テスト3", path: "test3" },
-//     { label: "テスト4", path: "test4" },
-//     { label: "テスト5", path: "test5" },
-//     { label: "テスト6", path: "test6" },
-// ];
+const iconStyle = { width: rem(12), height: rem(12) };
+
+const companySettingTabs = [
+    {
+        id: "contract",
+        label: "契約書",
+        icon: <IconSettings style={iconStyle} />,
+    },
+    {
+        id: "ownCompany",
+        label: "自社情報",
+        icon: <IconSettings style={iconStyle} />,
+    },
+    {
+        id: "authority",
+        label: "権限",
+        icon: <IconSettings style={iconStyle} />,
+    },
+];
 
 const CompanySettingNavigationWrapper = () => {
     // const [activeItem, setActiveItem] = useState<string>("test1");
@@ -31,24 +43,35 @@ const CompanySettingNavigationWrapper = () => {
     // const handleNavClick = (path: string) => {
     //     setActiveItem(path);
     // };
+    const [activeMenu, setActiveMenu] = useState("contract");
 
     return (
         <>
-            {/* <CompanySettingNavigationMenu
-                items={navigationItems}
-                activeItem={activeItem}
-                handleNavClick={(path: string) => handleNavClick(path)}
-            /> */}
             <Tabs
                 defaultValue="contract"
                 orientation="vertical"
                 className="flex"
+                variant="unstyled"
             >
                 <Stack w={250}>
                     <TabsList>
-                        <TabsTab value="contract">契約書</TabsTab>
-                        <TabsTab value="ownCompany">自社情報</TabsTab>
-                        <TabsTab value="authority">権限</TabsTab>
+                        {companySettingTabs.map((menu) => (
+                            <TabsTab
+                                key={menu.id}
+                                value={menu.id}
+                                color="blue"
+                                mt={15}
+                                onClick={() => setActiveMenu(menu.id)}
+                                leftSection={menu.icon}
+                                className={
+                                    activeMenu === menu.id
+                                        ? "text-blue-500"
+                                        : ""
+                                }
+                            >
+                                {menu.label}
+                            </TabsTab>
+                        ))}
                     </TabsList>
                 </Stack>
 
