@@ -54,6 +54,7 @@ export type TradingCompanyUser = {
 };
 
 export const tradingCompanies: TradingCompany[] = companyData;
+("`=)))))");
 
 export const departments: TradingCompanyDepartment[] = departmentData.map(
     ({ companyId, ...rest }) => ({
