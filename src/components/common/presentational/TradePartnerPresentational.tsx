@@ -2,6 +2,7 @@ import { Tabs, TabsList, TabsTab, TabsPanel } from "@mantine/core";
 import TradePartnerTableContainer from "../container/tradePartner/TradePartnerTableContainer";
 import TradePartnerCompanyTableContainer from "../container/tradePartner/TradePartnerCompanyTableContainer";
 import TradingPartnerPrivatePersonContainer from "./tradePartner/TradingPartnerPrivatePersonContainer";
+import TradingPartnerCompanyNestedContainer from "../container/tradePartner/TradingPartnerCompanyNestedContainer";
 
 const TradePartnerPresentational = () => {
     return (
@@ -26,6 +27,7 @@ const TradePartnerPresentational = () => {
                 </TabsPanel>
                 <TabsPanel value="newUser">
                     {/* 取引先会社選択して担当者をユーザー単位で登録 */}
+                    <TradingPartnerCompanyNestedContainer />
                     <TradingPartnerPrivatePersonContainer />
                 </TabsPanel>
             </Tabs>

@@ -5,22 +5,23 @@ import { useEffect, useState } from "react";
 import { DataTable, DataTableSortStatus } from "mantine-datatable";
 import CompanyDepartmentTable from "./CompanyDepartmentTable";
 import { delay, useIsMounted } from "@/hooks/mantine";
-import { tradingCompanies } from "@/types/api/tradePartner";
+// import { tradingCompanies } from "@/types/api/tradePartner";
 import { type TradingCompany } from "@/types/api/tradePartner";
 import { IconBuilding, IconChevronRight } from "@tabler/icons-react";
-import classes from "./NestedTablesAsyncSortingExample.module.css";
 import { sort } from "fast-sort";
 
 export type CompanyWithUserCount = TradingCompany & { users: number };
 
-type TradingPartnerCompanyNestedProps<T extends TradingCompany> = {
+type TradingPartnerCompanyNestedProps<T extends CompanyWithUserCount> = {
     tradingCompanies: T[];
     initialCount: number;
 };
 
 const PAGE_SIZES = [10, 15, 20, 50, 75, 100];
 
-const TradingPartnerCompanyNestedPresentation = <T extends TradingCompany>({
+const TradingPartnerCompanyNestedPresentation = <
+    T extends CompanyWithUserCount,
+>({
     tradingCompanies,
     initialCount,
 }: TradingPartnerCompanyNestedProps<T>) => {
@@ -35,7 +36,7 @@ const TradingPartnerCompanyNestedPresentation = <T extends TradingCompany>({
     const isMounted = useIsMounted();
     const [records, setRecords] =
         useState<typeof tradingCompanies>(tradingCompanies);
-    const [loading, setLoading] = useState(true);
+    const [loading, setLoading] = useState(false);
 
     useEffect(() => {
         if (isMounted()) {
@@ -49,8 +50,8 @@ const TradingPartnerCompanyNestedPresentation = <T extends TradingCompany>({
                     ]);
                     if (sortStatus.direction === "desc") newRecords.reverse();
                     setRecords(newRecords);
-                    setLoading(false);
                 }
+                setLoading(false);
             })();
         }
     }, [isMounted, records, sortStatus]);
@@ -72,15 +73,19 @@ const TradingPartnerCompanyNestedPresentation = <T extends TradingCompany>({
                         <>
                             <IconChevronRight
                                 className={clsx(
-                                    classes.icon,
-                                    classes.expandIcon,
+                                    "w-[13px] h-auto -translate-y-[1px] mr-[8px]",
+                                    "transition-transform duration-200",
                                     {
-                                        [classes.expandIconRotated]:
+                                        "rotate-90":
                                             expandedRecordIds.includes(id),
                                     }
                                 )}
                             />
-                            <IconBuilding className={classes.icon} />
+                            <IconBuilding
+                                className={clsx(
+                                    "w-[13px] h-auto -translate-y-[1px] mr-[8px]"
+                                )}
+                            />
                             <span>{name}</span>
                         </>
                     ),

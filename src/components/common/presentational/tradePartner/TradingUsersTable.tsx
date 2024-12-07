@@ -39,21 +39,27 @@ const TradingUsersTable = ({
                             user.tradingDepartment.id === departmentId
                     );
                     if (sortStatus) {
-                        newRecords = sort(newRecords).by(
-                            (record: TradingCompanyUser) =>
-                                sortStatus.columnAccessor === "name"
-                                    ? `${record.firstName} ${record.lastName}`
-                                    : record.birthDate
-                        );
+                        const newRecords = sort(records).by([
+                            { asc: (r) => r.id },
+                            { desc: (r) => r.id },
+                        ]);
                         if (sortStatus.direction === "desc")
                             newRecords.reverse();
+                        // newRecords = sort(newRecords).by(
+                        //     (record: TradingCompanyUser) =>
+                        //         sortStatus.columnAccessor === "name"
+                        //             ? `${record.firstName} ${record.lastName}`
+                        //             : record.birthDate
+                        // );
+                        // if (sortStatus.direction === "desc")
+                        //     newRecords.reverse();
                     }
                     setRecords(newRecords);
                     setLoading(false);
                 }
             })();
         }
-    }, [departmentId, isMounted, sortStatus]);
+    }, [departmentId, isMounted, records, sortStatus]);
 
     return (
         <DataTable
@@ -81,11 +87,9 @@ const TradingUsersTable = ({
                 },
                 {
                     accessor: "birthDate",
-                    render: ({ birthDate }: { birthDate: string }) => {
-                        return (
-                            <Box>{dayjs(birthDate).format("DD MMM YYYY")}</Box>
-                        );
-                    },
+                    render: ({ birthDate }: { birthDate: string }) => (
+                        <Box>{dayjs(birthDate).format("DD MMM YYYY")}</Box>
+                    ),
                     textAlign: "right",
                     width: 200,
                 },

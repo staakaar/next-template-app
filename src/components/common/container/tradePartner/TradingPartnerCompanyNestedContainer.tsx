@@ -1,5 +1,6 @@
 import { companyData } from "@/api/company/company";
 import TradingPartnerCompanyNestedPresentation from "../../presentational/tradePartner/TradingPartnerCompanyNestedPresentation";
+import { filteredTradingCompanies } from "@/types/api/tradePartner";
 
 // 型定義別ファイルへ
 // export type Company = {};
@@ -34,7 +35,6 @@ import TradingPartnerCompanyNestedPresentation from "../../presentational/tradeP
 //         )
 //         .reduce((sum, department) => sum + department.users, 0),
 // }));
-import { departments, tradingCompanies } from "@/types/api/tradePartner";
 
 // user department company情報を本来はフェッチする
 const TradingPartnerCompanyNestedContainer = () => {
@@ -43,7 +43,7 @@ const TradingPartnerCompanyNestedContainer = () => {
 
     return (
         <TradingPartnerCompanyNestedPresentation
-            tradingCompanies={tradingCompanies}
+            tradingCompanies={filteredTradingCompanies}
             initialCount={100}
         />
     );

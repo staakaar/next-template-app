@@ -54,7 +54,6 @@ export type TradingCompanyUser = {
 };
 
 export const tradingCompanies: TradingCompany[] = companyData;
-("`=)))))");
 
 export const departments: TradingCompanyDepartment[] = departmentData.map(
     ({ companyId, ...rest }) => ({
@@ -72,3 +71,22 @@ export const users = userData.map(({ departmentId, ...rest }) => ({
 //     ...rest,
 //     tradingDepartment: departments.find(({ id }) => id === departmentId)!,
 // })) as TradingCompanyUser[];
+
+export const filteredDepartments = departments.map((department) => ({
+    ...department,
+    users:
+        users.filter((user) => user.tradingDepartment?.id === department.id)
+            ?.length || 0,
+}));
+
+export const filteredTradingCompanies = tradingCompanies.map(
+    (tradingCompany) => ({
+        ...tradingCompany,
+        users: filteredDepartments
+            .filter(
+                (department) =>
+                    department.tradingCompany.id === tradingCompany.id
+            )
+            .reduce((sum, department) => sum + department.users, 0),
+    })
+);

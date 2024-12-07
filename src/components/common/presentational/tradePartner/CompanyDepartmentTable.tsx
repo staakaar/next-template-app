@@ -5,7 +5,6 @@ import { DataTable, DataTableSortStatus } from "mantine-datatable";
 import { useEffect, useState } from "react";
 import { IconChevronRight, IconUsers } from "@tabler/icons-react";
 import clsx from "clsx";
-import classes from "./NestedTablesAsyncExample.module.css";
 import TradingUsersTable from "./TradingUsersTable";
 import { delay, useIsMounted } from "@/hooks/mantine";
 import { departments } from "@/types/api/tradePartner";
@@ -82,15 +81,19 @@ const CompanyDepartmentTable = ({
                         <Box component="span" ml={20}>
                             <IconChevronRight
                                 className={clsx(
-                                    classes.icon,
-                                    classes.expandIcon,
+                                    "w-[13px] h-auto -translate-y-[1px] mr-[8px]",
+                                    "transition-transform duration-200",
                                     {
-                                        [classes.expandIconRotated]:
+                                        "rotate-90":
                                             expandedRecordIds.includes(id),
                                     }
                                 )}
                             />
-                            <IconUsers className={classes.icon} />
+                            <IconUsers
+                                className={clsx(
+                                    "w-[13px] h-auto -translate-y-[1px] mr-[8px]"
+                                )}
+                            />
                             <span>{name}</span>
                         </Box>
                     ),
