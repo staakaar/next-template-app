@@ -1,71 +1,51 @@
 "use client";
+import { IconSettings } from "@tabler/icons-react";
 import {
-    Card,
-    TextInput,
     Button,
-    Title,
-    Text,
+    Card,
     Checkbox,
-    Stack,
     Group,
-    TabsTab,
-    TabsPanel,
+    rem,
+    Stack,
     Tabs,
     TabsList,
-    rem,
+    TabsPanel,
+    TabsTab,
+    TextInput,
+    Title,
+    Text,
 } from "@mantine/core";
 import { useState } from "react";
-import { IconSettings } from "@tabler/icons-react";
 
 const iconStyle = { width: rem(12), height: rem(12) };
 
-const companySettingTabs = [
+const userSettingTabs = [
     {
-        id: "contract",
+        id: "test1",
         label: "契約書",
         icon: <IconSettings style={iconStyle} />,
     },
     {
-        id: "ownCompany",
+        id: "test2",
         label: "自社情報",
-        icon: <IconSettings style={iconStyle} />,
-    },
-    {
-        id: "authority",
-        label: "権限",
-        icon: <IconSettings style={iconStyle} />,
-    },
-    {
-        id: "cooperative",
-        label: "連携",
-        icon: <IconSettings style={iconStyle} />,
-    },
-    {
-        id: "other",
-        label: "その他",
         icon: <IconSettings style={iconStyle} />,
     },
 ];
 
-const CompanySettingNavigationWrapper = () => {
-    // const [activeItem, setActiveItem] = useState<string>("test1");
-
-    // const handleNavClick = (path: string) => {
-    //     setActiveItem(path);
-    // };
+const UserSettingsNavigationWrapper = () => {
     const [activeMenu, setActiveMenu] = useState("contract");
 
     return (
         <>
             <Tabs
-                defaultValue="contract"
+                defaultValue="test1"
                 orientation="vertical"
                 className="flex"
                 variant="unstyled"
             >
                 <Stack w={250}>
                     <TabsList>
-                        {companySettingTabs.map((menu) => (
+                        {userSettingTabs.map((menu) => (
                             <TabsTab
                                 key={menu.id}
                                 value={menu.id}
@@ -86,7 +66,7 @@ const CompanySettingNavigationWrapper = () => {
                 </Stack>
 
                 <Stack w={900} ml={30} className="flex">
-                    <TabsPanel value="contract">
+                    <TabsPanel value="test1">
                         <Card shadow="sm" padding="lg" radius="md" withBorder>
                             <Stack>
                                 <Title order={3}>契約書設定</Title>
@@ -132,17 +112,8 @@ const CompanySettingNavigationWrapper = () => {
                             </Stack>
                         </Card>
                     </TabsPanel>
-                    <TabsPanel value="ownCompany">
-                        <div>ownCompany</div>
-                    </TabsPanel>
-                    <TabsPanel value="authority">
-                        <div>authority</div>
-                    </TabsPanel>
-                    <TabsPanel value="cooperative">
-                        <div>cooperative</div>
-                    </TabsPanel>
-                    <TabsPanel value="other">
-                        <div>other</div>
+                    <TabsPanel value="test2">
+                        <div>test2</div>
                     </TabsPanel>
                 </Stack>
             </Tabs>
@@ -150,4 +121,4 @@ const CompanySettingNavigationWrapper = () => {
     );
 };
 
-export default CompanySettingNavigationWrapper;
+export default UserSettingsNavigationWrapper;
