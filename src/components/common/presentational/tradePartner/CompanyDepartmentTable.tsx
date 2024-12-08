@@ -101,7 +101,7 @@ const CompanyDepartmentTable = ({
                 { accessor: "users", textAlign: "right", width: 200 },
             ]}
             records={records}
-            fetching={loading}
+            fetching={loading && !records.length}
             rowExpansion={{
                 allowMultiple: true,
                 expanded: {

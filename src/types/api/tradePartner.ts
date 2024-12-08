@@ -67,11 +67,6 @@ export const users = userData.map(({ departmentId, ...rest }) => ({
     tradingDepartment: departments.find(({ id }) => id === departmentId)!,
 })) as TradingCompanyUser[];
 
-// export const users = userData.map(({ departmentId, ...rest }) => ({
-//     ...rest,
-//     tradingDepartment: departments.find(({ id }) => id === departmentId)!,
-// })) as TradingCompanyUser[];
-
 export const filteredDepartments = departments.map((department) => ({
     ...department,
     users:

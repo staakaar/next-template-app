@@ -50,8 +50,8 @@ const TradingPartnerCompanyNestedPresentation = <
                     ]);
                     if (sortStatus.direction === "desc") newRecords.reverse();
                     setRecords(newRecords);
+                    setLoading(false);
                 }
-                setLoading(false);
             })();
         }
     }, [isMounted, records, sortStatus]);
@@ -100,7 +100,7 @@ const TradingPartnerCompanyNestedPresentation = <
                 },
             ]}
             records={records}
-            fetching={loading}
+            fetching={loading && !records.length}
             rowExpansion={{
                 allowMultiple: true,
                 expanded: {

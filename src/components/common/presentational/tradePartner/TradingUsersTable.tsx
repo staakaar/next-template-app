@@ -4,11 +4,10 @@ import { Box } from "@mantine/core";
 import { IconUser } from "@tabler/icons-react";
 import { DataTable, DataTableSortStatus } from "mantine-datatable";
 import dayjs from "dayjs";
-import clsx from "clsx";
 import { useEffect, useState } from "react";
 import { delay, useIsMounted } from "@/hooks/mantine";
-import { userData } from "@/api/user/user";
 import {
+    users,
     type TradingCompany,
     type TradingCompanyUser,
 } from "@/types/api/tradePartner";
@@ -25,7 +24,7 @@ const TradingUsersTable = ({
     sortStatus,
 }: TradingUsersTableProps) => {
     const isMounted = useIsMounted();
-    const [records, setRecords] = useState<typeof userData>([]);
+    const [records, setRecords] = useState<typeof users>([]);
     const [loading, setLoading] = useState(true);
 
     useEffect(() => {
@@ -34,9 +33,9 @@ const TradingUsersTable = ({
                 setLoading(true);
                 await delay({ min: 500, max: 800 });
                 if (isMounted()) {
-                    let newRecords = userData.filter(
+                    let newRecords = users.filter(
                         (user: any) =>
-                            user.tradingDepartment.id === departmentId
+                            user.tradingDepartment?.id === departmentId
                     );
                     if (sortStatus) {
                         const newRecords = sort(records).by([
@@ -87,15 +86,14 @@ const TradingUsersTable = ({
                 },
                 {
                     accessor: "birthDate",
-                    render: ({ birthDate }: { birthDate: string }) => (
-                        <Box>{dayjs(birthDate).format("DD MMM YYYY")}</Box>
-                    ),
+                    render: ({ birthDate }: any) =>
+                        dayjs(birthDate).format("DD MMM YYYY"),
                     textAlign: "right",
                     width: 200,
                 },
             ]}
             records={records}
-            fetching={loading}
+            fetching={loading && !records.length}
         />
     );
 };
