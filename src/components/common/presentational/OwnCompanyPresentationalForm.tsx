@@ -4,6 +4,9 @@ import {
     Box,
     Checkbox,
     ComboboxItem,
+    HoverCard,
+    HoverCardDropdown,
+    HoverCardTarget,
     LoadingOverlay,
     OptionsFilter,
     Select,
@@ -11,6 +14,7 @@ import {
     Stack,
     Textarea,
     TextInput,
+    Text,
     Tooltip,
 } from "@mantine/core";
 import { DateInput } from "@mantine/dates";
@@ -41,6 +45,7 @@ const OwnCompanyPresentationalForm = ({ form }: OwnCompanyFormProps) => {
             );
         });
     };
+
     return (
         <Box className="mt-10">
             <LoadingOverlay visible={form.formState.isSubmitting} />
@@ -67,16 +72,20 @@ const OwnCompanyPresentationalForm = ({ form }: OwnCompanyFormProps) => {
                         disabled={form.formState.isSubmitting}
                         required
                     />
-                    <Tooltip
-                        label="契約書の解約済みであるかを確認するフラグです。"
-                        // refProp="rootRef"
-                    >
-                        <Checkbox
-                            label="解除要項"
-                            error={errors.isCancellation?.message}
-                            {...register("isCancellation")}
-                        />
-                    </Tooltip>
+                    <HoverCard width={280} shadow="md">
+                        <HoverCardTarget>
+                            <Checkbox
+                                label="解除要項"
+                                error={errors.isCancellation?.message}
+                                {...register("isCancellation")}
+                            />
+                        </HoverCardTarget>
+                        <HoverCardDropdown>
+                            <Text size="sm">
+                                契約書の解約済みであるかを確認するフラグです。
+                            </Text>
+                        </HoverCardDropdown>
+                    </HoverCard>
                 </SimpleGrid>
                 <Stack mt="lg">
                     <Textarea
@@ -87,22 +96,20 @@ const OwnCompanyPresentationalForm = ({ form }: OwnCompanyFormProps) => {
                         minRows={3}
                     />
                 </Stack>
-                <Stack mt="lg">
+                {/* <Stack mt="lg">
                     <Tooltip
                         label="契約書の解約済みであるかを確認するフラグです。"
-                        // refProp="rootRef"
+                        refProp="rootRef"
                     >
                         <Checkbox label="解約済み" onChange={(value) => {}} />
                     </Tooltip>
-                    <Tooltip
-                        label="テスト1フラグです。" /** refProp="rootRef" */
-                    >
+                    <Tooltip label="テスト1フラグです。" refProp="rootRef">
                         <Checkbox label="テスト1" onChange={(value) => {}} />
                     </Tooltip>
-                    <Tooltip label="テスト2フラグです。" /**refProp="rootRef"*/>
+                    <Tooltip label="テスト2フラグです。" refProp="rootRef">
                         <Checkbox label="テスト2" onChange={(value) => {}} />
                     </Tooltip>
-                </Stack>
+                </Stack> */}
             </form>
         </Box>
     );
