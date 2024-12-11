@@ -13,6 +13,10 @@ import {
     OptionsFilter,
     ComboboxItem,
     Tooltip,
+    HoverCard,
+    HoverCardDropdown,
+    HoverCardTarget,
+    Text,
 } from "@mantine/core";
 import { DateInput } from "@mantine/dates";
 import React from "react";
@@ -181,12 +185,19 @@ const ContractBasicPresentationalForm = ({ form }: ContractBasicFormProps) => {
                     />
                 </Stack>
                 <Stack mt="lg">
-                    <Tooltip
-                        label="契約書の解約済みであるかを確認するフラグです。"
-                        // refProp="rootRef"
-                    >
-                        <Checkbox label="解約済み" onChange={(value) => {}} />
-                    </Tooltip>
+                    <HoverCard variant="" width={360} shadow="md">
+                        <HoverCardTarget>
+                            <Checkbox
+                                label="解約済み"
+                                onChange={(value) => {}}
+                            />
+                        </HoverCardTarget>
+                        <HoverCardDropdown>
+                            <Text size="sm">
+                                契約書の解約済みであるかを確認するフラグです。
+                            </Text>
+                        </HoverCardDropdown>
+                    </HoverCard>
                 </Stack>
             </form>
         </Box>
