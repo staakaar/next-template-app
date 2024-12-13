@@ -3,12 +3,12 @@ import axios from "axios";
 import { notifications } from "@mantine/notifications";
 import {
     ContractHistoryForm,
-    contractHistoryFormSchema,
+    contractHistoryListResponseSchema,
 } from "@/lib/contractHistory/schema";
 
 const fetcher = async (
     url: string
-): Promise<ContractHistoryForm | undefined> => {
+): Promise<ContractHistoryForm[] | undefined> => {
     const response = await axios.get(url);
 
     if (!response.data) {
@@ -21,7 +21,9 @@ const fetcher = async (
         return;
     }
 
-    const parsedData = contractHistoryFormSchema.safeParse(response.data);
+    const parsedData = contractHistoryListResponseSchema.safeParse(
+        response.data
+    );
 
     if (!parsedData.success) {
         notifications.show({
@@ -35,7 +37,7 @@ const fetcher = async (
 };
 
 export function useContractHistory(contractCode: string) {
-    const { data, error, mutate } = useSWR<ContractHistoryForm | undefined>(
+    const { data, error, mutate } = useSWR<ContractHistoryForm[] | undefined>(
         contractCode ? `/api/v1/contract/${contractCode}` : null,
         fetcher,
         {
@@ -44,7 +46,7 @@ export function useContractHistory(contractCode: string) {
     );
 
     return {
-        contractBasic: data as ContractHistoryForm,
+        contractHistory: data as ContractHistoryForm[],
         isLoading: !error && !data,
         isError: error,
         mutate,

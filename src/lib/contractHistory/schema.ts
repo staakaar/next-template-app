@@ -7,4 +7,9 @@ export const contractHistoryFormSchema = z.object({
     updateAt: z.string().date(),
 });
 
+// レスポンス専用の型
+export const contractHistoryListResponseSchema = z.array(
+    contractHistoryFormSchema
+);
+
 export type ContractHistoryForm = z.infer<typeof contractHistoryFormSchema>;

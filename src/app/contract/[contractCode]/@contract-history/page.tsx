@@ -1,9 +1,13 @@
 import ContractHistoryContainer from "@/components/common/container/ContractHistoryContainer";
+import { useParams } from "next/navigation";
 
 const ContractHistoryTab = () => {
+    const params = useParams();
+    const contractCode = params.contractCode;
+
     return (
         <>
-            <ContractHistoryContainer />
+            <ContractHistoryContainer contractCode={contractCode} />
         </>
     );
 };

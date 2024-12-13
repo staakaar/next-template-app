@@ -51,29 +51,6 @@ const ContractBasicContainer = ({
         defaultValues: isEdit ? contractBasic : defaultContractBasicForm,
     });
 
-    // useEffect(() => {
-    //     if (isEdit && contractCode) {
-    //         const fetchContractBasic = async () => {
-    //             try {
-    //                 const response = await fetch(
-    //                     `api/contracts/${contractCode}`
-    //                 );
-    //                 const data = await response.json();
-    //                 form.reset(data);
-    //             } catch (error) {
-    //                 console.log("基本情報の取得に失敗しました。", error);
-    //                 notifications.show({
-    //                     title: "エラー",
-    //                     message: "エラーが発生しました。",
-    //                     color: "red",
-    //                 });
-    //             }
-    //         };
-
-    //         fetchContractBasic();
-    //     }
-    // }, [isEdit, contractCode, form]);
-
     const save = () => {};
 
     const update = () => {};
