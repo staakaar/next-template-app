@@ -34,7 +34,7 @@ const fetcher = async (
     return parsedData.data;
 };
 
-export function useContractBasic(contractCode: string) {
+export function useContractHistory(contractCode: string) {
     const { data, error, mutate } = useSWR<ContractHistoryForm | undefined>(
         contractCode ? `/api/v1/contract/${contractCode}` : null,
         fetcher,
