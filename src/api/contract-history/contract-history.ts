@@ -38,7 +38,7 @@ const fetcher = async (
 
 export function useContractHistory(contractCode: string) {
     const { data, error, mutate } = useSWR<ContractHistoryForm[] | undefined>(
-        contractCode ? `/api/v1/contract/${contractCode}` : null,
+        contractCode ? `/api/v1/contract-history/${contractCode}` : null,
         fetcher,
         {
             onError: (error) => {},

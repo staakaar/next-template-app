@@ -2,7 +2,6 @@
 // import NavLink from "@/components/atoms/NavigationLink/NavigationLink";
 // import { useParams, useRouter } from "next/navigation";
 import { ReactNode, useState } from "react";
-import useContractStore from "@/stores/contracts/ContractStore";
 import { rem, Tabs, TabsList, TabsPanel, TabsTab } from "@mantine/core";
 import { IconSettings } from "@tabler/icons-react";
 

@@ -1,15 +1,11 @@
+"use client";
 import ContractHistoryContainer from "@/components/common/container/ContractHistoryContainer";
-import { useParams } from "next/navigation";
+import useContractStore from "@/stores/contracts/ContractStore";
 
 const ContractHistoryTab = () => {
-    const params = useParams();
-    const contractCode = params.contractCode;
+    const { selectedContractCode } = useContractStore();
 
-    return (
-        <>
-            <ContractHistoryContainer contractCode={contractCode} />
-        </>
-    );
+    return <ContractHistoryContainer contractCode={selectedContractCode} />;
 };
 
 export default ContractHistoryTab;

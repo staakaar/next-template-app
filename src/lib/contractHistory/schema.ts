@@ -1,9 +1,10 @@
 import { z } from "zod";
 
 export const contractHistoryFormSchema = z.object({
-    beforeValue: z.string().optional(),
-    afterValue: z.string().optional(),
-    personInCharge: z.string().optional(),
+    contractHistoryId: z.string().max(50),
+    beforeValue: z.string(),
+    afterValue: z.string(),
+    personInCharge: z.string(),
     updateAt: z.string().date(),
 });
 

@@ -32,7 +32,6 @@ interface ContractDetailTabProps {
 
 const Layout = ({
     children,
-    tabs,
     contractBasic,
     contractTrade,
     contractAuthority,

@@ -43,8 +43,6 @@ const ContractDetailsPresentational = <T extends Item>({
     useEffect(() => {
         const from = (page - 1) * pageSize;
         const to = from + pageSize;
-        console.log(from);
-        console.log(to);
         setRecords(items.slice(from, to));
     }, [items, page, pageSize]);
 

@@ -1,5 +1,4 @@
 import { useContractHistory } from "@/api/contract-history/contract-history";
-import { useParams } from "next/navigation";
 import ContractHistoryPresentational from "../presentational/ContractHistoryPresentational";
 
 interface ContractHistoryContainerProps {
