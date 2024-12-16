@@ -27,7 +27,7 @@ interface OwnCompanyFormProps {
     form: ReturnType<typeof useForm<OwnCompanyFormValues>>;
 }
 
-const OwnCompanyPresentationalForm = ({ form }: OwnCompanyFormProps) => {
+const OwnCompanyPresentationalForm = ({ form, ref }: OwnCompanyFormProps) => {
     const {
         register,
         handleSubmit,

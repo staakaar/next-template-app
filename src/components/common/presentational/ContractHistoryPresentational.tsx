@@ -9,6 +9,7 @@ import {
 } from "mantine-datatable";
 import { useEffect, useState } from "react";
 import VTooltip from "../atoms/Tooltip";
+import { Box, Group, Stack } from "@mantine/core";
 
 type ContractHistoryPresentationalProps<T extends ContractHistoryForm> = {
     contractHistories: T[];
@@ -131,7 +132,7 @@ const ContractHistoryPresentational = <T extends ContractHistoryForm>({
         <DataTable
             className="mt-8"
             withTableBorder
-            borderRadius="sm"
+            borderRadius="md"
             striped
             highlightOnHover={true}
             columns={effectiveColumns}
@@ -139,6 +140,20 @@ const ContractHistoryPresentational = <T extends ContractHistoryForm>({
             noRecordsText={
                 records.length === 0 ? "該当のレコードが存在しません。" : ""
             }
+            rowExpansion={{
+                content: ({ record }) => (
+                    <Stack className="text-sm bg-gray-50 p-4" gap={6}>
+                        <Group gap={6}>
+                            <Box className="w-[130px]">after Value</Box>
+                            <Box className="">{record.afterValue}</Box>
+                        </Group>
+                        <Group gap={6}>
+                            <Box className="w-[130px]">before Value</Box>
+                            <Box className="">{record.beforeValue}</Box>
+                        </Group>
+                    </Stack>
+                ),
+            }}
             // noRecordsIcon={true}
             emptyState={records.length === 0}
             loadingText="読み込み中です..."

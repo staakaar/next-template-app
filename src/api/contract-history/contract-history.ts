@@ -45,8 +45,25 @@ export function useContractHistory(contractCode: string) {
         }
     );
 
+    const tmpData = [
+        {
+            contractHistoryId: "1",
+            beforeValue: "変更前",
+            afterValue: "変更後",
+            personInCharge: "テスト太郎",
+            updateAt: "2024/12/01 12:00:000",
+        },
+        {
+            contractHistoryId: "2",
+            beforeValue: "変更前2",
+            afterValue: "変更後2",
+            personInCharge: "テスト次郎",
+            updateAt: "2024/12/01 12:00:000",
+        },
+    ] as ContractHistoryForm[];
+
     return {
-        contractHistory: data as ContractHistoryForm[],
+        contractHistory: !tmpData ? [] : (tmpData as ContractHistoryForm[]),
         isLoading: !error && !data,
         isError: error,
         mutate,

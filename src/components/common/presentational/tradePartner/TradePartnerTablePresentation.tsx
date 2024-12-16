@@ -164,7 +164,7 @@ const TradePartnerTablePresentation = <T extends TradingPartnerPerson>({
             onSortStatusChange={setSortStatus}
             onPageChange={(p) => setPage(p)}
             onRecordsPerPageChange={setPageSize}
-            idAccessor="tradePersonId"
+            idAccessor="tradingPersonId"
             styles={{
                 pagination: {
                     display: "flex",
@@ -174,7 +174,7 @@ const TradePartnerTablePresentation = <T extends TradingPartnerPerson>({
                     gap: "1rem",
 
                     ".mantineGroupRoot": {
-                        dispaly: "flex",
+                        display: "flex",
                         alignItems: "center",
                         gap: "1rem",
                         flex: 1,
