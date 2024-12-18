@@ -1,4 +1,6 @@
+import { useContractAuthority } from "@/api/contract-authority/contract-authority";
 import ContractAuthorityListPresentation from "../presentational/ContractAuthorityListPresentation";
+import { useContractAuthorityTable } from "@/hooks/contractAuthority";
 
 interface ContractAuthorityListContainerProps {
     contractCode: string;
@@ -7,10 +9,11 @@ interface ContractAuthorityListContainerProps {
 const ContractAuthorityListContainer = ({
     contractCode,
 }: ContractAuthorityListContainerProps) => {
-    // fetch own company api
-
     const { contractAuthority, isLoading, isError, mutate } =
         useContractAuthority(contractCode);
+
+    // own company and onb api check
+    const authorities = useContractAuthorityTable();
 
     return (
         <ContractAuthorityListPresentation

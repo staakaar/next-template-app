@@ -14,6 +14,11 @@ export type DepartmentRole = {
     permission: Permission;
 };
 
+/**
+ * 契約書詳細開いた際の権限チェック
+ * @param contractCode
+ * @returns
+ */
 export const useContractAuthorityCheck = (contractCode: string) => {
     const [permission, setPermission] = useState<Permission>("view");
     // ユーザー情報をstoreに設定
@@ -96,4 +101,13 @@ const checkUserPermission = (
     userId: string
 ): Permission | undefined => {
     return undefined;
+};
+
+/**
+    契約書権限のテーブル表示用
+ */
+export const useContractAuthorityTable = () => {
+    // own company api
+    // onb api
+    // データを照合してテーブル専用の型へ詰め替え
 };
