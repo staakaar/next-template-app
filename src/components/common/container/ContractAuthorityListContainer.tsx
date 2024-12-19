@@ -12,13 +12,13 @@ const ContractAuthorityListContainer = ({
     const { contractAuthority, isLoading, isError, mutate } =
         useContractAuthority(contractCode);
 
-    // own company and onb api check
+    // own company and onb api check このパターンはZustandで状態管理
     const authorities = useContractAuthorityTable();
 
     return (
         <ContractAuthorityListPresentation
-            contractAuthorities={contractCode}
-            initialTotalCount={contractAuthority.length}
+            contractAuthorities={authorities}
+            initialTotalCount={authorities.length}
         />
     );
 };

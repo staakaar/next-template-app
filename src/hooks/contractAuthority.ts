@@ -2,6 +2,7 @@ import { useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
 import useUserProfileStore from "@/stores/user/UserStore";
 import axios from "axios";
+import { Role } from "@/stores/contractBasic/ContractBasicStore";
 
 export type Permission = "edit" | "view";
 export type UserRole = {
@@ -110,4 +111,15 @@ export const useContractAuthorityTable = () => {
     // own company api
     // onb api
     // データを照合してテーブル専用の型へ詰め替え
+
+    return [{}, {}, {}] as ContractAuthority[];
+};
+
+type RoleType = "VIEW" | "EDIT";
+type RoleCategory = "USER" | "DEPARTMENT" | "COMPANY";
+
+export type ContractAuthority = {
+    roleCategory: RoleCategory;
+    roleName: string;
+    roleType: RoleType;
 };
