@@ -1,3 +1,4 @@
+"use client";
 import { useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
 import useUserProfileStore from "@/stores/user/UserStore";
@@ -119,6 +120,7 @@ type RoleType = "VIEW" | "EDIT";
 type RoleCategory = "USER" | "DEPARTMENT" | "COMPANY";
 
 export type ContractAuthority = {
+    roleId: string;
     roleCategory: RoleCategory;
     roleName: string;
     roleType: RoleType;
