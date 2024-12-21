@@ -94,6 +94,8 @@ const TradingUsersTable = ({
             ]}
             records={records}
             fetching={loading && !records.length}
+            selectedRecords={[]}
+            onSelectedRecordsChange={() => {}}
         />
     );
 };

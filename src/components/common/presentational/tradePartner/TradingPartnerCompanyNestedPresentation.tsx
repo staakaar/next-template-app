@@ -114,6 +114,8 @@ const TradingPartnerCompanyNestedPresentation = <
                     />
                 ),
             }}
+            selectedRecords={[]}
+            onSelectedRecordsChange={() => {}}
         />
     );
 };

@@ -3,10 +3,6 @@ import useSWR from "swr";
 import axios from "axios";
 import { notifications } from "@mantine/notifications";
 import {
-    ContractHistoryForm,
-    contractHistoryListResponseSchema,
-} from "@/lib/contractHistory/schema";
-import {
     ContractAuthorityForm,
     contractAuthorityListResponseSchema,
 } from "@/lib/contract-authority/schema";

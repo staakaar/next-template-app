@@ -115,6 +115,8 @@ const CompanyDepartmentTable = ({
                     />
                 ),
             }}
+            selectedRecords={[]}
+            onSelectedRecordsChange={() => {}}
         />
     );
 };

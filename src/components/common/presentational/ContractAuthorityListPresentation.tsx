@@ -10,6 +10,8 @@ import {
 } from "mantine-datatable";
 import { useEffect, useState } from "react";
 import VTooltip from "../atoms/Tooltip";
+import { ActionIcon, Box, Group } from "@mantine/core";
+import { IconTrash } from "@tabler/icons-react";
 
 type ContractAuthorityListPresentationProps<T extends ContractAuthority> = {
     contractAuthorities: T[];
@@ -83,6 +85,23 @@ const ContractAuthorityListPresentation = <T extends ContractAuthority>({
                 />
             ),
         },
+        {
+            accessor: "actions",
+            title: "",
+            textAlign: "right",
+            render: (company) => (
+                <Group gap={2} justify="right" wrap="nowrap">
+                    <ActionIcon
+                        size="sm"
+                        variant="subtle"
+                        color="red"
+                        onClick={() => {}}
+                    >
+                        <IconTrash size={16} />
+                    </ActionIcon>
+                </Group>
+            ),
+        },
     ];
 
     const { effectiveColumns } = useDataTableColumns<ContractAuthority>({
@@ -114,7 +133,7 @@ const ContractAuthorityListPresentation = <T extends ContractAuthority>({
             // onSortStatusChange={setSortStatus}
             onPageChange={(p) => setPage(p)}
             onRecordsPerPageChange={setPageSize}
-            idAccessor="contractHistoryId"
+            idAccessor="roleId"
             styles={{
                 pagination: {
                     display: "flex",

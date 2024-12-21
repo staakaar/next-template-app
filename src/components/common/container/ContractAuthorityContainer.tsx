@@ -1,10 +1,12 @@
 "use client";
 import { Box, Button, Tabs, TabsList, TabsPanel, TabsTab } from "@mantine/core";
 import ContractAuthorityListContainer from "./ContractAuthorityListContainer";
-import useContractStore from "@/stores/contracts/ContractStore";
+import { useParams } from "next/navigation";
 
 const ContractAuthorityContainer = () => {
-    const { selectedContractCode } = useContractStore();
+    const { contractCode } = useParams();
+    if (Array.isArray(contractCode) || !contractCode) return;
+
     return (
         <Tabs
             className="mt-6"
@@ -27,7 +29,7 @@ const ContractAuthorityContainer = () => {
             <Box className="grid gap-3">
                 <TabsPanel value="authorityList">
                     <ContractAuthorityListContainer
-                        contractCode={selectedContractCode}
+                        contractCode={contractCode}
                     />
                 </TabsPanel>
                 <TabsPanel value="userAuthority">
