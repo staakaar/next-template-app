@@ -2,6 +2,7 @@
 import { Box, Button, Tabs, TabsList, TabsPanel, TabsTab } from "@mantine/core";
 import ContractAuthorityListContainer from "./ContractAuthorityListContainer";
 import { useParams } from "next/navigation";
+import ContractAuthorityHierarchyContainer from "./contractAuthority/ContractAuthorityHierarchyContainer";
 
 const ContractAuthorityContainer = () => {
     const { contractCode } = useParams();
@@ -16,9 +17,7 @@ const ContractAuthorityContainer = () => {
         >
             <TabsList>
                 <TabsTab value="authorityList">権限一覧</TabsTab>
-                <TabsTab value="userAuthority">ユーザー権限</TabsTab>
-                <TabsTab value="departmentAuthority">部署権限</TabsTab>
-                <TabsTab value="companyAuthority">会社権限</TabsTab>
+                <TabsTab value="addAuthority">権限追加</TabsTab>
             </TabsList>
             {/* 詳細時は更新ボタン */}
             <Box className="flex justify-end">
@@ -32,14 +31,8 @@ const ContractAuthorityContainer = () => {
                         contractCode={contractCode}
                     />
                 </TabsPanel>
-                <TabsPanel value="userAuthority">
-                    <Box>userAuthority</Box>
-                </TabsPanel>
-                <TabsPanel value="departmentAuthority">
-                    <Box>departmentAuthority</Box>
-                </TabsPanel>
-                <TabsPanel value="companyAuthority">
-                    <Box>companyAuthority</Box>
+                <TabsPanel value="addAuthority">
+                    <ContractAuthorityHierarchyContainer />
                 </TabsPanel>
             </Box>
         </Tabs>
