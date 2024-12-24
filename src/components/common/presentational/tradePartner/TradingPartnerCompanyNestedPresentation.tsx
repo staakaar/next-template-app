@@ -17,8 +17,6 @@ type TradingPartnerCompanyNestedProps<T extends CompanyWithUserCount> = {
     initialCount: number;
 };
 
-const PAGE_SIZES = [10, 15, 20, 50, 75, 100];
-
 const TradingPartnerCompanyNestedPresentation = <
     T extends CompanyWithUserCount,
 >({
