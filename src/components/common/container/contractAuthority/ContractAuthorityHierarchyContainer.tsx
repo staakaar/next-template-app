@@ -1,4 +1,4 @@
-import { ownCompany } from "@/types/onboarding";
+import { filteredOwnCompanyAuthorities } from "@/types/onboarding";
 import ContractAuthorityHierarchyPresentation from "../../presentational/contractAuthority/ContractAuthorityHierarchyPresentation";
 
 const ContractAuthorityHierarchyContainer = () => {
@@ -6,8 +6,8 @@ const ContractAuthorityHierarchyContainer = () => {
 
     return (
         <ContractAuthorityHierarchyPresentation
-            contractAuthorities={ownCompany}
-            initialCount={1}
+            contractAuthorities={filteredOwnCompanyAuthorities}
+            initialTotalCount={1}
         />
     );
 };

@@ -30,7 +30,7 @@ export type OwnCompanyUser = {
 // TODO: hooks/contractAuthority
 // 本来は上記のフックでAPI叩いて以下の処理もcontractAuthority内で加工して返却する
 
-export const ownCompany: OwnCompanyAuthority = {
+export const ownCompanyAuthority: OwnCompanyAuthority = {
     id: "0cf96f1c-62c9-4e3f-97b0-4a2e8fa2bf6b",
     name: "Cummerata - Kuhlman",
     streetAddress: "6389 Dicki Stream",
@@ -39,10 +39,14 @@ export const ownCompany: OwnCompanyAuthority = {
     missionStatement: "Harness real-time channels.",
 } as OwnCompanyAuthority;
 
+export const ownCompanyAuthorities: OwnCompanyAuthority[] = [
+    ownCompanyAuthority,
+];
+
 export const departments: OwnCompanyDepartmentAuthority[] = departmentData.map(
     ({ companyId, ...rest }) => ({
         ...rest,
-        ownCompany: ownCompany,
+        ownCompany: ownCompanyAuthority,
     })
 );
 
@@ -57,3 +61,14 @@ export const filteredDepartments = departments.map((department) => ({
         users.filter((user) => user.ownCompanyDepartment?.id === department.id)
             ?.length || 0,
 }));
+
+export const filteredOwnCompanyAuthorities = ownCompanyAuthorities.map(
+    (tradingCompany) => ({
+        ...tradingCompany,
+        users: filteredDepartments
+            .filter(
+                (department) => department.ownCompany.id === tradingCompany.id
+            )
+            .reduce((sum, department) => sum + department.users, 0),
+    })
+);

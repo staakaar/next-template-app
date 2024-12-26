@@ -5,6 +5,7 @@ import clsx from "clsx";
 import { sort } from "fast-sort";
 import { DataTable, DataTableSortStatus } from "mantine-datatable";
 import { useEffect, useState } from "react";
+import OwnCompanyDepartmentAuthorityTable from "./OwnCompanyDepartmentAuthorityTable";
 
 export type OwnCompanyAuthorityWithUser = OwnCompanyAuthority & {
     users: number;
