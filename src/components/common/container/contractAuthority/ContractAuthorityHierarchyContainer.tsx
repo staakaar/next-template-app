@@ -3,6 +3,7 @@ import ContractAuthorityHierarchyPresentation from "../../presentational/contrac
 
 const ContractAuthorityHierarchyContainer = () => {
     // fetch onb apiを取得
+    console.log(filteredOwnCompanyAuthorities);
 
     return (
         <ContractAuthorityHierarchyPresentation

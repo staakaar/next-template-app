@@ -46,7 +46,7 @@ export const ownCompanyAuthorities: OwnCompanyAuthority[] = [
 export const departments: OwnCompanyDepartmentAuthority[] = departmentData.map(
     ({ companyId, ...rest }) => ({
         ...rest,
-        ownCompany: ownCompanyAuthority,
+        ownCompany: ownCompanyAuthorities.find(({ id }) => id === companyId)!,
     })
 );
 
@@ -67,7 +67,7 @@ export const filteredOwnCompanyAuthorities = ownCompanyAuthorities.map(
         ...tradingCompany,
         users: filteredDepartments
             .filter(
-                (department) => department.ownCompany.id === tradingCompany.id
+                (department) => department.ownCompany?.id === tradingCompany.id
             )
             .reduce((sum, department) => sum + department.users, 0),
     })

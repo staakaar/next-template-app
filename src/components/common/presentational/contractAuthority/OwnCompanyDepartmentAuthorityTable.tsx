@@ -49,6 +49,7 @@ const OwnCompanyDepartmentAuthorityTable = ({
             })();
         }
     }, [companyId, isMounted, records, sortStatus]);
+
     return (
         <DataTable
             noHeader
