@@ -46,7 +46,7 @@ export const ownCompanyAuthorities: OwnCompanyAuthority[] = [
 export const departments: OwnCompanyDepartmentAuthority[] = departmentData.map(
     ({ companyId, ...rest }) => ({
         ...rest,
-        ownCompany: ownCompanyAuthorities.find(({ id }) => id === companyId)!,
+        ownCompany: ownCompanyAuthorities[0], //.id === companyId, //.find(({ id }) => id === companyId)!,
     })
 );
 

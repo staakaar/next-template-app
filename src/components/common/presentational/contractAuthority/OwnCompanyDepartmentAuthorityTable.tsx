@@ -25,6 +25,7 @@ const OwnCompanyDepartmentAuthorityTable = ({
     const isMounted = useIsMounted();
     const [records, setRecords] = useState<typeof departments>([]);
     const [loading, setLoading] = useState(true);
+    console.log("🔥", departments);
 
     useEffect(() => {
         if (isMounted()) {
@@ -32,9 +33,10 @@ const OwnCompanyDepartmentAuthorityTable = ({
                 setLoading(true);
                 await delay({ min: 500, max: 800 });
                 if (isMounted()) {
-                    let newRecords = departments.filter(
-                        (department) => department.ownCompany.id === companyId
-                    );
+                    let newRecords = departments.filter((department) => {
+                        if (!department.ownCompany) return department;
+                        department.ownCompany.id === companyId;
+                    });
                     if (sortStatus) {
                         const newRecords = sort(records).by([
                             { asc: (r) => r.id },

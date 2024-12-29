@@ -24,9 +24,8 @@ const ContractAuthorityHierarchyPresentation = <
     contractAuthorities,
     initialTotalCount,
 }: ContractAuthorityHierarchyPresentationProps<T>) => {
-    const companyIds = contractAuthorities.map((c) => c.id);
-    const [expandedRecordIds, setExpandedRecordIds] =
-        useState<string[]>(companyIds);
+    // const companyIds = contractAuthorities.map((c) => c.id);
+    const [expandedRecordIds, setExpandedRecordIds] = useState<string[]>([]);
     const [sortStatus, setSortStatus] = useState<
         DataTableSortStatus<OwnCompanyAuthorityWithUser>
     >({
