@@ -1,3 +1,4 @@
+"use client";
 import { delay, useIsMounted } from "@/hooks/mantine";
 import { departments, OwnCompanyAuthority } from "@/types/onboarding";
 import { Box } from "@mantine/core";
@@ -25,7 +26,7 @@ const OwnCompanyDepartmentAuthorityTable = ({
     const isMounted = useIsMounted();
     const [records, setRecords] = useState<typeof departments>([]);
     const [loading, setLoading] = useState(true);
-    console.log("🔥", departments);
+    console.log(departments);
 
     useEffect(() => {
         if (isMounted()) {
@@ -34,8 +35,7 @@ const OwnCompanyDepartmentAuthorityTable = ({
                 await delay({ min: 500, max: 800 });
                 if (isMounted()) {
                     let newRecords = departments.filter((department) => {
-                        if (!department.ownCompany) return department;
-                        department.ownCompany.id === companyId;
+                        return department.ownCompany.id === companyId;
                     });
                     if (sortStatus) {
                         const newRecords = sort(records).by([

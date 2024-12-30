@@ -43,12 +43,12 @@ export const ownCompanyAuthorities: OwnCompanyAuthority[] = [
     ownCompanyAuthority,
 ];
 
-export const departments: OwnCompanyDepartmentAuthority[] = departmentData.map(
-    ({ companyId, ...rest }) => ({
+export const departments: OwnCompanyDepartmentAuthority[] = departmentData
+    .map(({ companyId, ...rest }) => ({
         ...rest,
-        ownCompany: ownCompanyAuthorities[0], //.id === companyId, //.find(({ id }) => id === companyId)!,
-    })
-);
+        ownCompany: ownCompanyAuthorities.find(({ id }) => id === companyId)!,
+    }))
+    .filter((department) => department.ownCompany !== undefined);
 
 export const users = userData.map(({ departmentId, ...rest }) => ({
     ...rest,
