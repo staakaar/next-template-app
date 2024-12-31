@@ -50,10 +50,14 @@ export const departments: OwnCompanyDepartmentAuthority[] = departmentData
     }))
     .filter((department) => department.ownCompany !== undefined);
 
-export const users = userData.map(({ departmentId, ...rest }) => ({
-    ...rest,
-    ownCompanyDepartment: departments.find(({ id }) => id === departmentId)!,
-})) as OwnCompanyUser[];
+export const users = userData
+    .map(({ departmentId, ...rest }) => ({
+        ...rest,
+        ownCompanyDepartment: departments.find(
+            ({ id }) => id === departmentId
+        )!,
+    }))
+    .filter((department) => department.ownCompanyDepartment !== undefined);
 
 export const filteredDepartments = departments.map((department) => ({
     ...department,

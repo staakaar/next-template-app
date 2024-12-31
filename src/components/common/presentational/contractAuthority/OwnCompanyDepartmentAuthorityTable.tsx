@@ -38,19 +38,19 @@ const OwnCompanyDepartmentAuthorityTable = ({
                         return department.ownCompany.id === companyId;
                     });
                     if (sortStatus) {
-                        const newRecords = sort(records).by([
-                            { asc: (r) => r.id },
-                            { desc: (r) => r.id },
-                        ]);
-                        if (sortStatus.direction === "desc")
-                            newRecords.reverse();
+                        // const newRecords = sort(records).by([
+                        //     { asc: (r) => r.id },
+                        //     { desc: (r) => r.id },
+                        // ]);
+                        // if (sortStatus.direction === "desc")
+                        //     newRecords.reverse();
                     }
                     setRecords(newRecords);
                     setLoading(false);
                 }
             })();
         }
-    }, [companyId, isMounted, records, sortStatus]);
+    }, [companyId, isMounted, sortStatus]);
 
     return (
         <DataTable
@@ -85,7 +85,7 @@ const OwnCompanyDepartmentAuthorityTable = ({
                 { accessor: "users", textAlign: "right", width: 200 },
             ]}
             records={records}
-            fetching={loading && !records.length}
+            fetching={loading}
             rowExpansion={{
                 allowMultiple: true,
                 expanded: {

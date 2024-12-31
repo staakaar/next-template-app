@@ -35,7 +35,7 @@ const TradingUsersTable = ({
                 if (isMounted()) {
                     let newRecords = users.filter(
                         (user: any) =>
-                            user.tradingDepartment?.id === departmentId
+                            user.tradingDepartment.id === departmentId
                     );
                     if (sortStatus) {
                         const newRecords = sort(records).by([
