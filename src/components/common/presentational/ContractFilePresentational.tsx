@@ -33,6 +33,7 @@ import { TrashIcon } from "lucide-react";
 
 interface UploadContractFile extends FileWithPath {
     id: string;
+    name: string;
     progress: number;
     status: "uploading" | "done" | "error";
     file: File;
@@ -40,7 +41,7 @@ interface UploadContractFile extends FileWithPath {
 }
 
 const ContractFilePresentational = (props: Partial<DropzoneProps>) => {
-    const openRef = useRef<() => void>(null);
+    // const openRef = useRef<() => void>(null);
     const { contractFiles, setContractFiles } = useContractFileStore();
     const [selectedFileIndex, setSelectedFileIndex] = useState<number | null>(
         null
@@ -59,11 +60,13 @@ const ContractFilePresentational = (props: Partial<DropzoneProps>) => {
 
     /** ファイルのドロップ */
     const handleDrop = async (acceptedFiles: FileWithPath[]) => {
+        console.log("handle drop", acceptedFiles);
         const newFiles = acceptedFiles.map(
             (file) =>
                 ({
                     ...file,
                     id: crypto.randomUUID(),
+                    // name: file.name,
                     progress: 0,
                     status: "uploading" as const,
                 }) as UploadContractFile
@@ -95,7 +98,7 @@ const ContractFilePresentational = (props: Partial<DropzoneProps>) => {
                 setSelectedFileIndex(null);
             }
         },
-        [selectedFileIndex, setContractFiles]
+        [contractFiles, selectedFileIndex, setContractFiles]
     );
 
     // クリーンアップ関数
@@ -123,7 +126,7 @@ const ContractFilePresentational = (props: Partial<DropzoneProps>) => {
     return (
         <Box>
             <Dropzone
-                onDrop={(files) => console.log("accepted files", files)}
+                onDrop={(files) => handleDrop(files)}
                 onReject={(files) => console.log("rejected files", files)}
                 maxSize={5 * 1024 ** 2}
                 accept={MIME_TYPE}
@@ -169,7 +172,7 @@ const ContractFilePresentational = (props: Partial<DropzoneProps>) => {
             <Stack mt={4} align="stretch">
                 {contractFiles.map((file, index) => (
                     <Group
-                        key={file.file.name + index}
+                        key={file.name + index}
                         p={2}
                         bg="gray.100"
                         className="justify-between"
@@ -178,8 +181,8 @@ const ContractFilePresentational = (props: Partial<DropzoneProps>) => {
                             onClick={() => handleFileSelect}
                             className="cursor-pointer"
                         >
-                            {file.file.name} -{" "}
-                            {(file.file.size / 1024 / 1024).toFixed(2)} MB
+                            {file.name} - {(file.size / 1024 / 1024).toFixed(2)}{" "}
+                            MB
                         </Text>
                         <ActionIcon
                             aria-label="Delete file"
