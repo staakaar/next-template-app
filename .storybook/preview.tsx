@@ -8,7 +8,6 @@ import theme from "../src/styles/theme";
 // import { AppRouterContext } from "next/client/router-context";
 import { initialize, mswDecorator } from "msw-storybook-addon";
 import type { Preview, StoryFn } from "@storybook/react";
-import { render } from "react-dom";
 
 initialize();
 

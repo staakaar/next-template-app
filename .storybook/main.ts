@@ -7,11 +7,7 @@ const config: StorybookConfig = {
         "@storybook/addon-essentials",
         "@storybook/addon-onboarding",
         "@storybook/addon-interactions",
-        "@chakra-ui/storybook-addon",
-        "storybook-addon-next-router",
-        "@storybook/addon-interactions",
         "@storybook/addon-a11y",
-        "@storybook/addon-styling-webpack",
         "storybook-dark-mode",
     ],
     framework: {

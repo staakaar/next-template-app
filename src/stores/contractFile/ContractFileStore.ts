@@ -4,6 +4,7 @@ import { FileWithPath } from "@mantine/dropzone";
 
 interface UploadContractFile extends FileWithPath {
     id: string;
+    name: string;
     progress: number;
     status: "uploading" | "done" | "error";
     file: File;
@@ -27,20 +28,18 @@ export type ContractFileState = {
 };
 
 export const useContractFileStore = create<ContractFileState>()(
-    persist(
-        (set) => ({
-            contractFiles: [] as UploadContractFile[],
-            setContractFiles: (uploadFiles: UploadContractFile[]) =>
-                set((state) => ({ ...state, contractFiles: uploadFiles })),
-            resetContractFiles: () =>
-                set((state) => ({
-                    ...state,
-                    contractFiles: [] as UploadContractFile[],
-                })),
-        }),
-        {
-            name: "contract-file-store",
-            storage: createJSONStorage(() => localStorage),
-        }
-    )
+    (set) => ({
+        contractFiles: [] as UploadContractFile[],
+        setContractFiles: (uploadFiles: UploadContractFile[]) =>
+            set((state) => ({ ...state, contractFiles: uploadFiles })),
+        resetContractFiles: () =>
+            set((state) => ({
+                ...state,
+                contractFiles: [] as UploadContractFile[],
+            })),
+    })
+    // {
+    //     name: "contract-file-store",
+    //     storage: createJSONStorage(() => sessionStorage),
+    // }
 );

@@ -25,10 +25,25 @@ import {
     PDF_MIME_TYPE,
 } from "@mantine/dropzone";
 import { useCallback, useEffect, useRef, useState } from "react";
-import { Viewer, Worker } from "@react-pdf-viewer/core";
-import { defaultLayoutPlugin } from "@react-pdf-viewer/default-layout";
+import dynamic from "next/dynamic";
 import "@react-pdf-viewer/core/lib/styles/index.css";
 import "@react-pdf-viewer/default-layout/lib/styles/index.css";
+
+// PDFビューアーを動的インポート（SSR無効）
+const PDFViewer = dynamic(
+    () =>
+        import("@react-pdf-viewer/core").then((mod) => ({
+            default: mod.Viewer,
+        })),
+    { ssr: false }
+);
+const PDFWorker = dynamic(
+    () =>
+        import("@react-pdf-viewer/core").then((mod) => ({
+            default: mod.Worker,
+        })),
+    { ssr: false }
+);
 import { TrashIcon } from "lucide-react";
 
 interface UploadContractFile extends FileWithPath {
@@ -41,14 +56,23 @@ interface UploadContractFile extends FileWithPath {
 }
 
 const ContractFilePresentational = (props: Partial<DropzoneProps>) => {
-    // const openRef = useRef<() => void>(null);
+    const openRef = useRef<() => void>(null);
     const { contractFiles, setContractFiles } = useContractFileStore();
     const [selectedFileIndex, setSelectedFileIndex] = useState<number | null>(
         null
     );
     const [isUploading, setIsUploading] = useState(false);
-    // プラグイン初期化
-    const defaultLayoutPluginInstance = defaultLayoutPlugin();
+    // プラグイン初期化（動的インポート対応）
+    const [defaultLayoutPluginInstance, setDefaultLayoutPluginInstance] =
+        useState<any>(null);
+
+    useEffect(() => {
+        if (typeof window !== "undefined") {
+            import("@react-pdf-viewer/default-layout").then((mod) => {
+                setDefaultLayoutPluginInstance(mod.defaultLayoutPlugin());
+            });
+        }
+    }, []);
 
     /** ファイルのアップロード */
     const uploadFile = async (file: UploadContractFile) => {
@@ -66,8 +90,9 @@ const ContractFilePresentational = (props: Partial<DropzoneProps>) => {
                 ({
                     ...file,
                     id: crypto.randomUUID(),
-                    // name: file.name,
+                    name: file.name,
                     progress: 0,
+                    file: file,
                     status: "uploading" as const,
                 }) as UploadContractFile
         );
@@ -84,6 +109,7 @@ const ContractFilePresentational = (props: Partial<DropzoneProps>) => {
             // API処理関数呼び出し
             console.log("API処理関数呼び出し", file);
         }
+        console.log(selectedFileIndex);
 
         setIsUploading(false);
     };
@@ -200,14 +226,14 @@ const ContractFilePresentational = (props: Partial<DropzoneProps>) => {
                 ))}
             </Stack>
 
-            {selectedFileIndex !== null && (
+            {selectedFileIndex !== null && defaultLayoutPluginInstance && (
                 <Box>
-                    <Worker workerUrl="https://unpkg.com/pdfjs-dist@3.4.120/build/pdf.worker.min.js">
-                        <Viewer
+                    <PDFWorker workerUrl="https://unpkg.com/pdfjs-dist@3.4.120/build/pdf.worker.min.js">
+                        <PDFViewer
                             fileUrl={contractFiles[selectedFileIndex].preview}
                             plugins={[defaultLayoutPluginInstance]}
-                        ></Viewer>
-                    </Worker>
+                        />
+                    </PDFWorker>
                 </Box>
             )}
         </Box>

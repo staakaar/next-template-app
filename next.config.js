@@ -61,6 +61,24 @@ const nextConfig = {
             test: /\.node/,
             use: "raw-loader",
         });
+
+        // Canvas モジュールを無視 (PDFビューアー用)
+        config.resolve.fallback = {
+            ...config.resolve.fallback,
+            canvas: false,
+            fs: false,
+            path: false,
+        };
+
+        // Node.js向けのモジュールを除外
+        config.externals = config.externals || {};
+        if (
+            typeof config.externals === "object" &&
+            !Array.isArray(config.externals)
+        ) {
+            config.externals = { ...config.externals, canvas: "canvas" };
+        }
+
         return config;
     },
 };
