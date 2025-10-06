@@ -2,7 +2,8 @@
     "editor.formatOnSave": true,
     "editor.defaultFormatter": "esbenp.prettier-vscode",
     "editor.codeActionsOnSave": {
-        "source.fixAll.eslint": "explicit"
+        "source.organizeImports.biome": "explicit",
+        "source.fixAll.biome": "explicit"
     },
     "eslint.validate": [
         "javascript",

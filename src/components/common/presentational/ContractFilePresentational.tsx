@@ -1,16 +1,14 @@
 "use client";
 import "@mantine/dropzone/styles.css";
-import { useContractFileStore } from "@/stores/contractFile/ContractFileStore";
 import {
-    Box,
-    Text,
-    Button,
     ActionIcon,
+    Box,
+    Button,
     Group,
-    Stack,
     Progress,
+    Stack,
+    Text,
 } from "@mantine/core";
-import { IconUpload, IconPhoto, IconX } from "@tabler/icons-react";
 import {
     Dropzone,
     DropzoneAccept,
@@ -24,26 +22,12 @@ import {
     MS_WORD_MIME_TYPE,
     PDF_MIME_TYPE,
 } from "@mantine/dropzone";
-import { useCallback, useEffect, useRef, useState } from "react";
+import { IconPhoto, IconUpload, IconX } from "@tabler/icons-react";
 import dynamic from "next/dynamic";
+import { useCallback, useEffect, useRef, useState } from "react";
+import { useContractFileStore } from "@/stores/contractFile/ContractFileStore";
 import "@react-pdf-viewer/core/lib/styles/index.css";
 import "@react-pdf-viewer/default-layout/lib/styles/index.css";
-
-// PDFビューアーを動的インポート（SSR無効）
-const PDFViewer = dynamic(
-    () =>
-        import("@react-pdf-viewer/core").then((mod) => ({
-            default: mod.Viewer,
-        })),
-    { ssr: false }
-);
-const PDFWorker = dynamic(
-    () =>
-        import("@react-pdf-viewer/core").then((mod) => ({
-            default: mod.Worker,
-        })),
-    { ssr: false }
-);
 import { TrashIcon } from "lucide-react";
 
 interface UploadContractFile extends FileWithPath {
@@ -56,6 +40,21 @@ interface UploadContractFile extends FileWithPath {
 }
 
 const ContractFilePresentational = (props: Partial<DropzoneProps>) => {
+    // PDFビューアーを動的インポート（SSR無効）
+    const PDFViewer = dynamic(
+        () =>
+            import("@react-pdf-viewer/core").then((mod) => ({
+                default: mod.Viewer,
+            })),
+        { ssr: false }
+    );
+    const PDFWorker = dynamic(
+        () =>
+            import("@react-pdf-viewer/core").then((mod) => ({
+                default: mod.Worker,
+            })),
+        { ssr: false }
+    );
     const openRef = useRef<() => void>(null);
     const { contractFiles, setContractFiles } = useContractFileStore();
     const [selectedFileIndex, setSelectedFileIndex] = useState<number | null>(
@@ -66,13 +65,13 @@ const ContractFilePresentational = (props: Partial<DropzoneProps>) => {
     const [defaultLayoutPluginInstance, setDefaultLayoutPluginInstance] =
         useState<any>(null);
 
-    useEffect(() => {
-        if (typeof window !== "undefined") {
-            import("@react-pdf-viewer/default-layout").then((mod) => {
-                setDefaultLayoutPluginInstance(mod.defaultLayoutPlugin());
-            });
-        }
-    }, []);
+    // useEffect(() => {
+    //     if (typeof window !== "undefined") {
+    //         import("@react-pdf-viewer/default-layout").then((mod) => {
+    //             setDefaultLayoutPluginInstance(mod.defaultLayoutPlugin());
+    //         });
+    //     }
+    // }, []);
 
     /** ファイルのアップロード */
     const uploadFile = async (file: UploadContractFile) => {
@@ -94,7 +93,7 @@ const ContractFilePresentational = (props: Partial<DropzoneProps>) => {
                     progress: 0,
                     file: file,
                     status: "uploading" as const,
-                }) as UploadContractFile
+                } as UploadContractFile)
         );
 
         const allContractFiles = [
@@ -198,7 +197,7 @@ const ContractFilePresentational = (props: Partial<DropzoneProps>) => {
             <Stack mt={4} align="stretch">
                 {contractFiles.map((file, index) => (
                     <Group
-                        key={file.name + index}
+                        key={file.id}
                         p={2}
                         bg="gray.100"
                         className="justify-between"

@@ -1,6 +1,5 @@
+import type { FileWithPath } from "@mantine/dropzone";
 import { create } from "zustand";
-import { createJSONStorage, persist } from "zustand/middleware";
-import { FileWithPath } from "@mantine/dropzone";
 
 interface UploadContractFile extends FileWithPath {
     id: string;

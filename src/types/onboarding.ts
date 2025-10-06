@@ -1,3 +1,4 @@
+import { v4 as uuidv4 } from "uuid";
 import { departmentData } from "@/api/department/department";
 import { userData } from "@/api/user/user";
 
@@ -31,7 +32,7 @@ export type OwnCompanyUser = {
 // 本来は上記のフックでAPI叩いて以下の処理もcontractAuthority内で加工して返却する
 
 export const ownCompanyAuthority: OwnCompanyAuthority = {
-    id: "0cf96f1c-62c9-4e3f-97b0-4a2e8fa2bf6b",
+    id: uuidv4(),
     name: "Cummerata - Kuhlman",
     streetAddress: "6389 Dicki Stream",
     city: "South Gate",

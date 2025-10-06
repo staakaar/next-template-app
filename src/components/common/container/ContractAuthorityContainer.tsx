@@ -1,7 +1,7 @@
 "use client";
 import { Box, Button, Tabs, TabsList, TabsPanel, TabsTab } from "@mantine/core";
-import ContractAuthorityListContainer from "./ContractAuthorityListContainer";
 import { useParams } from "next/navigation";
+import ContractAuthorityListContainer from "./ContractAuthorityListContainer";
 import ContractAuthorityHierarchyContainer from "./contractAuthority/ContractAuthorityHierarchyContainer";
 
 const ContractAuthorityContainer = () => {

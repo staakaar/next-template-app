@@ -1,24 +1,25 @@
 "use client";
 
 import { useState } from "react";
+import "@mantine/dates/styles.css";
 import {
-    Collapse,
-    Button,
-    Group,
+    ActionIcon,
     Box,
-    TextInput,
+    Button,
+    Collapse,
+    Grid,
+    GridCol,
+    Group,
     Select,
     Stack,
-    Grid,
-    ActionIcon,
-    GridCol,
-    TabsList,
-    TabsTab,
     Tabs,
+    TabsList,
     TabsPanel,
+    TabsTab,
+    TextInput,
 } from "@mantine/core";
-import { IconSearch, IconRefresh, IconDownload } from "@tabler/icons-react";
 import { DatePickerInput } from "@mantine/dates";
+import { IconDownload, IconRefresh, IconSearch } from "@tabler/icons-react";
 
 interface ContractSearchAreaProps {
     isOpen: boolean;
@@ -31,7 +32,7 @@ export type ContractSearchCondition = {
     contractCode: string;
     contractName: string;
     contractStatus: string;
-    issueanceType: string;
+    issuanceType: string;
     contractType: string;
     startDate: Date | null;
     endDate: Date | null;
@@ -53,7 +54,7 @@ const ContractSearchArea = ({ isOpen, onClose }: ContractSearchAreaProps) => {
         contractCode: "",
         contractName: "",
         contractStatus: "",
-        issueanceType: "",
+        issuanceType: "",
         contractType: "",
         startDate: new Date(),
         endDate: new Date(),

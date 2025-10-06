@@ -1,17 +1,17 @@
 "use client";
-import { ContractAuthority } from "@/hooks/contractAuthority";
-import { usePaginationStore } from "@/stores/pagination/PaginationStore";
+import { ActionIcon, Box, Group } from "@mantine/core";
+import { IconTrash } from "@tabler/icons-react";
 import { sort } from "fast-sort";
 import {
     DataTable,
-    DataTableColumn,
+    type DataTableColumn,
     DataTableSortStatus,
     useDataTableColumns,
 } from "mantine-datatable";
 import { useEffect, useState } from "react";
+import type { ContractAuthority } from "@/hooks/contractAuthority";
+import { usePaginationStore } from "@/stores/pagination/PaginationStore";
 import VTooltip from "../atoms/Tooltip";
-import { ActionIcon, Box, Group } from "@mantine/core";
-import { IconTrash } from "@tabler/icons-react";
 
 type ContractAuthorityListPresentationProps<T extends ContractAuthority> = {
     contractAuthorities: T[];
@@ -32,9 +32,9 @@ const ContractAuthorityListPresentation = <T extends ContractAuthority>({
     const [totalCount, setTotalCount] = useState(initialTotalCount);
     const setPageOptions = usePaginationStore();
 
-    useEffect(() => {
-        setPage(1);
-    }, [pageSize]);
+    // useEffect(() => {
+    //     setPage(1);
+    // }, [pageSize]);
 
     useEffect(() => {
         const from = (page - 1) * pageSize;

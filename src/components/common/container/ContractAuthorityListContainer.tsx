@@ -1,6 +1,6 @@
 import { useContractAuthority } from "@/api/contract-authority/contract-authority";
-import ContractAuthorityListPresentation from "../presentational/ContractAuthorityListPresentation";
 import { useContractAuthorityTable } from "@/hooks/contractAuthority";
+import ContractAuthorityListPresentation from "../presentational/ContractAuthorityListPresentation";
 
 interface ContractAuthorityListContainerProps {
     contractCode: string;

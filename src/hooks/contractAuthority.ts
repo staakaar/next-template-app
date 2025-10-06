@@ -1,9 +1,9 @@
 "use client";
+import axios from "axios";
 import { useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
-import useUserProfileStore from "@/stores/user/UserStore";
-import axios from "axios";
 import { Role } from "@/stores/contractBasic/ContractBasicStore";
+import useUserProfileStore from "@/stores/user/UserStore";
 
 export type Permission = "edit" | "view";
 export type UserRole = {

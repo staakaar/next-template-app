@@ -59,9 +59,6 @@ axios use SWR
 
 ### E2E
 
-![Cypress](https://img.shields.io/badge/Cypress-17202C?style=for-the-badge&logo=cypress&logoColor=white)
-※　GitHubに移行次第、以下に移行する。
-
 ![Playwright](https://img.shields.io/badge/Playwright-2EAD33?style=for-the-badge&logo=playwright&logoColor=white)
 
 ![MSW](https://img.shields.io/badge/MSW-4E4E4E?style=for-the-badge&logo=msw&logoColor=white)
