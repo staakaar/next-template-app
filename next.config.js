@@ -5,7 +5,7 @@ import createNextIntlPlugin from "next-intl/plugin";
 const withNextIntl = createNextIntlPlugin("./src/app/i18n/request.ts");
 
 const withBundleAnalyzer = bundleAnalyzer({
-    enabled: process.env.ANALYZE == "true",
+    enabled: process.env.ANALYZE === "true",
 });
 
 /** @type {import('next').NextConfig} */
@@ -35,7 +35,10 @@ const nextConfig = {
     },
     sassOptions: {
         implementation: "sass-embedded",
-        additionalData: `@use "${path.join(process.cwd(), "_mantine")}" as mantine;`,
+        additionalData: `@use "${path.join(
+            process.cwd(),
+            "_mantine"
+        )}" as mantine;`,
         includePaths: ["./src/styles", "./src/components"],
     },
     // async rewrites() {

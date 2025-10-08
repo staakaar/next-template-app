@@ -1,7 +1,7 @@
 "use client";
 import { redirect, useParams } from "next/navigation";
-import useContractStore from "@/stores/contracts/ContractStore";
 import { useEffect } from "react";
+import useContractStore from "@/stores/contracts/ContractStore";
 
 const ContractDetailsPage = () => {
     const params = useParams();
