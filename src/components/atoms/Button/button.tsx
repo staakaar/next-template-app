@@ -1,37 +1,13 @@
 "use client";
 
-import {
-    Button as MantineButton,
-    type ButtonProps as MantineButtonProps,
-} from "@mantine/core";
-import React from "react";
+import * as React from "react";
+import { Button as ShadcnButton } from "@/components/ui/button";
 
-export type ButtonProps = MantineButtonProps;
+export type ButtonProps = React.ComponentProps<typeof ShadcnButton>;
 
 export const Button = React.forwardRef<HTMLButtonElement, ButtonProps>(
-    function Button(
-        {
-            variant = "filled",
-            size = "md",
-            color = "blue",
-            radius = "sm",
-            children,
-            ...rest
-        },
-        ref
-    ) {
-        return (
-            <MantineButton
-                ref={ref}
-                variant={variant}
-                size={size}
-                color={color}
-                radius={radius}
-                {...rest}
-            >
-                {children}
-            </MantineButton>
-        );
+    function Button(props, ref) {
+        return <ShadcnButton ref={ref} {...props} />;
     }
 );
 

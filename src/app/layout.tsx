@@ -1,16 +1,14 @@
 import { NextIntlClientProvider } from "next-intl";
 import { getLocale, getMessages } from "next-intl/server";
-import { MantineProviders } from "./providers";
-import { ColorSchemeScript } from "@mantine/core";
-import "@mantine/core/styles.layer.css";
-import "mantine-datatable/styles.layer.css";
+import { ThemeProvider } from "@/components/theme-provider";
 import "./globals.css";
 import type { Metadata } from "next";
 import { Inter as FontSans } from "next/font/google";
-import { cn } from "@/lib/utils";
 import React from "react";
-import Header from "@/components/organisms/Header";
 import SideMenu from "@/components/organisms/ContractSideMenu/ContractSideMenu";
+import Header from "@/components/organisms/Header";
+import { Toaster } from "@/components/ui/toaster";
+import { cn } from "@/lib/utils";
 
 const fontSans = FontSans({
     subsets: ["latin"],
@@ -43,7 +41,6 @@ export default async function RootLayout({
                     name="viewport"
                     content="width=device-width, initial-scale=1.0"
                 />
-                <ColorSchemeScript defaultColorScheme="light" />
             </head>
             <body
                 className={cn(
@@ -52,12 +49,12 @@ export default async function RootLayout({
                 )}
             >
                 <NextIntlClientProvider messages={messages}>
-                    <MantineProviders>
+                    <ThemeProvider>
                         <Header />
                         <SideMenu />
-
                         {children}
-                    </MantineProviders>
+                        <Toaster />
+                    </ThemeProvider>
                 </NextIntlClientProvider>
             </body>
         </html>

@@ -1,17 +1,22 @@
 // ダミーのためTestProviderとしている
-import { TestProvider } from "@/context/"
-import { TestLayout } from "@/components/"
+
 import { INITIAL_VIEWPORTS } from "@storybook/addon-viewport";
 import { Args, PartialStoryFn } from "@storybook/csf";
 import { ReactFramework } from "@storybook/react";
+import { TestLayout } from "@/components/";
+import { TestProvider } from "@/context/";
 
-export const TestProviderDecorator = (Story: PartialStoryFn<ReactFramework, Args>) => (
+export const TestProviderDecorator = (
+    Story: PartialStoryFn<ReactFramework, Args>
+) => (
     <TestProvider>
         <Story />
     </TestProvider>
-)
+);
 
-export const BasicLayoutDecorator = (Story: PartialStoryFn<ReactFramework, Args>) => TestLayout(<Story />)
+export const BasicLayoutDecorator = (
+    Story: PartialStoryFn<ReactFramework, Args>
+) => TestLayout(<Story />);
 
 export const SPStory = {
     parameters: {

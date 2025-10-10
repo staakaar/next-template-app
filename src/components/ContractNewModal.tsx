@@ -1,5 +1,11 @@
-import React from "react";
-import { Modal, Text, Button, Group, Stack } from "@mantine/core";
+import { Button } from "@/components/atoms/Button/button";
+import {
+    Dialog,
+    DialogContent,
+    DialogFooter,
+    DialogHeader,
+    DialogTitle,
+} from "@/components/ui/dialog";
 
 interface ContractNewConfirmDialogProps {
     isOpen: boolean;
@@ -13,23 +19,27 @@ const ContractNewConfirmDialog = ({
     onConfirm,
 }: ContractNewConfirmDialogProps) => {
     return (
-        <Modal
-            opened={isOpen}
-            onClose={onClose}
-            title="確認"
-            size="sm"
-            centered
+        <Dialog
+            open={isOpen}
+            onOpenChange={(open: boolean) => (!open ? onClose() : null)}
         >
-            <Stack gap="md">
-                <Text>入力した内容は保存されません。よろしいですか？</Text>
-                <Group justify="flex-end" gap="sm">
-                    <Button variant="outline" onClick={onClose}>
-                        キャンセル
-                    </Button>
-                    <Button onClick={onConfirm}>OK</Button>
-                </Group>
-            </Stack>
-        </Modal>
+            <DialogContent className="sm:max-w-[425px]">
+                <DialogHeader>
+                    <DialogTitle>確認</DialogTitle>
+                </DialogHeader>
+                <p className="text-sm text-muted-foreground">
+                    入力した内容は保存されません。よろしいですか？
+                </p>
+                <DialogFooter>
+                    <div className="flex w-full justify-end gap-2">
+                        <Button variant="outline" onClick={onClose}>
+                            キャンセル
+                        </Button>
+                        <Button onClick={onConfirm}>OK</Button>
+                    </div>
+                </DialogFooter>
+            </DialogContent>
+        </Dialog>
     );
 };
 

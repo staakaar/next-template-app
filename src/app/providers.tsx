@@ -1,13 +1,8 @@
-// "use client";
+"use client";
 
 import React from "react";
-import { MantineProvider } from "@mantine/core";
-import theme from "@/styles/theme";
+import { ThemeProvider } from "@/components/theme-provider";
 
-export function MantineProviders({ children }: { children: React.ReactNode }) {
-    return (
-        <MantineProvider theme={theme} defaultColorScheme="light">
-            {children}
-        </MantineProvider>
-    );
+export function UIProviders({ children }: { children: React.ReactNode }) {
+    return <ThemeProvider>{children}</ThemeProvider>;
 }
