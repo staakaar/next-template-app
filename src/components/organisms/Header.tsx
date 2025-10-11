@@ -1,223 +1,192 @@
 "use client";
 
 import {
-    Box,
-    Group,
-    Text,
-    Menu,
-    ActionIcon,
-    Button,
-    Avatar,
-    Divider,
-    MenuItem,
-    MenuDropdown,
-    MenuTarget,
-    MenuLabel,
-    MenuDivider,
-} from "@mantine/core";
-import {
-    IconSettings,
-    IconHelp,
-    IconUser,
-    IconFileText,
-    IconBuildingSkyscraper,
-    IconAdjustments,
-    IconUserCircle,
-    IconLogout,
-    IconQuestionMark,
-} from "@tabler/icons-react";
+    Building2,
+    FileText,
+    HelpCircle,
+    LogOut,
+    HelpCircle as QuestionMark,
+    Settings,
+    Sliders,
+    User,
+    UserCircle,
+} from "lucide-react";
 import Link from "next/link";
+import { Avatar, AvatarFallback } from "@/components/ui/avatar";
+import { Button } from "@/components/ui/button";
+import {
+    DropdownMenu,
+    DropdownMenuContent,
+    DropdownMenuItem,
+    DropdownMenuLabel,
+    DropdownMenuSeparator,
+    DropdownMenuTrigger,
+} from "@/components/ui/dropdown-menu";
 import LocaleSwitcher from "./LocaleSwitcher";
 
 const Header = () => {
     return (
-        <>
-            <Box
-                py="md"
-                px="xl"
-                style={{
-                    borderBottom: "1px solid var(--mantine-color-gray-3)",
-                }}
-            >
-                <Group flex={1} justify="space-between">
-                    <Group>
-                        <Text
-                            component={Link}
-                            href="/contract-all"
-                            size="lg"
-                            style={{ textDecoration: "none" }}
-                        >
-                            サービス名
-                        </Text>
+        <div className="py-4 px-8 border-b border-gray-200">
+            <div className="flex items-center justify-between">
+                <div className="flex items-center space-x-8">
+                    <Link
+                        href="/contract-all"
+                        className="text-lg font-medium text-gray-900 hover:text-gray-700"
+                    >
+                        サービス名
+                    </Link>
 
-                        {/* 管理メニュー */}
-                        <Group ml="xl">
-                            <Menu shadow="md">
-                                <MenuTarget>
-                                    <Button
-                                        variant="subtle"
-                                        leftSection={
-                                            <IconSettings size="1.2rem" />
-                                        }
-                                    >
-                                        管理メニュー
-                                    </Button>
-                                </MenuTarget>
-
-                                <MenuDropdown>
-                                    <MenuItem
-                                        leftSection={
-                                            <IconFileText size="1.2rem" />
-                                        }
-                                        component={Link}
+                    {/* 管理メニュー */}
+                    <div className="flex items-center space-x-4">
+                        <DropdownMenu>
+                            <DropdownMenuTrigger asChild>
+                                <Button
+                                    variant="ghost"
+                                    className="flex items-center space-x-2"
+                                >
+                                    <Settings className="h-4 w-4" />
+                                    <span>管理メニュー</span>
+                                </Button>
+                            </DropdownMenuTrigger>
+                            <DropdownMenuContent>
+                                <DropdownMenuItem asChild>
+                                    <Link
                                         href="/contract-all"
+                                        className="flex items-center space-x-2"
                                     >
-                                        契約書一覧
-                                    </MenuItem>
-                                    <MenuItem
-                                        leftSection={
-                                            <IconFileText size="1.2rem" />
-                                        }
-                                        component={Link}
+                                        <FileText className="h-4 w-4" />
+                                        <span>契約書一覧</span>
+                                    </Link>
+                                </DropdownMenuItem>
+                                <DropdownMenuItem asChild>
+                                    <Link
                                         href=""
+                                        className="flex items-center space-x-2"
                                     >
-                                        契約書【A】
-                                    </MenuItem>
-                                    <MenuItem
-                                        leftSection={
-                                            <IconFileText size="1.2rem" />
-                                        }
-                                        component={Link}
+                                        <FileText className="h-4 w-4" />
+                                        <span>契約書【A】</span>
+                                    </Link>
+                                </DropdownMenuItem>
+                                <DropdownMenuItem asChild>
+                                    <Link
                                         href=""
+                                        className="flex items-center space-x-2"
                                     >
-                                        契約書【B】
-                                    </MenuItem>
-                                    <MenuItem
-                                        leftSection={
-                                            <IconSettings size="1.2rem" />
-                                        }
-                                        component={Link}
+                                        <FileText className="h-4 w-4" />
+                                        <span>契約書【B】</span>
+                                    </Link>
+                                </DropdownMenuItem>
+                                <DropdownMenuItem asChild>
+                                    <Link
                                         href=""
+                                        className="flex items-center space-x-2"
                                     >
-                                        WF
-                                    </MenuItem>
-                                    <Divider />
-                                </MenuDropdown>
-                            </Menu>
+                                        <Settings className="h-4 w-4" />
+                                        <span>WF</span>
+                                    </Link>
+                                </DropdownMenuItem>
+                                <DropdownMenuSeparator />
+                            </DropdownMenuContent>
+                        </DropdownMenu>
 
-                            {/* 設定メニュー */}
-                            <Menu shadow="md">
-                                <MenuTarget>
-                                    <Button
-                                        variant="subtle"
-                                        leftSection={
-                                            <IconSettings size="1.2rem" />
-                                        }
-                                    >
-                                        設定メニュー
-                                    </Button>
-                                </MenuTarget>
-
-                                <MenuDropdown>
-                                    <MenuItem
-                                        leftSection={
-                                            <IconAdjustments size="1.2rem" />
-                                        }
-                                        component={Link}
+                        {/* 設定メニュー */}
+                        <DropdownMenu>
+                            <DropdownMenuTrigger asChild>
+                                <Button
+                                    variant="ghost"
+                                    className="flex items-center space-x-2"
+                                >
+                                    <Settings className="h-4 w-4" />
+                                    <span>設定メニュー</span>
+                                </Button>
+                            </DropdownMenuTrigger>
+                            <DropdownMenuContent>
+                                <DropdownMenuItem asChild>
+                                    <Link
                                         href="/user-settings"
+                                        className="flex items-center space-x-2"
                                     >
-                                        項目設定
-                                    </MenuItem>
-                                    <MenuItem
-                                        leftSection={
-                                            <IconAdjustments size="1.2rem" />
-                                        }
-                                        component={Link}
+                                        <Sliders className="h-4 w-4" />
+                                        <span>項目設定</span>
+                                    </Link>
+                                </DropdownMenuItem>
+                                <DropdownMenuItem asChild>
+                                    <Link
                                         href="/user-settings"
+                                        className="flex items-center space-x-2"
                                     >
-                                        セクション
-                                    </MenuItem>
-                                    <MenuItem
-                                        leftSection={
-                                            <IconUserCircle size="1.2rem" />
-                                        }
-                                        component={Link}
+                                        <Sliders className="h-4 w-4" />
+                                        <span>セクション</span>
+                                    </Link>
+                                </DropdownMenuItem>
+                                <DropdownMenuItem asChild>
+                                    <Link
                                         href="/user-settings"
+                                        className="flex items-center space-x-2"
                                     >
-                                        個人設定
-                                    </MenuItem>
-                                    <MenuItem
-                                        leftSection={
-                                            <IconBuildingSkyscraper size="1.2rem" />
-                                        }
-                                        component={Link}
+                                        <UserCircle className="h-4 w-4" />
+                                        <span>個人設定</span>
+                                    </Link>
+                                </DropdownMenuItem>
+                                <DropdownMenuItem asChild>
+                                    <Link
                                         href="/company-settings"
+                                        className="flex items-center space-x-2"
                                     >
-                                        会社設定
-                                    </MenuItem>
-                                    <Divider />
-                                </MenuDropdown>
-                            </Menu>
-                        </Group>
-                    </Group>
+                                        <Building2 className="h-4 w-4" />
+                                        <span>会社設定</span>
+                                    </Link>
+                                </DropdownMenuItem>
+                                <DropdownMenuSeparator />
+                            </DropdownMenuContent>
+                        </DropdownMenu>
+                    </div>
+                </div>
 
-                    {/* 右側: ヘルプ、会社名、ユーザーメニュー */}
-                    <Group>
-                        <LocaleSwitcher />
-                        <ActionIcon
-                            variant="subtle"
-                            size="lg"
-                            aria-label="Help"
-                        >
-                            <IconQuestionMark size="1.2rem" />
-                        </ActionIcon>
+                {/* 右側: ヘルプ、会社名、ユーザーメニュー */}
+                <div className="flex items-center space-x-4">
+                    <LocaleSwitcher />
+                    <Button variant="ghost" size="icon" aria-label="Help">
+                        <QuestionMark className="h-5 w-5" />
+                    </Button>
 
-                        <Text>会社名</Text>
+                    <span className="text-sm text-gray-700">会社名</span>
 
-                        <Menu shadow="md" position="bottom-end">
-                            <MenuTarget>
-                                <ActionIcon
-                                    variant="subtle"
-                                    size="lg"
-                                    radius="xl"
-                                >
-                                    <Avatar
-                                        size="sm"
-                                        radius="xl"
-                                        src={null}
-                                        alt="User menu"
-                                    >
-                                        <IconUser size="1.2rem" />
-                                    </Avatar>
-                                </ActionIcon>
-                            </MenuTarget>
-
-                            <MenuDropdown>
-                                <MenuLabel>My Account</MenuLabel>
-                                <MenuDivider />
-                                <MenuItem
-                                    leftSection={<IconSettings size="1.2rem" />}
-                                >
-                                    Settings
-                                </MenuItem>
-                                <MenuItem
-                                    leftSection={<IconHelp size="1.2rem" />}
-                                >
-                                    Support
-                                </MenuItem>
-                                <MenuDivider />
-                                <MenuItem
-                                    leftSection={<IconLogout size="1.2rem" />}
-                                    color="red"
-                                >
-                                    Logout
-                                </MenuItem>
-                            </MenuDropdown>
-                        </Menu>
-                    </Group>
-                </Group>
-            </Box>
-        </>
+                    <DropdownMenu>
+                        <DropdownMenuTrigger asChild>
+                            <Button
+                                variant="ghost"
+                                size="icon"
+                                className="rounded-full"
+                            >
+                                <Avatar className="h-8 w-8">
+                                    <AvatarFallback>
+                                        <User className="h-4 w-4" />
+                                    </AvatarFallback>
+                                </Avatar>
+                            </Button>
+                        </DropdownMenuTrigger>
+                        <DropdownMenuContent align="end">
+                            <DropdownMenuLabel>My Account</DropdownMenuLabel>
+                            <DropdownMenuSeparator />
+                            <DropdownMenuItem className="flex items-center space-x-2">
+                                <Settings className="h-4 w-4" />
+                                <span>Settings</span>
+                            </DropdownMenuItem>
+                            <DropdownMenuItem className="flex items-center space-x-2">
+                                <HelpCircle className="h-4 w-4" />
+                                <span>Support</span>
+                            </DropdownMenuItem>
+                            <DropdownMenuSeparator />
+                            <DropdownMenuItem className="flex items-center space-x-2 text-red-600">
+                                <LogOut className="h-4 w-4" />
+                                <span>Logout</span>
+                            </DropdownMenuItem>
+                        </DropdownMenuContent>
+                    </DropdownMenu>
+                </div>
+            </div>
+        </div>
     );
 };
 export default Header;

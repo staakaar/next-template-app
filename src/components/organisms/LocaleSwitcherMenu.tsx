@@ -1,16 +1,16 @@
 "use client";
 
+import { Check, Languages } from "lucide-react";
 import { useTransition } from "react";
-import { setUserLocale } from "@/app/i18n/locale";
 import { Locale } from "@/app/i18n/config";
+import { setUserLocale } from "@/app/i18n/locale";
+import { Button } from "@/components/ui/button";
 import {
-    Menu,
-    MenuDropdown,
-    MenuItem,
-    MenuTarget,
-    UnstyledButton,
-} from "@mantine/core";
-import { IconCheck, IconLanguage } from "@tabler/icons-react";
+    DropdownMenu,
+    DropdownMenuContent,
+    DropdownMenuItem,
+    DropdownMenuTrigger,
+} from "@/components/ui/dropdown-menu";
 
 interface Props {
     defaultValue: string;
@@ -33,34 +33,35 @@ export default function LocaleSwitcherMenu({
     }
 
     return (
-        <Menu position="bottom-end" width="target" withinPortal>
-            <MenuTarget>
-                <UnstyledButton
-                    className="p-2 rounded-sm transition-colors hover:bg-gray-200 disabled:opacity-60 disabled:pointer-events-none"
+        <DropdownMenu>
+            <DropdownMenuTrigger asChild>
+                <Button
+                    variant="ghost"
+                    size="icon"
+                    className="h-9 w-9"
                     aria-label={label}
                     disabled={isPending}
                 >
-                    <IconLanguage className="w-6 h-6 text-gray-600 hover:text-gray-900" />
-                </UnstyledButton>
-            </MenuTarget>
+                    <Languages className="h-5 w-5" />
+                </Button>
+            </DropdownMenuTrigger>
 
-            <MenuDropdown className="min-w-[8rem] py-1">
+            <DropdownMenuContent align="end" className="min-w-[8rem]">
                 {items.map((item) => (
-                    <MenuItem
+                    <DropdownMenuItem
                         key={item.value}
                         onClick={() => onChange(item.value)}
-                        leftSection={
-                            item.value === defaultValue ? (
-                                <IconCheck className="w-5 h-5 text-gray-600" />
-                            ) : (
-                                <div className="w-5" />
-                            )
-                        }
+                        className="flex items-center space-x-2"
                     >
-                        {item.label}
-                    </MenuItem>
+                        {item.value === defaultValue ? (
+                            <Check className="h-4 w-4" />
+                        ) : (
+                            <div className="h-4 w-4" />
+                        )}
+                        <span>{item.label}</span>
+                    </DropdownMenuItem>
                 ))}
-            </MenuDropdown>
-        </Menu>
+            </DropdownMenuContent>
+        </DropdownMenu>
     );
 }
