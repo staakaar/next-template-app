@@ -2,14 +2,10 @@
 import { useEffect, useState } from "react";
 import { usePaginationStore } from "@/stores/pagination/PaginationStore";
 import { Item } from "@/types/api/contractDetails";
-import { ActionIcon, Group } from "@mantine/core";
+import { Button } from "@/components/ui/button";
 import { IconEdit, IconEye, IconTrash } from "@tabler/icons-react";
-import {
-    DataTable,
-    DataTableColumn,
-    DataTableSortStatus,
-    useDataTableColumns,
-} from "mantine-datatable";
+import { ColumnDef, SortingState } from "@tanstack/react-table";
+import { DataTable } from "@/components/ui/data-table";
 import VTooltip from "../../atoms/Tooltip";
 import { sort } from "fast-sort";
 import { useRouter } from "next/navigation";
@@ -26,10 +22,9 @@ const ContractDetailsPresentational = <T extends Item>({
     initialTotalCount,
 }: ContractDetailsTableProps<T>) => {
     const [pageSize, setPageSize] = useState(PAGE_SIZES[2]);
-    const [sortStatus, setSortStatus] = useState<DataTableSortStatus<Item>>({
-        columnAccessor: "itemId",
-        direction: "asc",
-    });
+    const [sortStatus, setSortStatus] = useState<SortingState>([
+        { id: "itemId", desc: false }
+    ]);
 
     const [page, setPage] = useState(1);
     const [records, setRecords] = useState<Item[]>(items.slice(0, pageSize));
@@ -59,184 +54,126 @@ const ContractDetailsPresentational = <T extends Item>({
          */
     }, [items, sortStatus]);
 
-    const columns: DataTableColumn<Item>[] = [
+    const columns: ColumnDef<Item>[] = [
         {
-            accessor: "itemId",
-            title: "品目ID",
-            sortable: true,
-            render: (item: Item) => (
+            accessorKey: "itemId",
+            header: "品目ID",
+            enableSorting: true,
+            cell: ({ row }) => (
                 <VTooltip
-                    content={item.itemId}
-                    tooltip={`品目ID: ${item.itemId}`}
+                    content={row.original.itemId}
+                    tooltip={`品目ID: ${row.original.itemId}`}
                     maxWidth={"100"}
                 />
             ),
         },
         {
-            accessor: "itemName",
-            title: "品目名",
-            sortable: true,
-            render: (item: Item) => (
+            accessorKey: "itemName",
+            header: "品目名",
+            enableSorting: true,
+            cell: ({ row }) => (
                 <VTooltip
-                    content={item.itemName}
-                    tooltip={`品目名: ${item.itemName}`}
+                    content={row.original.itemName}
+                    tooltip={`品目名: ${row.original.itemName}`}
                     maxWidth={"100"}
                 />
             ),
         },
         {
-            accessor: "expenseCode",
-            title: "費目コード",
-            sortable: true,
-            render: (item: Item) => (
+            accessorKey: "expenseCode",
+            header: "費目コード",
+            enableSorting: true,
+            cell: ({ row }) => (
                 <VTooltip
-                    content={item.expenseCode}
-                    tooltip={`費目コード: ${item.expenseCode}`}
+                    content={row.original.expenseCode}
+                    tooltip={`費目コード: ${row.original.expenseCode}`}
                     maxWidth={"100"}
                 />
             ),
         },
         {
-            accessor: "expenseName",
-            title: "費目名",
-            sortable: true,
-            render: (item: Item) => (
+            accessorKey: "expenseName",
+            header: "費目名",
+            enableSorting: true,
+            cell: ({ row }) => (
                 <VTooltip
-                    content={item.expenseName}
-                    tooltip={`費目名: ${item.expenseName}`}
+                    content={row.original.expenseName}
+                    tooltip={`費目名: ${row.original.expenseName}`}
                     maxWidth={"100"}
                 />
             ),
         },
         {
-            accessor: "quantity",
-            title: "数量",
-            sortable: true,
-            render: (item: Item) => (
+            accessorKey: "quantity",
+            header: "数量",
+            enableSorting: true,
+            cell: ({ row }) => (
                 <VTooltip
-                    content={item.quantity}
-                    tooltip={`数量: ${item.quantity}`}
+                    content={row.original.quantity}
+                    tooltip={`数量: ${row.original.quantity}`}
                     maxWidth={"100"}
                 />
             ),
         },
         {
-            accessor: "unit",
-            title: "単位",
-            sortable: true,
-            render: (item: Item) => (
+            accessorKey: "unit",
+            header: "単位",
+            enableSorting: true,
+            cell: ({ row }) => (
                 <VTooltip
-                    content={item.unit}
-                    tooltip={`単位: ${item.unit}`}
+                    content={row.original.unit}
+                    tooltip={`単位: ${row.original.unit}`}
                     maxWidth={"100"}
                 />
             ),
         },
         {
-            accessor: "unitPrice",
-            title: "単価",
-            sortable: true,
-            render: (item: Item) => (
+            accessorKey: "unitPrice",
+            header: "単価",
+            enableSorting: true,
+            cell: ({ row }) => (
                 <VTooltip
-                    content={item.unitPrice}
-                    tooltip={`単価: ${item.unitPrice}`}
+                    content={row.original.unitPrice}
+                    tooltip={`単価: ${row.original.unitPrice}`}
                     maxWidth={"100"}
                 />
             ),
         },
         {
-            accessor: "actions",
-            title: "",
-            textAlign: "right",
-            render: (item: Item) => (
-                <Group gap={4} justify="right" wrap="nowrap">
-                    <ActionIcon size="sm" variant="subtle" color="green">
+            id: "actions",
+            header: "",
+            cell: ({ row }) => (
+                <div className="flex gap-1 justify-end flex-nowrap">
+                    <Button size="sm" variant="ghost" className="text-green-500 hover:text-green-700">
                         <IconEye size={16} />
-                    </ActionIcon>
-                    <ActionIcon size="sm" variant="subtle" color="blue">
+                    </Button>
+                    <Button size="sm" variant="ghost" className="text-blue-500 hover:text-blue-700">
                         <IconEdit size={16} />
-                    </ActionIcon>
-                    <ActionIcon size="sm" variant="subtle" color="red">
+                    </Button>
+                    <Button size="sm" variant="ghost" className="text-red-500 hover:text-red-700">
                         <IconTrash size={16} />
-                    </ActionIcon>
-                </Group>
+                    </Button>
+                </div>
             ),
         },
     ];
 
-    const { effectiveColumns } = useDataTableColumns<Item>({
-        key: "itemId",
-        columns,
-    });
-
     return (
         <DataTable
             className="mt-8"
-            withTableBorder
-            borderRadius="sm"
-            striped
-            highlightOnHover={true}
-            columns={effectiveColumns}
-            records={records}
-            noRecordsText={
-                records.length === 0 ? "該当のレコードが存在しません。" : ""
-            }
-            // noRecordsIcon={true}
-            emptyState={records.length === 0}
-            loadingText="読み込み中です..."
-            totalRecords={totalCount}
-            recordsPerPage={pageSize}
-            recordsPerPageLabel=""
-            paginationActiveBackgroundColor="blue"
+            columns={columns}
+            data={records}
+            pageSize={pageSize}
+            onPageSizeChange={setPageSize}
             page={page}
-            recordsPerPageOptions={PAGE_SIZES}
-            sortStatus={sortStatus}
-            onSortStatusChange={setSortStatus}
             onPageChange={(p) => setPage(p)}
-            onRecordsPerPageChange={setPageSize}
-            idAccessor="itemId"
-            styles={{
-                pagination: {
-                    display: "flex",
-                    justifyContent: "flex-end",
-                    alignItems: "center",
-                    padding: "1rem",
-                    gap: "1rem",
-
-                    ".mantineGroupRoot": {
-                        dispaly: "flex",
-                        alignItems: "center",
-                        gap: "1rem",
-                        flex: 1,
-                    },
-
-                    "[dataRecordsPerPage]": {
-                        order: 1,
-                    },
-
-                    ".mantinePaginationRoot": {
-                        order: 2,
-                    },
-
-                    "[dataPaginationText]": {
-                        marginLeft: "auto",
-                        whiteSpace: "nowrap",
-                        order: 3,
-                    },
-
-                    tr: {
-                        cursor: "pointer",
-                        position: "relative",
-                        transition: "all 0.2s ease",
-                        "&:hover": {
-                            backgroundColor: "blue",
-                            boxShadow: `0 4px 8px `,
-                            transform: "translateY(-1px)",
-                            zIndex: 1, // 他の行より上に表示
-                        },
-                    },
-                },
-            }}
+            totalRecords={totalCount}
+            pageOptions={PAGE_SIZES}
+            sorting={sortStatus}
+            onSortingChange={setSortStatus}
+            noRecordsText="該当のレコードが存在しません。"
+            highlightOnHover={true}
+            striped={true}
         />
     );
 };

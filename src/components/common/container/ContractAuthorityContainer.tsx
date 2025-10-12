@@ -1,5 +1,6 @@
 "use client";
-import { Box, Button, Tabs, TabsList, TabsPanel, TabsTab } from "@mantine/core";
+import { Button } from "@/components/ui/button";
+import { Tabs, TabsList, TabsContent, TabsTrigger } from "@/components/ui/tabs";
 import { useParams } from "next/navigation";
 import ContractAuthorityListContainer from "./ContractAuthorityListContainer";
 import ContractAuthorityHierarchyContainer from "./contractAuthority/ContractAuthorityHierarchyContainer";
@@ -11,30 +12,28 @@ const ContractAuthorityContainer = () => {
     return (
         <Tabs
             className="mt-6"
-            autoContrast
-            variant="pills"
             defaultValue="authorityList"
         >
             <TabsList>
-                <TabsTab value="authorityList">権限一覧</TabsTab>
-                <TabsTab value="addAuthority">権限追加</TabsTab>
+                <TabsTrigger value="authorityList">権限一覧</TabsTrigger>
+                <TabsTrigger value="addAuthority">権限追加</TabsTrigger>
             </TabsList>
             {/* 詳細時は更新ボタン */}
-            <Box className="flex justify-end">
+            <div className="flex justify-end">
                 <Button className="bg-sky-50 hover:bg-sky-100 text-sky-600 font-bold py-2 px-4 rounded hover:shadow-lg transition-all duration-200">
                     更新
                 </Button>
-            </Box>
-            <Box className="grid gap-3">
-                <TabsPanel value="authorityList">
+            </div>
+            <div className="grid gap-3">
+                <TabsContent value="authorityList">
                     <ContractAuthorityListContainer
                         contractCode={contractCode}
                     />
-                </TabsPanel>
-                <TabsPanel value="addAuthority">
+                </TabsContent>
+                <TabsContent value="addAuthority">
                     <ContractAuthorityHierarchyContainer />
-                </TabsPanel>
-            </Box>
+                </TabsContent>
+            </div>
         </Tabs>
     );
 };

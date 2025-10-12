@@ -2,19 +2,13 @@
 import TradePartnerPersonDrawerContainer from "../../container/tradePartner/TradePartnerPersonDrawerContainer";
 import React, { useEffect, useState } from "react";
 import { TradingPartnerCompany } from "@/types/api/tradePartner";
-import { useDisclosure } from "@mantine/hooks";
-import {
-    DataTable,
-    DataTableColumn,
-    DataTableRowClickHandler,
-    DataTableSortStatus,
-    useDataTableColumns,
-} from "mantine-datatable";
+import { ColumnDef, SortingState } from "@tanstack/react-table";
+import { DataTable } from "@/components/ui/data-table";
 import { useRouter } from "next/navigation";
 import { defaultTradingPartnerCompanyForm } from "@/stores/tradePartner/TradePartnerCompanyStore";
 import { usePaginationStore } from "@/stores/pagination/PaginationStore";
 import VTooltip from "../../atoms/Tooltip";
-import { ActionIcon, Group } from "@mantine/core";
+import { Button } from "@/components/ui/button";
 import { IconEdit, IconEye, IconTrash } from "@tabler/icons-react";
 import { sort } from "fast-sort";
 
@@ -30,7 +24,9 @@ const TradePartnerCompanyTablePresentation = <T extends TradingPartnerCompany>({
     initialTotalCount,
 }: TradePartnerTableProps<T>) => {
     /** ドロワー */
-    const [opened, { open, close }] = useDisclosure(false);
+    const [opened, setOpened] = useState(false);
+    const open = () => setOpened(true);
+    const close = () => setOpened(false);
 
     const [selectedRow, setSelectedRow] = useState(
         defaultTradingPartnerCompanyForm
@@ -38,12 +34,9 @@ const TradePartnerCompanyTablePresentation = <T extends TradingPartnerCompany>({
 
     const [pageSize, setPageSize] = useState(PAGE_SIZES[2]);
 
-    const [sortStatus, setSortStatus] = useState<
-        DataTableSortStatus<TradingPartnerCompany>
-    >({
-        columnAccessor: "tradingCompanyId",
-        direction: "asc",
-    });
+    const [sortStatus, setSortStatus] = useState<SortingState>([
+        { id: "tradingCompanyId", desc: false }
+    ]);
 
     const [page, setPage] = useState(1);
     const [records, setRecords] = useState<TradingPartnerCompany[]>(
@@ -78,146 +71,86 @@ const TradePartnerCompanyTablePresentation = <T extends TradingPartnerCompany>({
     const [totalCount, setTotalCount] = useState(initialTotalCount);
     const { setTradePartnerPageOptions } = usePaginationStore();
 
-    const navigateToTradePartnerPerson: DataTableRowClickHandler<
-        TradingPartnerCompany
-    > = ({ record }) => {
-        console.log(record);
-        setSelectedRow(record);
+    const navigateToTradePartnerPerson = (row: TradingPartnerCompany) => {
+        console.log(row);
+        setSelectedRow(row);
         open;
     };
 
-    const columns: DataTableColumn<TradingPartnerCompany>[] = [
+    const columns: ColumnDef<TradingPartnerCompany>[] = [
         {
-            accessor: "tradeCompanyName",
-            title: "取引先会社名",
-            sortable: true,
-            render: (tradingPartnerCompany: TradingPartnerCompany) => (
+            accessorKey: "tradeCompanyName",
+            header: "取引先会社名",
+            enableSorting: true,
+            cell: ({ row }) => (
                 <VTooltip
-                    content={tradingPartnerCompany.tradingCompanyName}
-                    tooltip={`取引先会社名: ${tradingPartnerCompany.tradingCompanyName}`}
+                    content={row.original.tradingCompanyName}
+                    tooltip={`取引先会社名: ${row.original.tradingCompanyName}`}
                     maxWidth={"100"}
                 />
             ),
         },
         {
-            accessor: "tradeCompanyAddress",
-            title: "取引先企業住所",
-            sortable: true,
-            render: (tradingPartnerCompany: TradingPartnerCompany) => (
+            accessorKey: "tradeCompanyAddress",
+            header: "取引先企業住所",
+            enableSorting: true,
+            cell: ({ row }) => (
                 <VTooltip
-                    content={tradingPartnerCompany.tradingCompanyAddress}
-                    tooltip={`取引先企業住所: ${tradingPartnerCompany.tradingCompanyAddress}`}
+                    content={row.original.tradingCompanyAddress}
+                    tooltip={`取引先企業住所: ${row.original.tradingCompanyAddress}`}
                     maxWidth={"100"}
                 />
             ),
         },
         {
-            accessor: "tradingCompanyEmailAddress",
-            title: "取引先企業メールアドレス",
-            sortable: true,
-            render: (tradingPartnerCompany: TradingPartnerCompany) => (
+            accessorKey: "tradingCompanyEmailAddress",
+            header: "取引先企業メールアドレス",
+            enableSorting: true,
+            cell: ({ row }) => (
                 <VTooltip
-                    content={tradingPartnerCompany.tradingCompanyEmailAddress}
-                    tooltip={`メールアドレス: ${tradingPartnerCompany.tradingCompanyEmailAddress}`}
+                    content={row.original.tradingCompanyEmailAddress}
+                    tooltip={`メールアドレス: ${row.original.tradingCompanyEmailAddress}`}
                     maxWidth={"100"}
                 />
             ),
         },
         {
-            accessor: "actions",
-            title: "",
-            textAlign: "right",
-            render: (tradingPartnerCompany: TradingPartnerCompany) => (
-                <Group gap={4} justify="right" wrap="nowrap">
-                    <ActionIcon size="sm" variant="subtle" color="green">
+            id: "actions",
+            header: "",
+            cell: ({ row }) => (
+                <div className="flex gap-1 justify-end flex-nowrap">
+                    <Button size="sm" variant="ghost" className="text-green-500 hover:text-green-700">
                         <IconEye size={16} />
-                    </ActionIcon>
-                    <ActionIcon size="sm" variant="subtle" color="blue">
+                    </Button>
+                    <Button size="sm" variant="ghost" className="text-blue-500 hover:text-blue-700">
                         <IconEdit size={16} />
-                    </ActionIcon>
-                    <ActionIcon size="sm" variant="subtle" color="red">
+                    </Button>
+                    <Button size="sm" variant="ghost" className="text-red-500 hover:text-red-700">
                         <IconTrash size={16} />
-                    </ActionIcon>
-                </Group>
+                    </Button>
+                </div>
             ),
         },
     ];
-
-    const { effectiveColumns } = useDataTableColumns<TradingPartnerCompany>({
-        key: "tradePersonId",
-        columns,
-    });
 
     return (
         <>
             <DataTable
                 className="mt-8"
-                withTableBorder
-                borderRadius="sm"
-                striped
-                highlightOnHover={true}
-                columns={effectiveColumns}
-                records={records}
-                noRecordsText={
-                    records.length === 0 ? "該当のレコードが存在しません。" : ""
-                }
-                // noRecordsIcon={true}
-                emptyState={records.length === 0}
-                loadingText="読み込み中です..."
-                totalRecords={totalCount}
-                recordsPerPage={pageSize}
-                recordsPerPageLabel=""
-                paginationActiveBackgroundColor="blue"
-                page={page}
-                recordsPerPageOptions={PAGE_SIZES}
-                sortStatus={sortStatus}
-                onSortStatusChange={setSortStatus}
+                columns={columns}
+                data={records}
                 onRowClick={navigateToTradePartnerPerson}
+                pageSize={pageSize}
+                onPageSizeChange={setPageSize}
+                page={page}
                 onPageChange={(p) => setPage(p)}
-                onRecordsPerPageChange={setPageSize}
-                idAccessor="tradingCompanyId"
-                styles={{
-                    pagination: {
-                        display: "flex",
-                        justifyContent: "flex-end",
-                        alignItems: "center",
-                        padding: "1rem",
-                        gap: "1rem",
-
-                        ".mantineGroupRoot": {
-                            dispaly: "flex",
-                            alignItems: "center",
-                            gap: "1rem",
-                            flex: 1,
-                        },
-
-                        "[dataRecordsPerPage]": {
-                            order: 1,
-                        },
-
-                        ".mantinePaginationRoot": {
-                            order: 2,
-                        },
-
-                        "[dataPaginationText]": {
-                            marginLeft: "auto",
-                            whiteSpace: "nowrap",
-                            order: 3,
-                        },
-
-                        tr: {
-                            cursor: "pointer",
-                            position: "relative",
-                            transition: "all 0.2s ease",
-                            "&:hover": {
-                                backgroundColor: "blue",
-                                boxShadow: `0 4px 8px `,
-                                transform: "translateY(-1px)",
-                                zIndex: 1, // 他の行より上に表示
-                            },
-                        },
-                    },
-                }}
+                totalRecords={totalCount}
+                pageOptions={PAGE_SIZES}
+                sorting={sortStatus}
+                onSortingChange={setSortStatus}
+                noRecordsText="該当のレコードが存在しません。"
+                highlightOnHover={true}
+                striped={true}
             />
 
             <TradePartnerPersonDrawerContainer

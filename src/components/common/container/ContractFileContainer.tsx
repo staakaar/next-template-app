@@ -1,4 +1,5 @@
-import { Box, Title, Button, Divider } from "@mantine/core";
+import { Button } from "@/components/ui/button";
+import { Separator } from "@/components/ui/separator";
 import ContractFilePresentational from "../presentational/ContractFilePresentational";
 
 export type ContractFileContainerProps = {
@@ -7,33 +8,31 @@ export type ContractFileContainerProps = {
 
 const ContractFileContainer = ({ isEdit }: ContractFileContainerProps) => {
     return (
-        // <Box>
         <>
-            <Box className="flex items-center justify-end mt-6">
+            <div className="flex items-center justify-end mt-6">
                 {/* 詳細時は更新ボタン */}
                 {isEdit ? (
-                    <Box className="flex justify-end">
+                    <div className="flex justify-end">
                         <Button className="bg-sky-50 hover:bg-sky-100 text-sky-600 font-bold py-2 px-4 rounded hover:shadow-lg transition-all duration-200">
                             アップロード
                         </Button>
-                    </Box>
+                    </div>
                 ) : (
-                    <Box>
+                    <div>
                         <Button className="bg-sky-50 hover:bg-sky-100 text-sky-600 font-bold py-2 px-4 rounded hover:shadow-lg transition-all duration-200">
                             スキップ
                         </Button>
                         <Button className="bg-sky-50 hover:bg-sky-100 text-sky-600 font-bold py-2 px-4 rounded hover:shadow-lg transition-all duration-200">
                             アップロード
                         </Button>
-                    </Box>
+                    </div>
                 )}
-            </Box>
-            <Divider className="mt-4" />
-            <Box className="grid gap-3">
+            </div>
+            <Separator className="mt-4" />
+            <div className="grid gap-3">
                 <ContractFilePresentational />
-            </Box>
+            </div>
         </>
-        // </Box>
     );
 };
 

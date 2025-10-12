@@ -1,11 +1,11 @@
 "use client";
 import { ContractStep } from "@/app/contract-new/page";
-import { Stepper, Box, StepperStep } from "@mantine/core";
+import { Stepper, Step } from "@/components/ui/stepper";
 
 interface ContractNewStepperProps {
     activeStep: number;
     steps: ContractStep[];
-    setActiveStep: () => void;
+    setActiveStep: (step: number) => void;
 }
 
 const ContractNewStepper = ({
@@ -14,38 +14,23 @@ const ContractNewStepper = ({
     setActiveStep,
 }: ContractNewStepperProps) => {
     return (
-        <Box className="flex justify-center sm:w-min-full md:w-min-full lg:w-min-full">
+        <div className="flex justify-center w-full px-10">
             <Stepper
-                size="lg"
-                active={activeStep}
+                activeStep={activeStep}
                 onStepClick={setActiveStep}
-                classNames={{
-                    root: "w-full max-w-full px-10",
-                    steps: "flex items-center justify-between",
-                    separator: "flex-1 h-0.5 mx-2 bg-gray-300",
-                    stepBody: "flex flex-col items-center",
-                    stepIcon:
-                        "w-10 h-10 rounded-full flex items-center justify-center text-sm font-medium transition-colors duration-200",
-                    stepCompletedIcon: "bg-blue-500 text-white",
-                }}
+                className="w-full max-w-full"
             >
                 {steps.map((step, index) => (
-                    <StepperStep
+                    <Step
                         key={index}
-                        label={
-                            <span className="mt-2 text-sm font-medium text-gray-700">
-                                {step.title}
-                            </span>
-                        }
-                        description={
-                            <span className="mt-1 text-xs text-gray-500">
-                                {step.description}
-                            </span>
-                        }
-                    ></StepperStep>
+                        stepNumber={index}
+                        label={step.title}
+                        description={step.description}
+                        isLast={index === steps.length - 1}
+                    />
                 ))}
             </Stepper>
-        </Box>
+        </div>
     );
 };
 

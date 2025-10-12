@@ -2,17 +2,12 @@
 import { usePaginationStore } from "@/stores/pagination/PaginationStore";
 import { TradingPartnerPerson } from "@/types/api/tradePartner";
 import { sort } from "fast-sort";
-import {
-    DataTable,
-    DataTableColumn,
-    DataTableRowClickHandler,
-    DataTableSortStatus,
-    useDataTableColumns,
-} from "mantine-datatable";
+import { ColumnDef, SortingState } from "@tanstack/react-table";
+import { DataTable } from "@/components/ui/data-table";
 import { useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
 import VTooltip from "../../atoms/Tooltip";
-import { ActionIcon, Card, Group, Text } from "@mantine/core";
+import { Button } from "@/components/ui/button";
 import { IconEdit, IconEye, IconTrash } from "@tabler/icons-react";
 
 export type TradePartnerTableProps<T extends TradingPartnerPerson> = {
@@ -34,12 +29,9 @@ const TradePartnerTablePresentation = <T extends TradingPartnerPerson>({
     const [totalCount, setTotalCount] = useState(initialTotalCount);
     const { setTradePartnerPageOptions } = usePaginationStore();
 
-    const [sortStatus, setSortStatus] = useState<
-        DataTableSortStatus<TradingPartnerPerson>
-    >({
-        columnAccessor: "tradingPersonId",
-        direction: "asc",
-    });
+    const [sortStatus, setSortStatus] = useState<SortingState>([
+        { id: "tradingPersonId", desc: false }
+    ]);
 
     useEffect(() => {
         setPage(1);
@@ -66,152 +58,86 @@ const TradePartnerTablePresentation = <T extends TradingPartnerPerson>({
          */
     }, [tradingPartnerPersons, sortStatus]);
 
-    const columns: DataTableColumn<TradingPartnerPerson>[] = [
+    const columns: ColumnDef<TradingPartnerPerson>[] = [
         {
-            accessor: "tradingPersonId",
-            title: "取引先担当者ID",
-            sortable: true,
-            render: (tradingPartnerPerson: TradingPartnerPerson) => (
+            accessorKey: "tradingPersonId",
+            header: "取引先担当者ID",
+            enableSorting: true,
+            cell: ({ row }) => (
                 <VTooltip
-                    content={tradingPartnerPerson.tradingPersonId}
-                    tooltip={`取引先担当者ID: ${tradingPartnerPerson.tradingPersonId}`}
+                    content={row.original.tradingPersonId}
+                    tooltip={`取引先担当者ID: ${row.original.tradingPersonId}`}
                     maxWidth={"100"}
                 />
             ),
         },
         {
-            accessor: "tradingPersonName",
-            title: "取引先担当名",
-            sortable: true,
-            render: (tradingPartnerPerson: TradingPartnerPerson) => (
+            accessorKey: "tradingPersonName",
+            header: "取引先担当名",
+            enableSorting: true,
+            cell: ({ row }) => (
                 <VTooltip
-                    content={tradingPartnerPerson.tradingPersonName}
-                    tooltip={`取引先担当名: ${tradingPartnerPerson.tradingPersonName}`}
+                    content={row.original.tradingPersonName}
+                    tooltip={`取引先担当名: ${row.original.tradingPersonName}`}
                     maxWidth={"100"}
                 />
             ),
         },
         {
-            accessor: "tradingPersonEmailAddress",
-            title: "取引先担当者メールアドレス",
-            sortable: true,
-            render: (tradingPartnerPerson: TradingPartnerPerson) => (
+            accessorKey: "tradingPersonEmailAddress",
+            header: "取引先担当者メールアドレス",
+            enableSorting: true,
+            cell: ({ row }) => (
                 <VTooltip
-                    content={tradingPartnerPerson.tradingPersonEmailAddress}
-                    tooltip={`メールアドレス: ${tradingPartnerPerson.tradingPersonEmailAddress}`}
+                    content={row.original.tradingPersonEmailAddress}
+                    tooltip={`メールアドレス: ${row.original.tradingPersonEmailAddress}`}
                     maxWidth={"100"}
                 />
             ),
         },
         {
-            accessor: "tradingPartnerDepartmentId",
-            title: "取引先担当者部署ID",
-            sortable: true,
-            render: (tradingPartnerPerson: TradingPartnerPerson) => (
+            accessorKey: "tradingPartnerDepartmentId",
+            header: "取引先担当者部署ID",
+            enableSorting: true,
+            cell: ({ row }) => (
                 <VTooltip
-                    content={tradingPartnerPerson.tradingPartnerDepartmentId}
-                    tooltip={`取引先担当者部署ID: ${tradingPartnerPerson.tradingPartnerDepartmentId}`}
+                    content={row.original.tradingPartnerDepartmentId}
+                    tooltip={`取引先担当者部署ID: ${row.original.tradingPartnerDepartmentId}`}
                     maxWidth={"100"}
                 />
             ),
         },
         {
-            accessor: "tradingPartnerDepartmentName",
-            title: "取引先担当者部署名",
-            sortable: true,
-            render: (tradingPartnerPerson: TradingPartnerPerson) => (
+            accessorKey: "tradingPartnerDepartmentName",
+            header: "取引先担当者部署名",
+            enableSorting: true,
+            cell: ({ row }) => (
                 <VTooltip
-                    content={tradingPartnerPerson.tradingPartnerDepartmentName}
-                    tooltip={`取引先担当者部署名: ${tradingPartnerPerson.tradingPartnerDepartmentName}`}
+                    content={row.original.tradingPartnerDepartmentName}
+                    tooltip={`取引先担当者部署名: ${row.original.tradingPartnerDepartmentName}`}
                     maxWidth={"100"}
                 />
             ),
         },
     ];
 
-    const { effectiveColumns } = useDataTableColumns<TradingPartnerPerson>({
-        key: "tradingPersonId",
-        columns,
-    });
-
     return (
-        // <Card withBorder mt={4}>
-        //     <Group justify="flex-start" mb="md">
-        //         <Text size="lg">取引先一覧</Text>
-        //     </Group>
-
         <DataTable
             className="mt-8"
-            withTableBorder
-            borderRadius="sm"
-            striped
-            highlightOnHover={true}
-            columns={effectiveColumns}
-            records={records}
-            noRecordsText={
-                records.length === 0 ? "該当のレコードが存在しません。" : ""
-            }
-            // noRecordsIcon={true}
-            emptyState={records.length === 0}
-            loadingText="読み込み中です..."
-            totalRecords={totalCount}
-            recordsPerPage={pageSize}
-            recordsPerPageLabel=""
-            paginationActiveBackgroundColor="blue"
+            columns={columns}
+            data={records}
+            pageSize={pageSize}
+            onPageSizeChange={setPageSize}
             page={page}
-            recordsPerPageOptions={PAGE_SIZES}
-            sortStatus={sortStatus}
-            onSortStatusChange={setSortStatus}
             onPageChange={(p) => setPage(p)}
-            onRecordsPerPageChange={setPageSize}
-            idAccessor="tradingPersonId"
-            styles={{
-                pagination: {
-                    display: "flex",
-                    justifyContent: "flex-end",
-                    alignItems: "center",
-                    padding: "1rem",
-                    gap: "1rem",
-
-                    ".mantineGroupRoot": {
-                        display: "flex",
-                        alignItems: "center",
-                        gap: "1rem",
-                        flex: 1,
-                    },
-
-                    "[dataRecordsPerPage]": {
-                        order: 1,
-                    },
-
-                    ".mantinePaginationRoot": {
-                        order: 2,
-                    },
-
-                    "[dataPaginationText]": {
-                        marginLeft: "auto",
-                        whiteSpace: "nowrap",
-                        order: 3,
-                    },
-
-                    tr: {
-                        cursor: "pointer",
-                        position: "relative",
-                        transition: "all 0.2s ease",
-                        "&:hover": {
-                            backgroundColor: "blue",
-                            boxShadow: `0 4px 8px `,
-                            transform: "translateY(-1px)",
-                            zIndex: 1, // 他の行より上に表示
-                        },
-                    },
-                },
-            }}
-            // paginationText={({ from, to, totalRecords }) =>
-            //     `${from}～${to} / ${totalRecords}件`
-            // }
+            totalRecords={totalCount}
+            pageOptions={PAGE_SIZES}
+            sorting={sortStatus}
+            onSortingChange={setSortStatus}
+            noRecordsText="該当のレコードが存在しません。"
+            highlightOnHover={true}
+            striped={true}
         />
-        // </Card>
     );
 };
 

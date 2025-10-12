@@ -1,4 +1,4 @@
-import { Tabs, TabsList, TabsTab, TabsPanel } from "@mantine/core";
+import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import TradePartnerTableContainer from "../container/tradePartner/TradePartnerTableContainer";
 import TradePartnerCompanyTableContainer from "../container/tradePartner/TradePartnerCompanyTableContainer";
 import TradingPartnerPrivatePersonContainer from "./tradePartner/TradingPartnerPrivatePersonContainer";
@@ -7,29 +7,23 @@ import TradingPartnerCompanyNestedContainer from "../container/tradePartner/Trad
 const TradePartnerPresentational = () => {
     return (
         <>
-            <Tabs
-                autoContrast
-                variant="pills"
-                orientation="horizontal"
-                defaultValue="list"
-                className="mt-4"
-            >
+            <Tabs defaultValue="list" className="mt-4">
                 <TabsList>
-                    <TabsTab value="list">一覧</TabsTab>
-                    <TabsTab value="add">取引先追加</TabsTab>
-                    <TabsTab value="newUser">担当者追加</TabsTab>
+                    <TabsTrigger value="list">一覧</TabsTrigger>
+                    <TabsTrigger value="add">取引先追加</TabsTrigger>
+                    <TabsTrigger value="newUser">担当者追加</TabsTrigger>
                 </TabsList>
-                <TabsPanel value="list">
+                <TabsContent value="list">
                     <TradePartnerTableContainer />
-                </TabsPanel>
-                <TabsPanel value="add">
+                </TabsContent>
+                <TabsContent value="add">
                     <TradePartnerCompanyTableContainer />
-                </TabsPanel>
-                <TabsPanel value="newUser">
+                </TabsContent>
+                <TabsContent value="newUser">
                     {/* 取引先会社選択して担当者をユーザー単位で登録 */}
                     <TradingPartnerCompanyNestedContainer />
                     <TradingPartnerPrivatePersonContainer />
-                </TabsPanel>
+                </TabsContent>
             </Tabs>
         </>
     );

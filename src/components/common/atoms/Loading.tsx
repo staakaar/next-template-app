@@ -1,14 +1,15 @@
-import "@mantine/core/styles/Loader.css";
-import { Center, Stack, Loader, Text } from "@mantine/core";
-
 const Loading = () => {
     return (
-        <Center style={{ width: "100vw", height: "100vh" }}>
-            <Stack align="center" gap="md">
-                <Loader size="xl" variant="dots" />
-                <Text size="lg">読み込み中...</Text>
-            </Stack>
-        </Center>
+        <div className="flex items-center justify-center w-screen h-screen">
+            <div className="flex flex-col items-center gap-4">
+                <div className="flex gap-2">
+                    <div className="w-3 h-3 bg-primary rounded-full animate-bounce [animation-delay:-0.3s]" />
+                    <div className="w-3 h-3 bg-primary rounded-full animate-bounce [animation-delay:-0.15s]" />
+                    <div className="w-3 h-3 bg-primary rounded-full animate-bounce" />
+                </div>
+                <p className="text-lg">読み込み中...</p>
+            </div>
+        </div>
     );
 };
 

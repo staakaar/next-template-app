@@ -1,17 +1,13 @@
 "use client";
-import { ActionIcon, Box, Group } from "@mantine/core";
 import { IconTrash } from "@tabler/icons-react";
 import { sort } from "fast-sort";
-import {
-    DataTable,
-    type DataTableColumn,
-    DataTableSortStatus,
-    useDataTableColumns,
-} from "mantine-datatable";
+import { ColumnDef, SortingState } from "@tanstack/react-table";
+import { DataTable } from "@/components/ui/data-table";
 import { useEffect, useState } from "react";
 import type { ContractAuthority } from "@/hooks/contractAuthority";
 import { usePaginationStore } from "@/stores/pagination/PaginationStore";
 import VTooltip from "../atoms/Tooltip";
+import { Button } from "@/components/ui/button";
 
 type ContractAuthorityListPresentationProps<T extends ContractAuthority> = {
     contractAuthorities: T[];
@@ -48,134 +44,75 @@ const ContractAuthorityListPresentation = <T extends ContractAuthority>({
         ]) as ContractAuthority[];
     }, [contractAuthorities]);
 
-    const columns: DataTableColumn<ContractAuthority>[] = [
+    const columns: ColumnDef<ContractAuthority>[] = [
         {
-            accessor: "roleCategory",
-            title: "契約種別",
-            sortable: true,
-            render: (item: ContractAuthority) => (
+            accessorKey: "roleCategory",
+            header: "契約種別",
+            enableSorting: true,
+            cell: ({ row }) => (
                 <VTooltip
-                    content={item.roleId}
-                    tooltip={`契約種別: ${item.roleId}`}
+                    content={row.original.roleId}
+                    tooltip={`契約種別: ${row.original.roleId}`}
                     maxWidth={"100"}
                 />
             ),
         },
         {
-            accessor: "roleName",
-            title: "ユーザー/部署",
-            sortable: true,
-            render: (item: ContractAuthority) => (
+            accessorKey: "roleName",
+            header: "ユーザー/部署",
+            enableSorting: true,
+            cell: ({ row }) => (
                 <VTooltip
-                    content={item.roleName}
-                    tooltip={`変更者: ${item.roleName}`}
+                    content={row.original.roleName}
+                    tooltip={`変更者: ${row.original.roleName}`}
                     maxWidth={"100"}
                 />
             ),
         },
         {
-            accessor: "roleType",
-            title: "権限タイプ",
-            sortable: true,
-            render: (item: ContractAuthority) => (
+            accessorKey: "roleType",
+            header: "権限タイプ",
+            enableSorting: true,
+            cell: ({ row }) => (
                 <VTooltip
-                    content={item.roleType}
-                    tooltip={`変更者: ${item.roleType}`}
+                    content={row.original.roleType}
+                    tooltip={`変更者: ${row.original.roleType}`}
                     maxWidth={"100"}
                 />
             ),
         },
         {
-            accessor: "actions",
-            title: "",
-            textAlign: "right",
-            render: (company) => (
-                <Group gap={2} justify="right" wrap="nowrap">
-                    <ActionIcon
+            id: "actions",
+            header: "",
+            cell: ({ row }) => (
+                <div className="flex gap-0.5 justify-end flex-nowrap">
+                    <Button
                         size="sm"
-                        variant="subtle"
-                        color="red"
+                        variant="ghost"
                         onClick={() => {}}
+                        className="text-red-500 hover:text-red-700"
                     >
                         <IconTrash size={16} />
-                    </ActionIcon>
-                </Group>
+                    </Button>
+                </div>
             ),
         },
     ];
 
-    const { effectiveColumns } = useDataTableColumns<ContractAuthority>({
-        key: "roleId",
-        columns,
-    });
-
     return (
         <DataTable
             className="mt-8"
-            withTableBorder
-            borderRadius="md"
-            striped
-            highlightOnHover={true}
-            columns={effectiveColumns}
-            records={records}
-            noRecordsText={
-                records.length === 0 ? "該当のレコードが存在しません。" : ""
-            }
-            emptyState={records.length === 0}
-            loadingText="読み込み中です..."
-            totalRecords={totalCount}
-            recordsPerPage={pageSize}
-            recordsPerPageLabel=""
-            paginationActiveBackgroundColor="blue"
+            columns={columns}
+            data={records}
+            pageSize={pageSize}
+            onPageSizeChange={setPageSize}
             page={page}
-            recordsPerPageOptions={PAGE_SIZES}
-            // sortStatus={sortStatus}
-            // onSortStatusChange={setSortStatus}
             onPageChange={(p) => setPage(p)}
-            onRecordsPerPageChange={setPageSize}
-            idAccessor="roleId"
-            styles={{
-                pagination: {
-                    display: "flex",
-                    justifyContent: "flex-end",
-                    alignItems: "center",
-                    padding: "1rem",
-                    gap: "1rem",
-
-                    ".mantineGroupRoot": {
-                        display: "flex",
-                        alignItems: "center",
-                        gap: "1rem",
-                        flex: 1,
-                    },
-
-                    "[dataRecordsPerPage]": {
-                        order: 1,
-                    },
-
-                    ".mantinePaginationRoot": {
-                        order: 2,
-                    },
-
-                    "[dataPaginationText]": {
-                        marginLeft: "auto",
-                        whiteSpace: "nowrap",
-                        order: 3,
-                    },
-
-                    tr: {
-                        cursor: "pointer",
-                        position: "relative",
-                        transition: "all 0.2s ease",
-                        "&:hover": {
-                            backgroundColor: "blue",
-                            boxShadow: `0 4px 8px `,
-                            transform: "translateY(-1px)",
-                            zIndex: 1, // 他の行より上に表示
-                        },
-                    },
-                },
-            }}
+            totalRecords={totalCount}
+            pageOptions={PAGE_SIZES}
+            noRecordsText="該当のレコードが存在しません。"
+            highlightOnHover={true}
+            striped={true}
         />
     );
 };

@@ -1,11 +1,11 @@
 "use client";
 import { delay, useIsMounted } from "@/hooks/mantine";
 import { departments, OwnCompanyAuthority } from "@/types/onboarding";
-import { Box } from "@mantine/core";
 import { IconChevronRight, IconUsers } from "@tabler/icons-react";
 import clsx from "clsx";
 import { sort } from "fast-sort";
-import { DataTable, DataTableSortStatus } from "mantine-datatable";
+import { ColumnDef, SortingState } from "@tanstack/react-table";
+import { DataTable } from "@/components/ui/data-table";
 import { useEffect, useState } from "react";
 import OwnCompanyUserAuthorityTable from "./OwnCompanyUserAuthorityTable";
 
@@ -15,7 +15,7 @@ type OwnCompanyDepartmentWithUserCount = OwnCompanyAuthority & {
 
 type OwnCompanyDepartmentAuthorityTableProps = {
     companyId: string;
-    sortStatus?: DataTableSortStatus<OwnCompanyDepartmentWithUserCount>;
+    sortStatus?: SortingState;
 };
 
 const OwnCompanyDepartmentAuthorityTable = ({
@@ -52,55 +52,44 @@ const OwnCompanyDepartmentAuthorityTable = ({
         }
     }, [companyId, isMounted, sortStatus]);
 
+    const columns: ColumnDef<typeof departments[0]>[] = [
+        {
+            accessorKey: "name",
+            header: "",
+            cell: ({ row }) => (
+                <span className="ml-5">
+                    <IconChevronRight
+                        className={clsx(
+                            "w-[13px] h-auto -translate-y-[1px] mr-[8px]",
+                            "transition-transform duration-200",
+                            {
+                                "rotate-90": expandedRecordIds.includes(row.original.id),
+                            }
+                        )}
+                    />
+                    <IconUsers
+                        className={clsx(
+                            "w-[13px] h-auto -translate-y-[1px] mr-[8px]"
+                        )}
+                    />
+                    <span>{row.original.name}</span>
+                </span>
+            ),
+        },
+        {
+            accessorKey: "users",
+            header: "",
+            cell: ({ row }) => <div className="text-right">{row.original.users}</div>,
+        },
+    ];
+
     return (
         <DataTable
-            noHeader
-            minHeight={100}
-            withColumnBorders
-            columns={[
-                {
-                    accessor: "name",
-                    noWrap: true,
-                    render: ({ id, name }) => (
-                        <Box component="span" ml={20}>
-                            <IconChevronRight
-                                className={clsx(
-                                    "w-[13px] h-auto -translate-y-[1px] mr-[8px]",
-                                    "transition-transform duration-200",
-                                    {
-                                        "rotate-90":
-                                            expandedRecordIds.includes(id),
-                                    }
-                                )}
-                            />
-                            <IconUsers
-                                className={clsx(
-                                    "w-[13px] h-auto -translate-y-[1px] mr-[8px]"
-                                )}
-                            />
-                            <span>{name}</span>
-                        </Box>
-                    ),
-                },
-                { accessor: "users", textAlign: "right", width: 200 },
-            ]}
-            records={records}
-            fetching={loading}
-            rowExpansion={{
-                allowMultiple: true,
-                expanded: {
-                    recordIds: expandedRecordIds,
-                    onRecordIdsChange: setExpandedRecordIds,
-                },
-                content: ({ record }) => (
-                    <OwnCompanyUserAuthorityTable
-                        departmentId={record.id}
-                        sortStatus={sortStatus}
-                    />
-                ),
-            }}
-            selectedRecords={[]}
-            onSelectedRecordsChange={() => {}}
+            columns={columns}
+            data={records}
+            noRecordsText="データがありません"
+            highlightOnHover={false}
+            striped={false}
         />
     );
 };

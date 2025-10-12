@@ -1,6 +1,6 @@
 "use client";
 import { useState } from "react";
-import { Stepper, Box, StepperStep } from "@mantine/core";
+import { Stepper, Step } from "@/components/ui/stepper";
 import { useContractBasicStore } from "@/stores/contractBasic/ContractBasicStore";
 
 const ContractSteps = [
@@ -22,56 +22,18 @@ const ContractStatusStepper = () => {
     );
 
     return (
-        <Box className="flex justify-center sm:w-min-full md:w-min-full lg:w-min-full mt-4">
-            <Stepper
-                size="sm"
-                color="blue"
-                active={activeStep}
-                styles={(theme) => ({
-                    root: {
-                        padding: "0 1rem",
-                        "@media (minWidth: 768px)": {
-                            padding: "0 2rem",
-                        },
-                    },
-                    // separator: {
-                    // marginLeft: theme.spacing.xl,
-                    // marginRight: theme.spacing.xl,
-                    // },
-                    step: {
-                        padding: theme.spacing.sm,
-                    },
-                    stepIcon: {
-                        borderWidth: 0,
-                        backgroundColor: !activeStep
-                            ? theme.colors.blue[6]
-                            : undefined,
-                        color: !activeStep ? theme.white : undefined,
-                        "&[dataCompleted]": {
-                            backgroundColor: theme.colors.blue[6],
-                            color: theme.white,
-                        },
-                    },
-                    stepLabel: {
-                        fontSize: theme.fontSizes.sm,
-                        fontWeight: 500,
-                    },
-                    stepDescription: {
-                        fontSize: theme.fontSizes.xs,
-                        marginTop: theme.spacing.xs,
-                        color: theme.colors.gray[6],
-                    },
-                })}
-            >
+        <div className="flex justify-center w-full mt-4 px-4 md:px-8">
+            <Stepper activeStep={activeStep} className="w-full max-w-6xl">
                 {ContractSteps.map((step, index) => (
-                    <StepperStep
+                    <Step
                         key={index}
-                        // label={step.title}
+                        stepNumber={index}
                         description={step.description}
+                        isLast={index === ContractSteps.length - 1}
                     />
                 ))}
             </Stepper>
-        </Box>
+        </div>
     );
 };
 

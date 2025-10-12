@@ -1,25 +1,15 @@
 import { ownCompanyFormSchema } from "@/lib/ownCompany/schema";
-import {
-    Autocomplete,
-    Box,
-    Checkbox,
-    ComboboxItem,
-    HoverCard,
-    HoverCardDropdown,
-    HoverCardTarget,
-    LoadingOverlay,
-    OptionsFilter,
-    Select,
-    SimpleGrid,
-    Stack,
-    Textarea,
-    TextInput,
-    Text,
-    Tooltip,
-} from "@mantine/core";
-import { DateInput } from "@mantine/dates";
 import { Controller, useForm } from "react-hook-form";
 import { z } from "zod";
+import { Input } from "@/components/ui/input";
+import { Textarea } from "@/components/ui/textarea";
+import { Checkbox } from "@/components/ui/checkbox";
+import { Label } from "@/components/ui/label";
+import {
+    HoverCard,
+    HoverCardContent,
+    HoverCardTrigger,
+} from "@/components/ui/hover-card";
 
 type OwnCompanyFormValues = z.infer<typeof ownCompanyFormSchema>;
 
@@ -35,83 +25,104 @@ const OwnCompanyPresentationalForm = ({ form, ref }: OwnCompanyFormProps) => {
         control,
     } = form;
 
-    // 名義情報の検索
-    const optionsFilter: OptionsFilter = ({ options, search }) => {
-        const splittedSearch = search.toLowerCase().trim().split(" ");
-        return (options as ComboboxItem[]).filter((option) => {
-            const words = option.label.toLowerCase().trim().split(" ");
-            return splittedSearch.every((searchWord) =>
-                words.some((word) => word.includes(searchWord))
-            );
-        });
-    };
-
     return (
-        <Box className="mt-10">
-            <LoadingOverlay visible={form.formState.isSubmitting} />
+        <div className="mt-10 relative">
+            {form.formState.isSubmitting && (
+                <div className="absolute inset-0 bg-background/50 z-10 flex items-center justify-center">
+                    <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-primary"></div>
+                </div>
+            )}
             <form>
-                <SimpleGrid cols={{ base: 1, sm: 2 }} spacing="lg">
-                    <Autocomplete
-                        label="自社担当者"
-                        placeholder="自社担当者"
-                        data={["APIで取得", "したデータ", "をセット"]}
-                        filter={optionsFilter}
-                        error={errors.ownCompanyPersonInCharge?.message}
-                    />
-                    <Autocomplete
-                        label="担当部署"
-                        placeholder="担当部署"
-                        data={["APIで取得", "したデータ", "をセット"]}
-                        filter={optionsFilter}
-                        error={errors.ownCompanyDepartmentName?.message}
-                    />
-                    <TextInput
-                        label="外部リンク"
-                        error={errors.externalLink?.message}
-                        {...register("externalLink")}
-                        disabled={form.formState.isSubmitting}
-                        required
-                    />
-                    <HoverCard width={280} shadow="md">
-                        <HoverCardTarget>
-                            <Checkbox
-                                label="解除要項"
-                                error={errors.isCancellation?.message}
-                                {...register("isCancellation")}
-                            />
-                        </HoverCardTarget>
-                        <HoverCardDropdown>
-                            <Text size="sm">
-                                契約書の解約済みであるかを確認するフラグです。
-                            </Text>
-                        </HoverCardDropdown>
-                    </HoverCard>
-                </SimpleGrid>
-                <Stack mt="lg">
+                <div className="grid grid-cols-1 sm:grid-cols-2 gap-6">
+                    <div className="space-y-2">
+                        <Label htmlFor="ownCompanyPersonInCharge">自社担当者</Label>
+                        <Input
+                            id="ownCompanyPersonInCharge"
+                            placeholder="自社担当者"
+                            {...register("ownCompanyPersonInCharge")}
+                            disabled={form.formState.isSubmitting}
+                        />
+                        {errors.ownCompanyPersonInCharge && (
+                            <p className="text-sm text-red-500">
+                                {errors.ownCompanyPersonInCharge.message}
+                            </p>
+                        )}
+                    </div>
+                    <div className="space-y-2">
+                        <Label htmlFor="ownCompanyDepartmentName">担当部署</Label>
+                        <Input
+                            id="ownCompanyDepartmentName"
+                            placeholder="担当部署"
+                            {...register("ownCompanyDepartmentName")}
+                            disabled={form.formState.isSubmitting}
+                        />
+                        {errors.ownCompanyDepartmentName && (
+                            <p className="text-sm text-red-500">
+                                {errors.ownCompanyDepartmentName.message}
+                            </p>
+                        )}
+                    </div>
+                    <div className="space-y-2">
+                        <Label htmlFor="externalLink">
+                            外部リンク <span className="text-red-500">*</span>
+                        </Label>
+                        <Input
+                            id="externalLink"
+                            {...register("externalLink")}
+                            disabled={form.formState.isSubmitting}
+                            required
+                        />
+                        {errors.externalLink && (
+                            <p className="text-sm text-red-500">
+                                {errors.externalLink.message}
+                            </p>
+                        )}
+                    </div>
+                    <div className="space-y-2">
+                        <HoverCard>
+                            <HoverCardTrigger asChild>
+                                <div className="flex items-center space-x-2">
+                                    <Controller
+                                        name="isCancellation"
+                                        control={control}
+                                        render={({ field }) => (
+                                            <Checkbox
+                                                id="isCancellation"
+                                                checked={field.value}
+                                                onCheckedChange={field.onChange}
+                                            />
+                                        )}
+                                    />
+                                    <Label htmlFor="isCancellation">解除要項</Label>
+                                </div>
+                            </HoverCardTrigger>
+                            <HoverCardContent className="w-80">
+                                <p className="text-sm">
+                                    契約書の解約済みであるかを確認するフラグです。
+                                </p>
+                            </HoverCardContent>
+                        </HoverCard>
+                        {errors.isCancellation && (
+                            <p className="text-sm text-red-500">
+                                {errors.isCancellation.message}
+                            </p>
+                        )}
+                    </div>
+                </div>
+                <div className="mt-6">
                     <Textarea
-                        label=""
-                        error={errors.cancellationText?.message}
                         {...register("cancellationText")}
                         disabled={form.formState.isSubmitting}
-                        minRows={3}
+                        rows={3}
                     />
-                </Stack>
-                {/* <Stack mt="lg">
-                    <Tooltip
-                        label="契約書の解約済みであるかを確認するフラグです。"
-                        refProp="rootRef"
-                    >
-                        <Checkbox label="解約済み" onChange={(value) => {}} />
-                    </Tooltip>
-                    <Tooltip label="テスト1フラグです。" refProp="rootRef">
-                        <Checkbox label="テスト1" onChange={(value) => {}} />
-                    </Tooltip>
-                    <Tooltip label="テスト2フラグです。" refProp="rootRef">
-                        <Checkbox label="テスト2" onChange={(value) => {}} />
-                    </Tooltip>
-                </Stack> */}
+                    {errors.cancellationText && (
+                        <p className="text-sm text-red-500 mt-2">
+                            {errors.cancellationText.message}
+                        </p>
+                    )}
+                </div>
             </form>
-        </Box>
+        </div>
     );
 };
 

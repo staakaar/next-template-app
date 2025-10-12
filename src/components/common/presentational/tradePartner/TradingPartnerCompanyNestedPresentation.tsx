@@ -2,7 +2,8 @@
 
 import clsx from "clsx";
 import { useEffect, useState } from "react";
-import { DataTable, DataTableSortStatus } from "mantine-datatable";
+import { ColumnDef, SortingState } from "@tanstack/react-table";
+import { DataTable } from "@/components/ui/data-table";
 import CompanyDepartmentTable from "./CompanyDepartmentTable";
 import { delay, useIsMounted } from "@/hooks/mantine";
 // import { tradingCompanies } from "@/types/api/tradePartner";
@@ -24,12 +25,9 @@ const TradingPartnerCompanyNestedPresentation = <
     initialCount,
 }: TradingPartnerCompanyNestedProps<T>) => {
     const [expandedRecordIds, setExpandedRecordIds] = useState<string[]>([]);
-    const [sortStatus, setSortStatus] = useState<
-        DataTableSortStatus<CompanyWithUserCount>
-    >({
-        columnAccessor: "name",
-        direction: "asc",
-    });
+    const [sortStatus, setSortStatus] = useState<SortingState>([
+        { id: "name", desc: false }
+    ]);
 
     const isMounted = useIsMounted();
     const [records, setRecords] =
@@ -46,7 +44,7 @@ const TradingPartnerCompanyNestedPresentation = <
                         { asc: (r) => r.id },
                         { desc: (r) => r.id },
                     ]);
-                    if (sortStatus.direction === "desc") newRecords.reverse();
+                    if (sortStatus.length > 0 && sortStatus[0].desc) newRecords.reverse();
                     setRecords(newRecords);
                     setLoading(false);
                 }
@@ -54,66 +52,48 @@ const TradingPartnerCompanyNestedPresentation = <
         }
     }, [isMounted, records, sortStatus]);
 
+    const columns: ColumnDef<CompanyWithUserCount>[] = [
+        {
+            accessorKey: "name",
+            header: "Company / Department / User",
+            enableSorting: true,
+            cell: ({ row }) => (
+                <>
+                    <IconChevronRight
+                        className={clsx(
+                            "w-[13px] h-auto -translate-y-[1px] mr-[8px]",
+                            "transition-transform duration-200",
+                            {
+                                "rotate-90": expandedRecordIds.includes(row.original.id),
+                            }
+                        )}
+                    />
+                    <IconBuilding
+                        className={clsx(
+                            "w-[13px] h-auto -translate-y-[1px] mr-[8px]"
+                        )}
+                    />
+                    <span>{row.original.name}</span>
+                </>
+            ),
+        },
+        {
+            id: "details",
+            header: "Users / Birth date",
+            enableSorting: true,
+            cell: ({ row }) => <div className="text-right">{row.original.users}</div>,
+        },
+    ];
+
     return (
         <DataTable
-            minHeight={160}
-            withTableBorder
-            withColumnBorders
-            highlightOnHover
-            sortStatus={sortStatus}
-            onSortStatusChange={setSortStatus}
-            columns={[
-                {
-                    accessor: "name",
-                    title: "Company / Department / User",
-                    noWrap: true,
-                    render: ({ id, name }) => (
-                        <>
-                            <IconChevronRight
-                                className={clsx(
-                                    "w-[13px] h-auto -translate-y-[1px] mr-[8px]",
-                                    "transition-transform duration-200",
-                                    {
-                                        "rotate-90":
-                                            expandedRecordIds.includes(id),
-                                    }
-                                )}
-                            />
-                            <IconBuilding
-                                className={clsx(
-                                    "w-[13px] h-auto -translate-y-[1px] mr-[8px]"
-                                )}
-                            />
-                            <span>{name}</span>
-                        </>
-                    ),
-                },
-                {
-                    accessor: "details",
-                    sortable: true,
-                    title: "Users / Birth date",
-                    render: ({ users }) => users,
-                    textAlign: "right",
-                    width: 200,
-                },
-            ]}
-            records={records}
-            fetching={loading && !records.length}
-            rowExpansion={{
-                allowMultiple: true,
-                expanded: {
-                    recordIds: expandedRecordIds,
-                    onRecordIdsChange: setExpandedRecordIds,
-                },
-                content: ({ record }) => (
-                    <CompanyDepartmentTable
-                        companyId={record.id}
-                        sortStatus={sortStatus as DataTableSortStatus}
-                    />
-                ),
-            }}
-            selectedRecords={[]}
-            onSelectedRecordsChange={() => {}}
+            columns={columns}
+            data={records}
+            sorting={sortStatus}
+            onSortingChange={setSortStatus}
+            noRecordsText="データがありません"
+            highlightOnHover={true}
+            striped={false}
         />
     );
 };

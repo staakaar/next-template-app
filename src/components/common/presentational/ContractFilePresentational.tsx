@@ -1,27 +1,4 @@
 "use client";
-import "@mantine/dropzone/styles.css";
-import {
-    ActionIcon,
-    Box,
-    Button,
-    Group,
-    Progress,
-    Stack,
-    Text,
-} from "@mantine/core";
-import {
-    Dropzone,
-    DropzoneAccept,
-    DropzoneIdle,
-    type DropzoneProps,
-    DropzoneReject,
-    type FileWithPath,
-    IMAGE_MIME_TYPE,
-    MS_EXCEL_MIME_TYPE,
-    MS_POWERPOINT_MIME_TYPE,
-    MS_WORD_MIME_TYPE,
-    PDF_MIME_TYPE,
-} from "@mantine/dropzone";
 import { IconPhoto, IconUpload, IconX } from "@tabler/icons-react";
 import dynamic from "next/dynamic";
 import { useCallback, useEffect, useRef, useState } from "react";
@@ -29,6 +6,12 @@ import { useContractFileStore } from "@/stores/contractFile/ContractFileStore";
 import "@react-pdf-viewer/core/lib/styles/index.css";
 import "@react-pdf-viewer/default-layout/lib/styles/index.css";
 import { TrashIcon } from "lucide-react";
+import { Button } from "@/components/ui/button";
+import { Progress } from "@/components/ui/progress";
+
+interface FileWithPath extends File {
+    path?: string;
+}
 
 interface UploadContractFile extends FileWithPath {
     id: string;
@@ -39,7 +22,13 @@ interface UploadContractFile extends FileWithPath {
     preview: string;
 }
 
-const ContractFilePresentational = (props: Partial<DropzoneProps>) => {
+interface ContractFilePresentationalProps {
+    maxSize?: number;
+    accept?: string[];
+    disabled?: boolean;
+}
+
+const ContractFilePresentational = (props: ContractFilePresentationalProps) => {
     // PDFビューアーを動的インポート（SSR無効）
     const PDFViewer = dynamic(
         () =>
@@ -140,102 +129,111 @@ const ContractFilePresentational = (props: Partial<DropzoneProps>) => {
         setSelectedFileIndex(index);
     }, []);
 
-    const MIME_TYPE = [
-        ...IMAGE_MIME_TYPE,
-        ...PDF_MIME_TYPE,
-        ...MS_WORD_MIME_TYPE,
-        ...MS_EXCEL_MIME_TYPE,
-        ...MS_POWERPOINT_MIME_TYPE,
-    ];
+    const [isDragging, setIsDragging] = useState(false);
+    const fileInputRef = useRef<HTMLInputElement>(null);
+
+    const handleDragOver = (e: React.DragEvent) => {
+        e.preventDefault();
+        setIsDragging(true);
+    };
+
+    const handleDragLeave = (e: React.DragEvent) => {
+        e.preventDefault();
+        setIsDragging(false);
+    };
+
+    const handleDropEvent = async (e: React.DragEvent) => {
+        e.preventDefault();
+        setIsDragging(false);
+
+        const files = Array.from(e.dataTransfer.files) as FileWithPath[];
+        await handleDrop(files);
+    };
+
+    const handleFileInputChange = async (e: React.ChangeEvent<HTMLInputElement>) => {
+        const files = e.target.files ? Array.from(e.target.files) as FileWithPath[] : [];
+        await handleDrop(files);
+    };
 
     return (
-        <Box>
-            <Dropzone
-                onDrop={(files) => handleDrop(files)}
-                onReject={(files) => console.log("rejected files", files)}
-                maxSize={5 * 1024 ** 2}
-                accept={MIME_TYPE}
-                disabled={isUploading}
-                {...props}
+        <div>
+            <div
+                onDragOver={handleDragOver}
+                onDragLeave={handleDragLeave}
+                onDrop={handleDropEvent}
+                className={`border-2 border-dashed rounded-lg p-12 text-center transition-colors ${
+                    isDragging ? "border-primary bg-primary/5" : "border-gray-300"
+                } ${isUploading ? "opacity-50 pointer-events-none" : ""}`}
             >
-                <Group
-                    justify="center"
-                    gap="xl"
-                    mih={220}
-                    style={{ pointerEvents: "none" }}
-                >
-                    <DropzoneAccept>
-                        <IconUpload
-                            className="w-[52px] h-[52px] text-gray-400 dark:text-gray-500"
-                            stroke={1.5}
-                        />
-                    </DropzoneAccept>
-                    <DropzoneReject>
-                        <IconX
-                            className="w-[52px] h-[52px] text-gray-400 dark:text-gray-500"
-                            stroke={1.5}
-                        />
-                    </DropzoneReject>
-                    <DropzoneIdle>
-                        <IconPhoto
-                            className="w-[52px] h-[52px] text-gray-400 dark:text-gray-500"
-                            stroke={1.5}
-                        />
-                    </DropzoneIdle>
-
+                <div className="flex flex-col items-center gap-4 pointer-events-none">
+                    <IconPhoto
+                        className="w-[52px] h-[52px] text-gray-400 dark:text-gray-500"
+                        stroke={1.5}
+                    />
                     <div>
-                        <Text size="xl" inline>
+                        <p className="text-xl">
                             ファイルをドラッグ＆ドロップするか、クリックして選択してください
-                        </Text>
-                        <Group justify="center" mt="md">
-                            <Button onClick={() => {}}>ファイルを選択</Button>
-                        </Group>
+                        </p>
+                        <div className="flex justify-center mt-4">
+                            <Button
+                                type="button"
+                                onClick={() => fileInputRef.current?.click()}
+                                className="pointer-events-auto"
+                            >
+                                ファイルを選択
+                            </Button>
+                        </div>
                     </div>
-                </Group>
-            </Dropzone>
+                </div>
+                <input
+                    ref={fileInputRef}
+                    type="file"
+                    multiple
+                    onChange={handleFileInputChange}
+                    className="hidden"
+                    disabled={isUploading}
+                />
+            </div>
 
-            <Stack mt={4} align="stretch">
+            <div className="mt-4 flex flex-col gap-2">
                 {contractFiles.map((file, index) => (
-                    <Group
+                    <div
                         key={file.id}
-                        p={2}
-                        bg="gray.100"
-                        className="justify-between"
+                        className="p-2 bg-gray-100 flex justify-between items-center gap-2"
                     >
-                        <Text
-                            onClick={() => handleFileSelect}
-                            className="cursor-pointer"
+                        <span
+                            onClick={() => handleFileSelect(index)}
+                            className="cursor-pointer flex-1"
                         >
                             {file.name} - {(file.size / 1024 / 1024).toFixed(2)}{" "}
                             MB
-                        </Text>
-                        <ActionIcon
-                            aria-label="Delete file"
+                        </span>
+                        <Button
+                            variant="ghost"
+                            size="icon"
                             onClick={() => removeFile(index)}
-                            size="sm"
-                            color="red"
-                            variant="subtle"
+                            className="text-red-500 hover:text-red-700"
                         >
-                            <TrashIcon size="1rem" />
-                        </ActionIcon>
-                        <Box>
+                            <TrashIcon className="h-4 w-4" />
+                        </Button>
+                        <div className="w-24">
                             <Progress value={file.progress} />
-                        </Box>
-                    </Group>
+                        </div>
+                    </div>
                 ))}
-            </Stack>
+            </div>
 
             {selectedFileIndex !== null && defaultLayoutPluginInstance && (
-                <Box>
+                <div className="mt-4">
                     <PDFWorker workerUrl="https://unpkg.com/pdfjs-dist@3.4.120/build/pdf.worker.min.js">
                         <PDFViewer
                             fileUrl={contractFiles[selectedFileIndex].preview}
                             plugins={[defaultLayoutPluginInstance]}
                         />
                     </PDFWorker>
-                </Box>
+                </div>
             )}
-        </Box>
+        </div>
     );
 };
 

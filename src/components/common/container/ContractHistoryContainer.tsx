@@ -1,6 +1,5 @@
 import { useContractHistory } from "@/api/contract-history/contract-history";
 import ContractHistoryPresentational from "../presentational/ContractHistoryPresentational";
-import { Box } from "@mantine/core";
 
 interface ContractHistoryContainerProps {
     contractCode: string;

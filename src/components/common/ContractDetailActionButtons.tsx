@@ -1,6 +1,6 @@
 "use client";
 import { useContractBasicStore } from "@/stores/contractBasic/ContractBasicStore";
-import { Button } from "@mantine/core";
+import { Button } from "@/components/ui/button";
 
 const ContractDetailActionButtons = () => {
     const { contractBasic } = useContractBasicStore();

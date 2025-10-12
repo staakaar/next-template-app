@@ -1,7 +1,7 @@
 "use client";
 import { sort } from "fast-sort";
-import { Box } from "@mantine/core";
-import { DataTable, DataTableSortStatus } from "mantine-datatable";
+import { ColumnDef, SortingState } from "@tanstack/react-table";
+import { DataTable } from "@/components/ui/data-table";
 import { useEffect, useState } from "react";
 import { IconChevronRight, IconUsers } from "@tabler/icons-react";
 import clsx from "clsx";
@@ -14,7 +14,7 @@ type CompanyWithUserCount = TradingCompany & { users: number };
 
 type CompanyDepartmentTableProps = {
     companyId: string;
-    sortStatus?: DataTableSortStatus<CompanyWithUserCount>;
+    sortStatus?: SortingState;
 };
 
 const CompanyDepartmentTable = ({
@@ -41,7 +41,7 @@ const CompanyDepartmentTable = ({
                             { asc: (r) => r.id },
                             { desc: (r) => r.id },
                         ]);
-                        if (sortStatus.direction === "desc")
+                        if (sortStatus.length > 0 && sortStatus[0].desc)
                             newRecords.reverse();
                         //     newRecords = sort(records).by(() =>
                         //         sortStatus.columnAccessor === "details"
@@ -68,55 +68,44 @@ const CompanyDepartmentTable = ({
         }
     }, [companyId, isMounted, records, sortStatus]);
 
+    const columns: ColumnDef<typeof departments[0]>[] = [
+        {
+            accessorKey: "name",
+            header: "",
+            cell: ({ row }) => (
+                <span className="ml-5">
+                    <IconChevronRight
+                        className={clsx(
+                            "w-[13px] h-auto -translate-y-[1px] mr-[8px]",
+                            "transition-transform duration-200",
+                            {
+                                "rotate-90": expandedRecordIds.includes(row.original.id),
+                            }
+                        )}
+                    />
+                    <IconUsers
+                        className={clsx(
+                            "w-[13px] h-auto -translate-y-[1px] mr-[8px]"
+                        )}
+                    />
+                    <span>{row.original.name}</span>
+                </span>
+            ),
+        },
+        {
+            accessorKey: "users",
+            header: "",
+            cell: ({ row }) => <div className="text-right">{row.original.users}</div>,
+        },
+    ];
+
     return (
         <DataTable
-            noHeader
-            minHeight={100}
-            withColumnBorders
-            columns={[
-                {
-                    accessor: "name",
-                    noWrap: true,
-                    render: ({ id, name }) => (
-                        <Box component="span" ml={20}>
-                            <IconChevronRight
-                                className={clsx(
-                                    "w-[13px] h-auto -translate-y-[1px] mr-[8px]",
-                                    "transition-transform duration-200",
-                                    {
-                                        "rotate-90":
-                                            expandedRecordIds.includes(id),
-                                    }
-                                )}
-                            />
-                            <IconUsers
-                                className={clsx(
-                                    "w-[13px] h-auto -translate-y-[1px] mr-[8px]"
-                                )}
-                            />
-                            <span>{name}</span>
-                        </Box>
-                    ),
-                },
-                { accessor: "users", textAlign: "right", width: 200 },
-            ]}
-            records={records}
-            fetching={loading && !records.length}
-            rowExpansion={{
-                allowMultiple: true,
-                expanded: {
-                    recordIds: expandedRecordIds,
-                    onRecordIdsChange: setExpandedRecordIds,
-                },
-                content: ({ record }) => (
-                    <TradingUsersTable
-                        departmentId={record.id}
-                        sortStatus={sortStatus}
-                    />
-                ),
-            }}
-            selectedRecords={[]}
-            onSelectedRecordsChange={() => {}}
+            columns={columns}
+            data={records}
+            noRecordsText="データがありません"
+            highlightOnHover={false}
+            striped={false}
         />
     );
 };

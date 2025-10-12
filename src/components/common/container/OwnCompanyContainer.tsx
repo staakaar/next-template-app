@@ -5,16 +5,9 @@ import { z } from "zod";
 import { useOwnCompany } from "@/api/own-company/own-company";
 import { OwnCompanyForm, ownCompanyFormSchema } from "@/lib/ownCompany/schema";
 import { defaultOwnCompanyForm } from "@/stores/ownCompany/OwnCompanyStore";
-import {
-    Box,
-    Button,
-    Divider,
-    Group,
-    Paper,
-    Stack,
-    Title,
-} from "@mantine/core";
-import { notifications } from "@mantine/notifications";
+import { Button } from "@/components/ui/button";
+import { Separator } from "@/components/ui/separator";
+import { toast } from "sonner";
 import { saveOwnCompany, updateOwnCompany } from "@/lib/ownCompany/api";
 import OwnCompanyPresentationalForm from "../presentational/OwnCompanyPresentationalForm";
 import useContractStore from "@/stores/contracts/ContractStore";
@@ -57,26 +50,22 @@ const OwnCompanyContainer = ({
 
         if (result) {
             // 成功後の処理（例：次のステップに進む、リダイレクトするなど）
-            notifications.show({
-                title: isEdit ? "更新完了" : "登録完了",
-                message: `${isEdit ? "更新" : "登録"}が成功しました。`,
-                color: "red",
+            toast.success(isEdit ? "更新完了" : "登録完了", {
+                description: `${isEdit ? "更新" : "登録"}が成功しました。`,
             });
         } else {
-            notifications.show({
-                title: "エラー",
-                message: "エラーが発生しました。",
-                color: "red",
+            toast.error("エラー", {
+                description: "エラーが発生しました。",
             });
         }
     };
 
     return (
-        <Paper shadow="xs" p="md" className="mt-4">
-            <Stack>
-                <Group align="center" justify="space-between">
-                    <Title className="mt-4">自社情報</Title>
-                    <Group>
+        <div className="mt-4 rounded-lg border bg-card p-6 shadow-sm">
+            <div className="flex flex-col gap-4">
+                <div className="flex items-center justify-between">
+                    <h2 className="mt-4 text-2xl font-bold">自社情報</h2>
+                    <div className="flex gap-2">
                         {isEdit ? (
                             <Button
                                 type="submit"
@@ -94,14 +83,14 @@ const OwnCompanyContainer = ({
                                 登録
                             </Button>
                         )}
-                    </Group>
-                </Group>
-            </Stack>
-            <Divider className="mt-2" />
-            <Box className="grid gap-3">
+                    </div>
+                </div>
+            </div>
+            <Separator className="mt-2" />
+            <div className="grid gap-3">
                 <OwnCompanyPresentationalForm form={form} />
-            </Box>
-        </Paper>
+            </div>
+        </div>
     );
 };
 

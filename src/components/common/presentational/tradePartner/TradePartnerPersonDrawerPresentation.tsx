@@ -3,14 +3,11 @@
 import React, { useEffect } from "react";
 import { useState } from "react";
 import { useRouter } from "next/navigation";
-import {
-    DataTable,
-    useDataTableColumns,
-    DataTableSortStatus,
-    DataTableRowClickHandler,
-    DataTableColumn,
-} from "mantine-datatable";
-import { Card, Text, Group, ActionIcon, TextInput } from "@mantine/core";
+import { ColumnDef, SortingState } from "@tanstack/react-table";
+import { DataTable } from "@/components/ui/data-table";
+import { Card, CardContent, CardHeader } from "@/components/ui/card";
+import { Input } from "@/components/ui/input";
+import { Button } from "@/components/ui/button";
 import { IconTrash, IconEdit, IconEye, IconSearch } from "@tabler/icons-react";
 import { usePaginationStore } from "@/stores/pagination/PaginationStore";
 import VTooltip from "@/components/common/atoms/Tooltip";
@@ -31,12 +28,9 @@ const TradePartnerPersonDrawerPresentation = <T extends TradingPartnerPerson>({
     const router = useRouter();
     const [pageSize, setPageSize] = useState(PAGE_SIZES[2]);
 
-    const [sortStatus, setSortStatus] = useState<
-        DataTableSortStatus<TradingPartnerPerson>
-    >({
-        columnAccessor: "tradePersonId",
-        direction: "asc",
-    });
+    const [sortStatus, setSortStatus] = useState<SortingState>([
+        { id: "tradePersonId", desc: false }
+    ]);
 
     const [page, setPage] = useState(1);
     const [records, setRecords] = useState<TradingPartnerPerson[]>(
@@ -71,9 +65,7 @@ const TradePartnerPersonDrawerPresentation = <T extends TradingPartnerPerson>({
     const [totalCount, setTotalCount] = useState(initialTotalCount);
     const { setTradePartnerPageOptions } = usePaginationStore();
 
-    const navigateToContractDetail: DataTableRowClickHandler<
-        TradingPartnerPerson
-    > = ({ record }) => {
+    const navigateToContractDetail = (row: TradingPartnerPerson) => {
         router.push(`/contract/`);
     };
 
@@ -118,7 +110,7 @@ const TradePartnerPersonDrawerPresentation = <T extends TradingPartnerPerson>({
     };
 
     const handleSortStatusChange = async (
-        newSortStatus: DataTableSortStatus<T>
+        newSortStatus: SortingState
     ) => {
         // setSortStatus(newSortStatus);
         try {
@@ -131,183 +123,127 @@ const TradePartnerPersonDrawerPresentation = <T extends TradingPartnerPerson>({
         }
     };
 
-    const columns: DataTableColumn<TradingPartnerPerson>[] = [
+    const columns: ColumnDef<TradingPartnerPerson>[] = [
         {
-            accessor: "tradePersonId",
-            title: "取引先担当者ID",
-            sortable: true,
-            render: (tradingPartnerPerson: TradingPartnerPerson) => (
+            accessorKey: "tradePersonId",
+            header: "取引先担当者ID",
+            enableSorting: true,
+            cell: ({ row }) => (
                 <VTooltip
-                    content={tradingPartnerPerson.tradingPersonId}
-                    tooltip={`取引先担当者ID: ${tradingPartnerPerson.tradingPersonId}`}
+                    content={row.original.tradingPersonId}
+                    tooltip={`取引先担当者ID: ${row.original.tradingPersonId}`}
                     maxWidth={"100"}
                 />
             ),
         },
         {
-            accessor: "tradePersonName",
-            title: "取引先担当者名",
-            sortable: true,
-            render: (tradingPartnerPerson: TradingPartnerPerson) => (
+            accessorKey: "tradePersonName",
+            header: "取引先担当者名",
+            enableSorting: true,
+            cell: ({ row }) => (
                 <VTooltip
-                    content={tradingPartnerPerson.tradingPersonName}
-                    tooltip={`タイトル: ${tradingPartnerPerson.tradingPersonName}`}
+                    content={row.original.tradingPersonName}
+                    tooltip={`タイトル: ${row.original.tradingPersonName}`}
                     maxWidth={"100"}
                 />
             ),
         },
         {
-            accessor: "tradePersonEmailAddress",
-            title: "取引先担当者メールアドレス",
-            sortable: true,
-            render: (tradingPartnerPerson: TradingPartnerPerson) => (
+            accessorKey: "tradePersonEmailAddress",
+            header: "取引先担当者メールアドレス",
+            enableSorting: true,
+            cell: ({ row }) => (
                 <VTooltip
-                    content={tradingPartnerPerson.tradingPersonEmailAddress}
-                    tooltip={`取引先担当者メールアドレス: ${tradingPartnerPerson.tradingPersonEmailAddress}`}
+                    content={row.original.tradingPersonEmailAddress}
+                    tooltip={`取引先担当者メールアドレス: ${row.original.tradingPersonEmailAddress}`}
                     maxWidth={"100"}
                 />
             ),
         },
         {
-            accessor: "tradePartnerDepartmentId",
-            title: "取引先担当部署ID",
-            sortable: true,
-            render: (tradingPartnerPerson: TradingPartnerPerson) => (
+            accessorKey: "tradePartnerDepartmentId",
+            header: "取引先担当部署ID",
+            enableSorting: true,
+            cell: ({ row }) => (
                 <VTooltip
-                    content={tradingPartnerPerson.tradingPartnerDepartmentId}
-                    tooltip={`取引先担当部署ID: ${tradingPartnerPerson.tradingPartnerDepartmentId}`}
+                    content={row.original.tradingPartnerDepartmentId}
+                    tooltip={`取引先担当部署ID: ${row.original.tradingPartnerDepartmentId}`}
                     maxWidth={"100"}
                 />
             ),
         },
         {
-            accessor: "tradePartnerDepartmentName",
-            title: "取引先担当部署名",
-            sortable: true,
-            render: (tradingPartnerPerson: TradingPartnerPerson) => (
+            accessorKey: "tradePartnerDepartmentName",
+            header: "取引先担当部署名",
+            enableSorting: true,
+            cell: ({ row }) => (
                 <VTooltip
-                    content={tradingPartnerPerson.tradingPartnerDepartmentName}
-                    tooltip={`取引先担当部署名: ${tradingPartnerPerson.tradingPartnerDepartmentName}`}
+                    content={row.original.tradingPartnerDepartmentName}
+                    tooltip={`取引先担当部署名: ${row.original.tradingPartnerDepartmentName}`}
                     maxWidth={"100"}
                 />
             ),
         },
         {
-            accessor: "actions",
-            title: "",
-            textAlign: "right",
-            render: (tradingPartnerPerson: TradingPartnerPerson) => (
-                <Group gap={4} justify="right" wrap="nowrap">
-                    <ActionIcon size="sm" variant="subtle" color="green">
+            id: "actions",
+            header: "",
+            cell: ({ row }) => (
+                <div className="flex gap-1 justify-end flex-nowrap">
+                    <Button size="sm" variant="ghost" className="text-green-500 hover:text-green-700">
                         <IconEye size={16} />
-                    </ActionIcon>
-                    <ActionIcon
+                    </Button>
+                    <Button
                         size="sm"
-                        variant="subtle"
-                        color="blue"
-                        onClick={() => handleEdit(tradingPartnerPerson)}
+                        variant="ghost"
+                        className="text-blue-500 hover:text-blue-700"
+                        onClick={() => handleEdit(row.original)}
                     >
                         <IconEdit size={16} />
-                    </ActionIcon>
-                    <ActionIcon
+                    </Button>
+                    <Button
                         size="sm"
-                        variant="subtle"
-                        color="red"
-                        onClick={() => handleDelete(tradingPartnerPerson)}
+                        variant="ghost"
+                        className="text-red-500 hover:text-red-700"
+                        onClick={() => handleDelete(row.original)}
                     >
                         <IconTrash size={16} />
-                    </ActionIcon>
-                </Group>
+                    </Button>
+                </div>
             ),
         },
     ];
 
-    const { effectiveColumns } = useDataTableColumns<TradingPartnerPerson>({
-        key: "tradePersonId",
-        columns,
-    });
-
     return (
         <>
-            <Card withBorder>
-                <Group mb="md">
-                    <Text size="lg">取引先一覧</Text>
-                    <TextInput
-                        className="ml-64"
-                        placeholder="Search..."
-                        leftSection={<IconSearch size="1rem" />}
-                        style={{ width: "600px" }}
+            <Card>
+                <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-4">
+                    <h2 className="text-lg font-semibold">取引先一覧</h2>
+                    <div className="relative w-[600px]">
+                        <IconSearch className="absolute left-2 top-2.5 h-4 w-4 text-gray-500" />
+                        <Input
+                            className="pl-8"
+                            placeholder="Search..."
+                        />
+                    </div>
+                </CardHeader>
+                <CardContent>
+                    <DataTable
+                        columns={columns}
+                        data={records}
+                        onRowClick={navigateToContractDetail}
+                        pageSize={pageSize}
+                        onPageSizeChange={setPageSize}
+                        page={page}
+                        onPageChange={(p) => setPage(p)}
+                        totalRecords={totalCount}
+                        pageOptions={PAGE_SIZES}
+                        sorting={sortStatus}
+                        onSortingChange={setSortStatus}
+                        noRecordsText="該当のレコードが存在しません。"
+                        highlightOnHover={true}
+                        striped={true}
                     />
-                </Group>
-
-                <DataTable
-                    striped
-                    highlightOnHover
-                    // highlightOnHoverColor="gray.100"
-                    columns={effectiveColumns}
-                    records={records}
-                    noRecordsText={
-                        records.length === 0
-                            ? "該当のレコードが存在しません。"
-                            : ""
-                    }
-                    emptyState={records.length !== 0}
-                    loadingText="読み込み中です..."
-                    totalRecords={totalCount}
-                    recordsPerPage={pageSize}
-                    recordsPerPageLabel=""
-                    paginationActiveBackgroundColor="blue"
-                    page={page}
-                    recordsPerPageOptions={PAGE_SIZES}
-                    sortStatus={sortStatus}
-                    onSortStatusChange={setSortStatus}
-                    onRowClick={navigateToContractDetail}
-                    onPageChange={(p) => setPage(p)}
-                    onRecordsPerPageChange={setPageSize}
-                    idAccessor="tradePersonId"
-                    styles={{
-                        pagination: {
-                            display: "flex",
-                            justifyContent: "flex-end",
-                            alignItems: "center",
-                            padding: "1rem",
-                            gap: "1rem",
-
-                            ".mantineGroupRoot": {
-                                dispaly: "flex",
-                                alignItems: "center",
-                                gap: "1rem",
-                                flex: 1,
-                            },
-
-                            "[dataRecordsPerPage]": {
-                                order: 1,
-                            },
-
-                            ".mantinePaginationRoot": {
-                                order: 2,
-                            },
-
-                            "[dataPaginationText]": {
-                                marginLeft: "auto",
-                                whiteSpace: "nowrap",
-                                order: 3,
-                            },
-
-                            tr: {
-                                cursor: "pointer",
-                                position: "relative",
-                                transition: "all 0.2s ease",
-                                "&:hover": {
-                                    backgroundColor: "blue",
-                                    boxShadow: `0 4px 8px `,
-                                    transform: "translateY(-1px)",
-                                    zIndex: 1, // 他の行より上に表示
-                                },
-                            },
-                        },
-                    }}
-                />
+                </CardContent>
             </Card>
         </>
     );

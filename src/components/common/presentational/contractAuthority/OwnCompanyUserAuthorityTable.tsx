@@ -1,10 +1,10 @@
 import dayjs from "dayjs";
 import { delay, useIsMounted } from "@/hooks/mantine";
 import { OwnCompanyAuthority, OwnCompanyUser, users } from "@/types/onboarding";
-import { Box } from "@mantine/core";
 import { IconUser } from "@tabler/icons-react";
 import { sort } from "fast-sort";
-import { DataTable, DataTableSortStatus } from "mantine-datatable";
+import { ColumnDef, SortingState } from "@tanstack/react-table";
+import { DataTable } from "@/components/ui/data-table";
 import { useEffect, useState } from "react";
 
 type OwnCompanyAuthorityWithUserCount = OwnCompanyAuthority & {
@@ -13,7 +13,7 @@ type OwnCompanyAuthorityWithUserCount = OwnCompanyAuthority & {
 
 type OwnCompanyUserAuthorityTableProps = {
     departmentId: string;
-    sortStatus?: DataTableSortStatus<OwnCompanyAuthorityWithUserCount>;
+    sortStatus?: SortingState;
 };
 
 const OwnCompanyUserAuthorityTable = ({
@@ -39,7 +39,7 @@ const OwnCompanyUserAuthorityTable = ({
                             { asc: (r) => r.id },
                             { desc: (r) => r.id },
                         ]);
-                        if (sortStatus.direction === "desc")
+                        if (sortStatus.length > 0 && sortStatus[0].desc)
                             newRecords.reverse();
                     }
                     setRecords(newRecords);
@@ -49,42 +49,37 @@ const OwnCompanyUserAuthorityTable = ({
         }
     }, [departmentId, isMounted, records, sortStatus]);
 
+    const columns: ColumnDef<OwnCompanyUser>[] = [
+        {
+            id: "name",
+            header: "",
+            cell: ({ row }) => (
+                <span className="ml-10">
+                    <IconUser className="w-3 h-auto align-baseline mr-2" />
+                    <span>
+                        {row.original.firstName} {row.original.lastName}
+                    </span>
+                </span>
+            ),
+        },
+        {
+            accessorKey: "birthDate",
+            header: "",
+            cell: ({ row }) => (
+                <div className="text-right">
+                    {dayjs(row.original.birthDate).format("DD MMM YYYY")}
+                </div>
+            ),
+        },
+    ];
+
     return (
         <DataTable
-            noHeader
-            minHeight={100}
-            withColumnBorders
-            columns={[
-                {
-                    accessor: "name",
-                    noWrap: true,
-                    render: ({
-                        firstName,
-                        lastName,
-                    }: {
-                        firstName: string;
-                        lastName: string;
-                    }) => (
-                        <Box component="span" ml={40}>
-                            <IconUser className="w-3 h-auto align-baseline mr-2" />
-                            <span>
-                                {firstName} {lastName}
-                            </span>
-                        </Box>
-                    ),
-                },
-                {
-                    accessor: "birthDate",
-                    render: ({ birthDate }: any) =>
-                        dayjs(birthDate).format("DD MMM YYYY"),
-                    textAlign: "right",
-                    width: 200,
-                },
-            ]}
-            records={records}
-            fetching={loading && !records.length}
-            selectedRecords={[]}
-            onSelectedRecordsChange={() => {}}
+            columns={columns}
+            data={records}
+            noRecordsText="データがありません"
+            highlightOnHover={false}
+            striped={false}
         />
     );
 };
