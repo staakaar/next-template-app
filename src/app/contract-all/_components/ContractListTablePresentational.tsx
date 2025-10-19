@@ -1,320 +1,240 @@
 "use client";
-import { sort } from "fast-sort";
-import React, { useState, useEffect } from "react";
+import { IconEdit, IconEye, IconSearch, IconTrash } from "@tabler/icons-react";
+import { ColumnDef } from "@tanstack/react-table";
 import { useRouter } from "next/navigation";
+import React, { useCallback, useMemo, useState } from "react";
+import { Button } from "@/components/ui/button";
+import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
+import { DataTable } from "@/components/ui/data-table";
+import { Input } from "@/components/ui/input";
 import {
-    DataTable,
-    useDataTableColumns,
-    DataTableSortStatus,
-    DataTableRowClickHandler,
-    DataTableColumn,
-} from "mantine-datatable";
-import { Card, Text, Group, ActionIcon, TextInput } from "@mantine/core";
-import { IconTrash, IconEdit, IconEye, IconSearch } from "@tabler/icons-react";
-import { usePaginationStore } from "@/stores/pagination/PaginationStore";
+    Tooltip,
+    TooltipContent,
+    TooltipProvider,
+    TooltipTrigger,
+} from "@/components/ui/tooltip";
 import { Contract } from "@/types/api/contract";
-import VTooltip from "@/components/common/atoms/Tooltip";
 
 export type ContractListTableProps<T extends Contract> = {
     contracts: T[];
-    initialTotalCount: number;
+    initialTotalCount?: number;
 };
 
 const PAGE_SIZES = [10, 15, 20, 50, 75, 100];
 
+// Tooltip Wrapper Component
+const TooltipCell = ({
+    content,
+    tooltip,
+}: { content: string; tooltip: string }) => (
+    <TooltipProvider>
+        <Tooltip>
+            <TooltipTrigger asChild>
+                <div className="max-w-[100px] truncate cursor-default">
+                    {content}
+                </div>
+            </TooltipTrigger>
+            <TooltipContent>
+                <p>{tooltip}</p>
+            </TooltipContent>
+        </Tooltip>
+    </TooltipProvider>
+);
+
 const ContractListTablePresentation = <T extends Contract>({
     contracts,
-    initialTotalCount,
 }: ContractListTableProps<T>) => {
     const router = useRouter();
     const [pageSize, setPageSize] = useState(PAGE_SIZES[2]);
-    const [totalCount, setTotalCount] = useState(initialTotalCount);
-    const { setContractPageOptions } = usePaginationStore();
-
-    const [sortStatus, setSortStatus] = useState<DataTableSortStatus<Contract>>(
-        {
-            columnAccessor: "contractCode",
-            direction: "asc",
-        }
-    );
-
     const [page, setPage] = useState(1);
-    const [records, setRecords] = useState<Contract[]>(
-        contracts.slice(0, pageSize)
+    const [searchQuery, setSearchQuery] = useState("");
+
+    const handleDelete = useCallback((rowData: Contract) => {
+        console.log("Delete", rowData);
+    }, []);
+
+    const handleEdit = useCallback((rowData: Contract) => {
+        console.log("Edit", rowData);
+    }, []);
+
+    const handleRowClick = useCallback((row: Contract) => {
+        router.push(`/contract/${row.contractCode}`);
+    }, [router]);
+
+    const columns: ColumnDef<Contract>[] = useMemo(
+        () => [
+            {
+                accessorKey: "contractCode",
+                header: "契約書コード",
+                cell: ({ row }) => (
+                    <TooltipCell
+                        content={row.original.contractCode}
+                        tooltip={`契約書コード: ${row.original.contractCode}`}
+                    />
+                ),
+            },
+            {
+                accessorKey: "contractName",
+                header: "タイトル",
+                cell: ({ row }) => (
+                    <TooltipCell
+                        content={row.original.contractName}
+                        tooltip={`契約書名: ${row.original.contractName}`}
+                    />
+                ),
+            },
+            {
+                accessorKey: "contractStatus",
+                header: "ステータス",
+                cell: ({ row }) => (
+                    <TooltipCell
+                        content={row.original.contractStatus}
+                        tooltip={`契約書ステータス: ${row.original.contractStatus}`}
+                    />
+                ),
+            },
+            {
+                accessorKey: "tradePartner",
+                header: "取引先",
+                cell: ({ row }) => (
+                    <TooltipCell
+                        content={row.original.tradePartner}
+                        tooltip={`取引先: ${row.original.tradePartner}`}
+                    />
+                ),
+            },
+            {
+                accessorKey: "contractPersonInCharge",
+                header: "担当者",
+                cell: ({ row }) => (
+                    <TooltipCell
+                        content={row.original.contractPersonInCharge}
+                        tooltip={`担当者: ${row.original.contractPersonInCharge}`}
+                    />
+                ),
+            },
+            {
+                id: "actions",
+                header: "",
+                cell: ({ row }) => (
+                    <div className="flex justify-end gap-1">
+                        <TooltipProvider>
+                            <Tooltip>
+                                <TooltipTrigger asChild>
+                                    <Button
+                                        variant="ghost"
+                                        size="icon"
+                                        className="h-8 w-8 text-green-600 hover:text-green-700 hover:bg-green-50"
+                                        onClick={(e) => {
+                                            e.stopPropagation();
+                                        }}
+                                    >
+                                        <IconEye size={16} />
+                                    </Button>
+                                </TooltipTrigger>
+                                <TooltipContent>
+                                    <p>詳細を表示</p>
+                                </TooltipContent>
+                            </Tooltip>
+                        </TooltipProvider>
+
+                        <TooltipProvider>
+                            <Tooltip>
+                                <TooltipTrigger asChild>
+                                    <Button
+                                        variant="ghost"
+                                        size="icon"
+                                        className="h-8 w-8 text-blue-600 hover:text-blue-700 hover:bg-blue-50"
+                                        onClick={(e) => {
+                                            e.stopPropagation();
+                                            handleEdit(row.original);
+                                        }}
+                                    >
+                                        <IconEdit size={16} />
+                                    </Button>
+                                </TooltipTrigger>
+                                <TooltipContent>
+                                    <p>編集</p>
+                                </TooltipContent>
+                            </Tooltip>
+                        </TooltipProvider>
+
+                        <TooltipProvider>
+                            <Tooltip>
+                                <TooltipTrigger asChild>
+                                    <Button
+                                        variant="ghost"
+                                        size="icon"
+                                        className="h-8 w-8 text-red-600 hover:text-red-700 hover:bg-red-50"
+                                        onClick={(e) => {
+                                            e.stopPropagation();
+                                            handleDelete(row.original);
+                                        }}
+                                    >
+                                        <IconTrash size={16} />
+                                    </Button>
+                                </TooltipTrigger>
+                                <TooltipContent>
+                                    <p>削除</p>
+                                </TooltipContent>
+                            </Tooltip>
+                        </TooltipProvider>
+                    </div>
+                ),
+            },
+        ],
+        [handleDelete, handleEdit]
     );
 
-    useEffect(() => {
-        setPage(1);
-    }, [pageSize]);
+    // Filter data based on search query
+    const filteredData = useMemo(() => {
+        if (!searchQuery) return contracts;
 
-    useEffect(() => {
-        const from = (page - 1) * pageSize;
-        const to = from + pageSize;
-        console.log(from);
-        console.log(to);
-        setRecords(contracts.slice(from, to));
-    }, [contracts, page, pageSize]);
-
-    useEffect(() => {
-        const sortedContracts = sort(contracts).by([
-            { asc: (c) => c.contractCode },
-        ]) as Contract[];
-        /**
-        setRecords(
-            sortStatus.direction === "desc"
-                ? sortedContracts.reverse()
-                : sortedContracts
+        return contracts.filter((item: Contract) =>
+            Object.values(item).some(
+                (value) =>
+                    value?.toString()
+                        .toLowerCase()
+                        .includes(searchQuery.toLowerCase())
+            )
         );
-         */
-    }, [contracts, sortStatus]);
-
-    const navigateToContractDetail: DataTableRowClickHandler<Contract> = ({
-        record,
-    }) => {
-        router.push(`/contract/${record.contractCode}`);
-    };
-
-    const handleDelete = (rowData: Contract) => {
-        console.log("Delete", rowData);
-    };
-
-    const handleEdit = (rowData: Contract) => {
-        console.log("Edit", rowData);
-    };
-
-    const handlePageChange = async (newPage: number) => {
-        try {
-            // const result = await useFetchContracts(newPage, pageSize);
-            // setRecords(result.contracts);
-            // setTotalCount(result.totalCount);
-            // setPage(newPage);
-        } catch (error) {
-            console.error("Failed to fetch contracts:", error);
-            // エラーハンドリングをここに追加（例：ユーザーへの通知）
-        }
-    };
-
-    const handleSearchChange = async (
-        event: React.ChangeEvent<HTMLInputElement>
-    ) => {
-        const newSearchQuery = event.currentTarget.value;
-        // setSearchQuery(newSearchQuery);
-        try {
-            // const result = await useFetchContracts(
-            //     page,
-            //     pageSize,
-            //     newSearchQuery
-            // );
-            // setRecords(result.contracts);
-            // setTotalCount(result.totalCount);
-            // setPage(1);
-        } catch (error) {
-            console.error("Failed to fetch contracts:", error);
-            // エラーハンドリングをここに追加
-        }
-    };
-
-    const handleSortStatusChange = async (
-        newSortStatus: DataTableSortStatus<T>
-    ) => {
-        // setSortStatus(newSortStatus);
-        try {
-            // const result = await useFetchContracts(page, pageSize);
-            // setRecords(result.contracts);
-            // setTotalCount(result.totalCount);
-        } catch (error) {
-            console.error("Failed to fetch contracts:", error);
-            // エラーハンドリングをここに追加
-        }
-    };
-
-    const columns: DataTableColumn<Contract>[] = [
-        {
-            accessor: "contractCode",
-            title: "契約書コード",
-            sortable: true,
-            render: (contract: Contract) => (
-                <VTooltip
-                    content={contract.contractCode}
-                    tooltip={`契約書コード: ${contract.contractCode}`}
-                    maxWidth={"100"}
-                />
-            ),
-        },
-        {
-            accessor: "contractName",
-            title: "タイトル",
-            sortable: true,
-            render: (contract: Contract) => (
-                <VTooltip
-                    content={contract.contractName}
-                    tooltip={`契約書名: ${contract.contractName}`}
-                    maxWidth={"100"}
-                />
-            ),
-        },
-        {
-            accessor: "contractStatus",
-            title: "ステータス",
-            sortable: true,
-            render: (contract: Contract) => (
-                <VTooltip
-                    content={contract.contractStatus}
-                    tooltip={`契約書ステータス: ${contract.contractStatus}`}
-                    maxWidth={"100"}
-                />
-            ),
-        },
-        {
-            accessor: "tradePartner",
-            title: "取引先",
-            sortable: true,
-            render: (contract: Contract) => (
-                <VTooltip
-                    content={contract.tradePartner}
-                    tooltip={`取引先: ${contract.tradePartner}`}
-                    maxWidth={"100"}
-                />
-            ),
-        },
-        {
-            accessor: "contractPersonInCharge",
-            title: "担当者",
-            sortable: true,
-            render: (contract: Contract) => (
-                <VTooltip
-                    content={contract.contractPersonInCharge}
-                    tooltip={`担当者: ${contract.contractPersonInCharge}`}
-                    maxWidth={"100"}
-                />
-            ),
-        },
-        {
-            accessor: "actions",
-            title: "",
-            textAlign: "right",
-            render: (contract: Contract) => (
-                <Group gap={4} justify="right" wrap="nowrap">
-                    <ActionIcon size="sm" variant="subtle" color="green">
-                        <IconEye size={16} />
-                    </ActionIcon>
-                    <ActionIcon
-                        size="sm"
-                        variant="subtle"
-                        color="blue"
-                        onClick={() => handleEdit(contract)}
-                    >
-                        <IconEdit size={16} />
-                    </ActionIcon>
-                    <ActionIcon
-                        size="sm"
-                        variant="subtle"
-                        color="red"
-                        onClick={() => handleDelete(contract)}
-                    >
-                        <IconTrash size={16} />
-                    </ActionIcon>
-                </Group>
-            ),
-        },
-    ];
-
-    const { effectiveColumns } = useDataTableColumns<Contract>({
-        key: "contractCode",
-        columns,
-    });
-
-    // const filteredData = useMemo(() => {
-    //     return contracts.filter((item: Contract) =>
-    //         Object.values(item).some(
-    //             (value) =>
-    //                 value &&
-    //                 value
-    //                     .toString()
-    //                     .toLowerCase()
-    //                     .includes(searchQuery.toLowerCase())
-    //         )
-    //     );
-    // }, [contracts, searchQuery]);
+    }, [contracts, searchQuery]);
 
     return (
-        <Card withBorder>
-            <Group mb="md">
-                <Text size="lg">契約書一覧</Text>
-                <TextInput
-                    className="ml-64"
-                    placeholder="Search..."
-                    leftSection={<IconSearch size="1rem" />}
-                    style={{ width: "600px" }}
+        <Card className="border">
+            <CardHeader>
+                <div className="flex items-center justify-between">
+                    <CardTitle className="text-lg">契約書一覧</CardTitle>
+                    <div className="relative w-[600px]">
+                        <IconSearch
+                            className="absolute left-3 top-1/2 -translate-y-1/2 text-muted-foreground"
+                            size={16}
+                        />
+                        <Input
+                            placeholder="Search..."
+                            value={searchQuery}
+                            onChange={(e) => setSearchQuery(e.target.value)}
+                            className="pl-10"
+                        />
+                    </div>
+                </div>
+            </CardHeader>
+            <CardContent>
+                <DataTable
+                    columns={columns}
+                    data={filteredData}
+                    onRowClick={handleRowClick}
+                    pageSize={pageSize}
+                    onPageSizeChange={setPageSize}
+                    page={page}
+                    onPageChange={setPage}
+                    totalRecords={filteredData.length}
+                    pageOptions={PAGE_SIZES}
+                    noRecordsText="該当のレコードが存在しません。"
+                    highlightOnHover={true}
+                    striped={true}
                 />
-            </Group>
-
-            <DataTable
-                striped
-                highlightOnHover
-                // highlightOnHoverColor="gray.100"
-                columns={effectiveColumns}
-                records={records}
-                noRecordsText={
-                    records.length === 0 ? "該当のレコードが存在しません。" : ""
-                }
-                emptyState={records.length !== 0}
-                loadingText="読み込み中です..."
-                totalRecords={totalCount}
-                recordsPerPage={pageSize}
-                recordsPerPageLabel=""
-                paginationActiveBackgroundColor="blue"
-                page={page}
-                recordsPerPageOptions={PAGE_SIZES}
-                sortStatus={sortStatus}
-                onSortStatusChange={setSortStatus}
-                onRowClick={navigateToContractDetail}
-                onPageChange={(p) => setPage(p)}
-                onRecordsPerPageChange={setPageSize}
-                idAccessor="contractCode"
-                styles={{
-                    pagination: {
-                        display: "flex",
-                        justifyContent: "flex-end",
-                        alignItems: "center",
-                        padding: "1rem",
-                        gap: "1rem",
-
-                        ".mantineGroupRoot": {
-                            dispaly: "flex",
-                            alignItems: "center",
-                            gap: "1rem",
-                            flex: 1,
-                        },
-
-                        "[dataRecordsPerPage]": {
-                            order: 1,
-                        },
-
-                        ".mantinePaginationRoot": {
-                            order: 2,
-                        },
-
-                        "[dataPaginationText]": {
-                            marginLeft: "auto",
-                            whiteSpace: "nowrap",
-                            order: 3,
-                        },
-
-                        tr: {
-                            cursor: "pointer",
-                            position: "relative",
-                            transition: "all 0.2s ease",
-                            "&:hover": {
-                                backgroundColor: "blue",
-                                boxShadow: `0 4px 8px `,
-                                transform: "translateY(-1px)",
-                                zIndex: 1, // 他の行より上に表示
-                            },
-                        },
-                    },
-                }}
-            />
+            </CardContent>
         </Card>
     );
 };

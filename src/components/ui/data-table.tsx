@@ -1,9 +1,8 @@
 "use client";
 
 import * as React from "react";
+import type { ColumnDef, SortingState } from "@tanstack/react-table";
 import {
-    ColumnDef,
-    SortingState,
     flexRender,
     getCoreRowModel,
     getPaginationRowModel,
@@ -12,14 +11,6 @@ import {
 } from "@tanstack/react-table";
 import { ChevronDown, ChevronUp } from "lucide-react";
 
-import {
-    Table,
-    TableBody,
-    TableCell,
-    TableHead,
-    TableHeader,
-    TableRow,
-} from "@/components/ui/table";
 import { Button } from "@/components/ui/button";
 import {
     Select,
@@ -28,6 +19,14 @@ import {
     SelectTrigger,
     SelectValue,
 } from "@/components/ui/select";
+import {
+    Table,
+    TableBody,
+    TableCell,
+    TableHead,
+    TableHeader,
+    TableRow,
+} from "@/components/ui/table";
 
 interface DataTableProps<TData, TValue> {
     columns: ColumnDef<TData, TValue>[];
@@ -40,7 +39,7 @@ interface DataTableProps<TData, TValue> {
     totalRecords?: number;
     pageOptions?: number[];
     sorting?: SortingState;
-    onSortingChange?: (sorting: SortingState) => void;
+    onSortingChange?: React.Dispatch<React.SetStateAction<SortingState>>;
     noRecordsText?: string;
     highlightOnHover?: boolean;
     striped?: boolean;
@@ -107,6 +106,56 @@ export function DataTable<TData, TValue>({
         ? Math.ceil(totalRecords / pageSize)
         : table.getPageCount();
 
+    // Generate page numbers to display
+    const getPageNumbers = () => {
+        const pages: (number | string)[] = [];
+        const maxVisible = 5; // Maximum number of page buttons to show
+
+        if (pageCount <= maxVisible + 2) {
+            // Show all pages if total is small
+            for (let i = 1; i <= pageCount; i++) {
+                pages.push(i);
+            }
+        } else {
+            // Always show first page
+            pages.push(1);
+
+            if (currentPage <= 3) {
+                // Near the start
+                for (let i = 2; i <= Math.min(maxVisible, pageCount - 1); i++) {
+                    pages.push(i);
+                }
+                pages.push("...");
+            } else if (currentPage >= pageCount - 2) {
+                // Near the end
+                pages.push("...");
+                for (
+                    let i = Math.max(2, pageCount - maxVisible + 1);
+                    i < pageCount;
+                    i++
+                ) {
+                    pages.push(i);
+                }
+            } else {
+                // In the middle
+                pages.push("...");
+                for (
+                    let i = currentPage - 1;
+                    i <= Math.min(currentPage + 1, pageCount - 1);
+                    i++
+                ) {
+                    pages.push(i);
+                }
+                pages.push("...");
+            }
+
+            // Always show last page
+            pages.push(pageCount);
+        }
+
+        return pages;
+    };
+
     return (
         <div className={`space-y-4 ${className}`}>
             <div className="rounded-md border">
@@ -120,36 +169,35 @@ export function DataTable<TData, TValue>({
 
                                     return (
                                         <TableHead key={header.id}>
-                                            {header.isPlaceholder ? null : (
-                                                <div
-                                                    className={
-                                                        canSort
-                                                            ? "flex items-center gap-2 cursor-pointer select-none"
-                                                            : ""
-                                                    }
-                                                    onClick={
-                                                        canSort
-                                                            ? header.column.getToggleSortingHandler()
-                                                            : undefined
-                                                    }
+                                            {header.isPlaceholder ? null : canSort ? (
+                                                <button
+                                                    type="button"
+                                                    className="flex items-center gap-2 cursor-pointer select-none"
+                                                    onClick={header.column.getToggleSortingHandler()}
                                                 >
                                                     {flexRender(
                                                         header.column.columnDef
                                                             .header,
                                                         header.getContext()
                                                     )}
-                                                    {canSort && (
-                                                        <span className="ml-auto">
-                                                            {isSorted ===
-                                                            "asc" ? (
-                                                                <ChevronUp className="h-4 w-4" />
-                                                            ) : isSorted ===
-                                                              "desc" ? (
-                                                                <ChevronDown className="h-4 w-4" />
-                                                            ) : (
-                                                                <ChevronDown className="h-4 w-4 opacity-30" />
-                                                            )}
-                                                        </span>
+                                                    <span className="ml-auto">
+                                                        {isSorted ===
+                                                        "asc" ? (
+                                                            <ChevronUp className="h-4 w-4" />
+                                                        ) : isSorted ===
+                                                          "desc" ? (
+                                                            <ChevronDown className="h-4 w-4" />
+                                                        ) : (
+                                                            <ChevronDown className="h-4 w-4 opacity-30" />
+                                                        )}
+                                                    </span>
+                                                </button>
+                                            ) : (
+                                                <div>
+                                                    {flexRender(
+                                                        header.column.columnDef
+                                                            .header,
+                                                        header.getContext()
                                                     )}
                                                 </div>
                                             )}
@@ -246,19 +294,37 @@ export function DataTable<TData, TValue>({
                     <Button
                         variant="outline"
                         size="sm"
-                        onClick={() => handlePageChange(1)}
-                        disabled={currentPage === 1}
-                    >
-                        最初
-                    </Button>
-                    <Button
-                        variant="outline"
-                        size="sm"
                         onClick={() => handlePageChange(currentPage - 1)}
                         disabled={currentPage === 1}
                     >
                         前へ
                     </Button>
+
+                    {getPageNumbers().map((pageNum) =>
+                        typeof pageNum === "string" ? (
+                            <span
+                                key={`ellipsis-${pageNum}`}
+                                className="px-2 text-sm text-muted-foreground"
+                            >
+                                {pageNum}
+                            </span>
+                        ) : (
+                            <Button
+                                key={`page-${pageNum}`}
+                                variant={
+                                    currentPage === pageNum
+                                        ? "default"
+                                        : "outline"
+                                }
+                                size="sm"
+                                onClick={() => handlePageChange(pageNum)}
+                                className="min-w-[36px]"
+                            >
+                                {pageNum}
+                            </Button>
+                        )
+                    )}
+
                     <Button
                         variant="outline"
                         size="sm"
@@ -266,14 +332,6 @@ export function DataTable<TData, TValue>({
                         disabled={currentPage >= pageCount}
                     >
                         次へ
-                    </Button>
-                    <Button
-                        variant="outline"
-                        size="sm"
-                        onClick={() => handlePageChange(pageCount)}
-                        disabled={currentPage >= pageCount}
-                    >
-                        最後
                     </Button>
                 </div>
             </div>

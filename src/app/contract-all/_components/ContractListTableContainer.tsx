@@ -2,16 +2,8 @@
 
 import Link from "next/link";
 import { Suspense, useState } from "react";
-import {
-    Box,
-    Tabs,
-    Button,
-    Group,
-    Stack,
-    TabsList,
-    TabsTab,
-    TabsPanel,
-} from "@mantine/core";
+import { Tabs, TabsList, TabsTrigger, TabsContent } from "@/components/ui/tabs";
+import { Button } from "@/components/ui/button";
 import { IconFilter, IconPlus } from "@tabler/icons-react";
 import ContractListTablePresentation from "./ContractListTablePresentational";
 import ContractSearchArea from "@/components/common/ContractSearchArea";
@@ -53,25 +45,24 @@ const ContractListTableContainer = () => {
     // }, [data, setContracts]);
 
     return (
-        <Box className="min-h-screen w-full bg-black-alpha-200">
-            <Box className="sm:gap-4 sm:py-4 sm:pl-14 sm:mt-10">
-                <Stack gap="md" p="md">
-                    <Tabs value={activeTab} defaultValue="created">
-                        <TabsList>
-                            <TabsTab value="underConstruction">作成中</TabsTab>
-                            <TabsTab value="created">作成済み</TabsTab>
-                            <TabsTab value="internalApproved">承認中</TabsTab>
-                            <TabsTab value="revised">差し戻し</TabsTab>
-                            <TabsTab value="reject">却下</TabsTab>
-                            <TabsTab value="approved">承認済み</TabsTab>
-                            <TabsTab value="issued">発行</TabsTab>
-                            <TabsTab value="ok">合意</TabsTab>
-                            <TabsTab value="reject">却下</TabsTab>
-                            <TabsTab value="complete">締結</TabsTab>
+        <div className="min-h-screen w-full bg-gray-50">
+            <div className="sm:gap-4 sm:py-4 sm:pl-14 sm:mt-10">
+                <div className="space-y-4 p-4">
+                    <Tabs value={activeTab} onValueChange={setActiveTab} defaultValue="created">
+                        <TabsList className="w-full justify-start">
+                            <TabsTrigger value="underConstruction">作成中</TabsTrigger>
+                            <TabsTrigger value="created">作成済み</TabsTrigger>
+                            <TabsTrigger value="internalApproved">承認中</TabsTrigger>
+                            <TabsTrigger value="revised">差し戻し</TabsTrigger>
+                            <TabsTrigger value="reject">却下</TabsTrigger>
+                            <TabsTrigger value="approved">承認済み</TabsTrigger>
+                            <TabsTrigger value="issued">発行</TabsTrigger>
+                            <TabsTrigger value="ok">合意</TabsTrigger>
+                            <TabsTrigger value="complete">締結</TabsTrigger>
                         </TabsList>
 
-                        <Group className="flex items-center mt-8">
-                            <Group flex="1" justify="flex-end">
+                        <div className="flex items-center mt-8">
+                            <div className="flex-1 flex justify-end gap-2">
                                 <Button
                                     variant="outline"
                                     size="sm"
@@ -79,29 +70,26 @@ const ContractListTableContainer = () => {
                                         setIsSearchAreaOpen(!isSearchAreaOpen)
                                     }
                                 >
-                                    <Group gap="xs">
-                                        <IconFilter size="1rem" />
-                                        <span>検索</span>
-                                    </Group>
+                                    <IconFilter size={16} />
+                                    <span>検索</span>
                                 </Button>
 
                                 <Button
-                                    component={Link}
-                                    href="/contract-new"
+                                    asChild
                                     size="sm"
                                 >
-                                    <Group gap="xs">
-                                        <IconPlus size="1rem" />
+                                    <Link href="/contract-new">
+                                        <IconPlus size={16} />
                                         <span>新規作成</span>
-                                    </Group>
+                                    </Link>
                                 </Button>
-                            </Group>
-                        </Group>
+                            </div>
+                        </div>
                         <ContractSearchArea
                             isOpen={isSearchAreaOpen}
                             onClose={() => setIsSearchAreaOpen(false)}
                         />
-                        <TabsPanel value="created">
+                        <TabsContent value="created">
                             {/* トースターにする */}
                             <ErrorBoundary
                                 fallback={<p>契約書一覧取得に失敗しました</p>}
@@ -113,11 +101,11 @@ const ContractListTableContainer = () => {
                                     />
                                 </Suspense>
                             </ErrorBoundary>
-                        </TabsPanel>
+                        </TabsContent>
                     </Tabs>
-                </Stack>
-            </Box>
-        </Box>
+                </div>
+            </div>
+        </div>
     );
 };
 
