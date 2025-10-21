@@ -1,5 +1,5 @@
 import React, { ReactNode } from "react";
-import { Card, Button, Group, Box, Stack, Paper, Anchor } from "@mantine/core";
+import { Card } from "@/components/ui/card";
 import {
     IconArrowLeft,
     IconFileExport,
@@ -47,45 +47,21 @@ const Layout = ({
 }: Readonly<ContractDetailTabProps>) => {
     return (
         <>
-            <Box className="min-h-full h-full">
-                {/* <Card className="flex min-h-screen w-full flex-col bg-muted/40"> */}
-                <Card
-                    shadow="sm"
-                    mx={4}
-                    style={{
-                        flex: "1 1 auto",
-                        backgroundColor: "var(--mantine-color-gray-0)",
-                        display: "flex",
-                        flexDirection: "column",
-                        width: "100%",
-                        minHeight: "100vh",
-                    }}
-                >
-                    <Box
-                        style={{
-                            width: "100%",
-                            padding: "1rem",
-                            "@media (minWidth: 768px)": {
-                                padding: "1rem 2rem",
-                            },
-                        }}
-                    >
-                        <Stack>
-                            <Group align="center" justify="space-between">
-                                <Anchor
-                                    component={Link}
+            <div className="min-h-full h-full">
+                <Card className="flex flex-col flex-1 mx-4 min-h-screen w-full bg-gray-50">
+                    <div className="w-full p-4 md:px-8">
+                        <div className="flex flex-col space-y-4">
+                            <div className="flex items-center justify-between">
+                                <Link
                                     href="/contract-all"
-                                    size="sm"
-                                    // leftSection={<IconArrowLeft size="1rem" />}
+                                    className="text-sm text-blue-600 hover:text-blue-800 hover:underline"
                                 >
                                     一覧へ戻る
-                                </Anchor>
-                                <Group>
+                                </Link>
+                                <div className="flex items-center gap-2">
                                     <ContractDetailActionButtons />
-                                </Group>
-                                {/* </Box> */}
-                            </Group>
-                            {/* </Box> */}
+                                </div>
+                            </div>
                             {/* ステッパー */}
                             <ContractStatusStepper />
                             {/* セクション */}
@@ -105,31 +81,27 @@ const Layout = ({
                                 workflow={workflow}
                                 businessForm={businessForm}
                             />
-                            <Box className="flex-1 lg:max-w-2xl: bg-black-alpha-200"></Box>
+                            <div className="flex-1 lg:max-w-2xl bg-black/5"></div>
                             {children}
-                        </Stack>
-                    </Box>
+                        </div>
+                    </div>
                 </Card>
-            </Box>
-            <Paper
-                shadow="sm"
-                p="md"
-                className="sticky bottom-0 border-t border-gray-300 bg-white flex justify-end items-center z-50 w-full transition-all duration-200 ease-in-out shadow-lg"
-            >
-                <Group>
+            </div>
+            <div className="sticky bottom-0 border-t border-gray-300 bg-white flex justify-end items-center z-50 w-full transition-all duration-200 ease-in-out shadow-lg p-4">
+                <div className="flex items-center gap-2">
                     <ContractDetailUpdateButton
                         activeTab={undefined}
                         contractCode={undefined}
                     />
-                </Group>
-            </Paper>
+                </div>
+            </div>
             {/* <footer className="flex items-center justify-end bg-background h-16 sticky bottom-0 border-t">
-                <Box className="mr-8">
+                <div className="mr-8">
                     <ContractDetailUpdateButton
                         activeTab={undefined}
                         contractCode={undefined}
                     />
-                </Box>
+                </div>
             </footer> */}
         </>
     );

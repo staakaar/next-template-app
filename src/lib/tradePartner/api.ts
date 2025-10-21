@@ -1,14 +1,14 @@
 import { ApiContext } from "@/types/api";
 import {
-    TradingPartnerPersonResponse,
     TradingPartnerCompanyResponse,
+    TradingPartnerPersonResponse,
 } from "@/types/api/tradePartner";
 
 /** axios */
 const fetchTradePartner = (
     url: string
 ): Promise<TradingPartnerCompanyResponse[] | undefined> => {
-    fetch(url).then((res) => res.json());
+    return fetch(url).then((res) => res.json());
 };
 
 /** 取引先企業 */

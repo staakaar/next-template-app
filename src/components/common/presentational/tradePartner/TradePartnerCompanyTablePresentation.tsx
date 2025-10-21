@@ -1,16 +1,13 @@
 "use client";
-import TradePartnerPersonDrawerContainer from "../../container/tradePartner/TradePartnerPersonDrawerContainer";
-import React, { useEffect, useState } from "react";
-import { TradingPartnerCompany } from "@/types/api/tradePartner";
-import { ColumnDef, SortingState } from "@tanstack/react-table";
-import { DataTable } from "@/components/ui/data-table";
-import { useRouter } from "next/navigation";
-import { defaultTradingPartnerCompanyForm } from "@/stores/tradePartner/TradePartnerCompanyStore";
-import { usePaginationStore } from "@/stores/pagination/PaginationStore";
-import VTooltip from "../../atoms/Tooltip";
-import { Button } from "@/components/ui/button";
 import { IconEdit, IconEye, IconTrash } from "@tabler/icons-react";
-import { sort } from "fast-sort";
+import { ColumnDef, SortingState } from "@tanstack/react-table";
+import React, { useEffect, useState } from "react";
+import { Button } from "@/components/ui/button";
+import { DataTable } from "@/components/ui/data-table";
+import { defaultTradingPartnerCompanyForm } from "@/stores/tradePartner/TradePartnerCompanyStore";
+import { TradingPartnerCompany } from "@/types/api/tradePartner";
+import VTooltip from "../../atoms/Tooltip";
+import TradePartnerPersonDrawerContainer from "../../container/tradePartner/TradePartnerPersonDrawerContainer";
 
 export type TradePartnerTableProps<T extends TradingPartnerCompany> = {
     tradingPartnerCompanies: T[];
@@ -35,7 +32,7 @@ const TradePartnerCompanyTablePresentation = <T extends TradingPartnerCompany>({
     const [pageSize, setPageSize] = useState(PAGE_SIZES[2]);
 
     const [sortStatus, setSortStatus] = useState<SortingState>([
-        { id: "tradingCompanyId", desc: false }
+        { id: "tradeCompanyName", desc: false },
     ]);
 
     const [page, setPage] = useState(1);
@@ -45,7 +42,7 @@ const TradePartnerCompanyTablePresentation = <T extends TradingPartnerCompany>({
 
     useEffect(() => {
         setPage(1);
-    }, [pageSize]);
+    }, []);
 
     useEffect(() => {
         const from = (page - 1) * pageSize;
@@ -55,26 +52,16 @@ const TradePartnerCompanyTablePresentation = <T extends TradingPartnerCompany>({
         setRecords(tradingPartnerCompanies.slice(from, to));
     }, [tradingPartnerCompanies, page, pageSize]);
 
-    useEffect(() => {
-        const sortedContracts = sort(tradingPartnerCompanies).by([
-            { asc: (t: TradingPartnerCompany) => t.tradingCompanyId },
-        ]) as TradingPartnerCompany[];
-        /**
-        setRecords(
-            sortStatus.direction === "desc"
-                ? sortedContracts.reverse()
-                : sortedContracts
-        );
-         */
-    }, [tradingPartnerCompanies, sortStatus]);
+    // Note: Sorting is currently handled by DataTable component
+    // This useEffect can be removed or re-implemented when custom sorting is needed
 
-    const [totalCount, setTotalCount] = useState(initialTotalCount);
-    const { setTradePartnerPageOptions } = usePaginationStore();
+    const [totalCount] = useState(initialTotalCount);
+    // const { setTradePartnerPageOptions } = usePaginationStore(); // Currently unused
 
     const navigateToTradePartnerPerson = (row: TradingPartnerCompany) => {
         console.log(row);
         setSelectedRow(row);
-        open;
+        open();
     };
 
     const columns: ColumnDef<TradingPartnerCompany>[] = [
@@ -119,13 +106,25 @@ const TradePartnerCompanyTablePresentation = <T extends TradingPartnerCompany>({
             header: "",
             cell: ({ row }) => (
                 <div className="flex gap-1 justify-end flex-nowrap">
-                    <Button size="sm" variant="ghost" className="text-green-500 hover:text-green-700">
+                    <Button
+                        size="sm"
+                        variant="ghost"
+                        className="text-green-500 hover:text-green-700"
+                    >
                         <IconEye size={16} />
                     </Button>
-                    <Button size="sm" variant="ghost" className="text-blue-500 hover:text-blue-700">
+                    <Button
+                        size="sm"
+                        variant="ghost"
+                        className="text-blue-500 hover:text-blue-700"
+                    >
                         <IconEdit size={16} />
                     </Button>
-                    <Button size="sm" variant="ghost" className="text-red-500 hover:text-red-700">
+                    <Button
+                        size="sm"
+                        variant="ghost"
+                        className="text-red-500 hover:text-red-700"
+                    >
                         <IconTrash size={16} />
                     </Button>
                 </div>

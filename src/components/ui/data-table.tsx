@@ -1,6 +1,5 @@
 "use client";
 
-import * as React from "react";
 import type { ColumnDef, SortingState } from "@tanstack/react-table";
 import {
     flexRender,
@@ -10,6 +9,7 @@ import {
     useReactTable,
 } from "@tanstack/react-table";
 import { ChevronDown, ChevronUp } from "lucide-react";
+import * as React from "react";
 
 import { Button } from "@/components/ui/button";
 import {
@@ -165,7 +165,8 @@ export function DataTable<TData, TValue>({
                             <TableRow key={headerGroup.id}>
                                 {headerGroup.headers.map((header) => {
                                     const canSort = header.column.getCanSort();
-                                    const isSorted = header.column.getIsSorted();
+                                    const isSorted =
+                                        header.column.getIsSorted();
 
                                     return (
                                         <TableHead key={header.id}>
@@ -181,8 +182,7 @@ export function DataTable<TData, TValue>({
                                                         header.getContext()
                                                     )}
                                                     <span className="ml-auto">
-                                                        {isSorted ===
-                                                        "asc" ? (
+                                                        {isSorted === "asc" ? (
                                                             <ChevronUp className="h-4 w-4" />
                                                         ) : isSorted ===
                                                           "desc" ? (

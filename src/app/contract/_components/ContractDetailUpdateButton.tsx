@@ -1,9 +1,9 @@
 "use client";
 import { useState } from "react";
-import { Button } from "@mantine/core";
-import updateContractFiles from "@/lib/contractFile/api";
+import { Button } from "@/components/ui/button";
 import { updateContractBasic } from "@/lib/contractBasic/api";
 import { updateContractDetails } from "@/lib/contractDetails/api";
+import updateContractFiles from "@/lib/contractFile/api";
 
 export function ContractDetailUpdateButton({
     activeTab,
@@ -42,7 +42,7 @@ export function ContractDetailUpdateButton({
         <Button
             onClick={handleUpdate}
             disabled={isUpdating}
-            className="bg-blue-500 hover:bg-blue-600 text-white font-bold py-2 px-4 rounded hover:shadow-lg transition-all duration-200"
+            className="bg-blue-500 hover:bg-blue-600 text-white font-bold shadow hover:shadow-lg"
         >
             {isUpdating ? "更新中..." : "更新"}
         </Button>

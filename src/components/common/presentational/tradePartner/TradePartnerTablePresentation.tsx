@@ -1,14 +1,14 @@
 "use client";
-import { usePaginationStore } from "@/stores/pagination/PaginationStore";
-import { TradingPartnerPerson } from "@/types/api/tradePartner";
-import { sort } from "fast-sort";
+import { IconEdit, IconEye, IconTrash } from "@tabler/icons-react";
 import { ColumnDef, SortingState } from "@tanstack/react-table";
-import { DataTable } from "@/components/ui/data-table";
+import { sort } from "fast-sort";
 import { useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
-import VTooltip from "../../atoms/Tooltip";
 import { Button } from "@/components/ui/button";
-import { IconEdit, IconEye, IconTrash } from "@tabler/icons-react";
+import { DataTable } from "@/components/ui/data-table";
+import { usePaginationStore } from "@/stores/pagination/PaginationStore";
+import { TradingPartnerPerson } from "@/types/api/tradePartner";
+import VTooltip from "../../atoms/Tooltip";
 
 export type TradePartnerTableProps<T extends TradingPartnerPerson> = {
     tradingPartnerPersons: T[];
@@ -30,12 +30,12 @@ const TradePartnerTablePresentation = <T extends TradingPartnerPerson>({
     const { setTradePartnerPageOptions } = usePaginationStore();
 
     const [sortStatus, setSortStatus] = useState<SortingState>([
-        { id: "tradingPersonId", desc: false }
+        { id: "tradingPersonId", desc: false },
     ]);
 
     useEffect(() => {
         setPage(1);
-    }, [pageSize]);
+    }, []);
 
     useEffect(() => {
         const from = (page - 1) * pageSize;
