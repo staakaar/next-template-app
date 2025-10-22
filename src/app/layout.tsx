@@ -5,10 +5,11 @@ import "./globals.css";
 import type { Metadata } from "next";
 import { Inter as FontSans } from "next/font/google";
 import React from "react";
-import SideMenu from "@/components/organisms/ContractSideMenu/ContractSideMenu";
+import SideMenuWrapper from "@/components/organisms/ContractSideMenu/SideMenuWrapper";
 import Header from "@/components/organisms/Header";
 import { Toaster } from "@/components/ui/toaster";
 import { cn } from "@/lib/utils";
+import LayoutContent from "@/components/organisms/LayoutContent";
 
 const fontSans = FontSans({
     subsets: ["latin"],
@@ -51,8 +52,8 @@ export default async function RootLayout({
                 <NextIntlClientProvider messages={messages}>
                     <ThemeProvider>
                         <Header />
-                        <SideMenu />
-                        {children}
+                        <SideMenuWrapper />
+                        <LayoutContent>{children}</LayoutContent>
                         <Toaster />
                     </ThemeProvider>
                 </NextIntlClientProvider>

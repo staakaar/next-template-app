@@ -1,9 +1,15 @@
 "use client";
 
-import { Calendar, FileText } from "lucide-react";
-import { useEffect, useState } from "react";
-import { Drawer, DrawerContent } from "@/components/ui/drawer";
-import { NavigationLinksGroup } from "../NavigationLinksGroup/NavigationLinksGroup";
+import { Calendar, ChevronDown, FileText } from "lucide-react";
+import Link from "next/link";
+import { usePathname } from "next/navigation";
+import { useState } from "react";
+import {
+    Collapsible,
+    CollapsibleContent,
+    CollapsibleTrigger,
+} from "@/components/ui/collapsible";
+import { cn } from "@/lib/utils";
 
 const contractMenu = [
     {
@@ -31,66 +37,66 @@ const contractMenu = [
     },
 ];
 
-const SideMenu = () => {
-    const links = contractMenu.map((item) => (
-        <NavigationLinksGroup {...item} key={item.label} />
-    ));
-    const [drawerOpened, setDrawerOpened] = useState(false);
-    const [width, setWidth] = useState(0);
+interface MenuGroupProps {
+    label: string;
+    icon: React.ComponentType<{ className?: string }>;
+    initiallyOpened: boolean;
+    links: { label: string; link: string }[];
+}
 
-    // ビューポートサイズの取得
-    useEffect(() => {
-        const updateWidth = () => setWidth(window.innerWidth);
-        updateWidth();
-        window.addEventListener("resize", updateWidth);
-        return () => window.removeEventListener("resize", updateWidth);
-    }, []);
-
-    // サイドバートリガーエリアの設定
-    useEffect(() => {
-        const handleMouseMove = (event: MouseEvent) => {
-            // デスクトップサイズでのみ有効
-            if (width >= 768) {
-                if (event.clientX <= 20 && !drawerOpened) {
-                    setDrawerOpened(true);
-                }
-            }
-        };
-
-        window.addEventListener("mousemove", handleMouseMove);
-        return () => window.removeEventListener("mousemove", handleMouseMove);
-    }, [width, drawerOpened]);
-
-    // ドロワーが開いているときのマウス位置監視
-    useEffect(() => {
-        const handleMouseMove = (event: MouseEvent) => {
-            if (drawerOpened && event.clientX > 300) {
-                // ドロワーの幅に応じて調整
-                setDrawerOpened(false);
-            }
-        };
-
-        if (drawerOpened) {
-            window.addEventListener("mousemove", handleMouseMove);
-        }
-
-        return () => window.removeEventListener("mousemove", handleMouseMove);
-    }, [drawerOpened]);
+const MenuGroup = ({ label, icon: Icon, initiallyOpened, links }: MenuGroupProps) => {
+    const [isOpen, setIsOpen] = useState(initiallyOpened);
+    const pathname = usePathname();
 
     return (
-        <Drawer open={drawerOpened} onOpenChange={setDrawerOpened}>
-            <DrawerContent className="h-[800px] w-[300px] p-0">
-                <nav className="bg-white dark:bg-gray-800 h-full w-full p-4 flex flex-col border-r border-gray-200 dark:border-gray-700">
-                    <div className="p-4 -mx-4 -mt-4 mb-0 text-black dark:text-white border-b border-gray-200 dark:border-gray-700">
-                        <h1 className="text-xl font-semibold">契約メニュー</h1>
-                    </div>
-                    <div className="flex-1 -mx-4 overflow-y-auto">
-                        <div className="pt-6 pb-6">{links}</div>
-                    </div>
-                </nav>
-            </DrawerContent>
-        </Drawer>
+        <Collapsible open={isOpen} onOpenChange={setIsOpen} className="mb-2">
+            <CollapsibleTrigger className="flex items-center justify-between w-full px-4 py-2 text-sm font-medium text-foreground hover:bg-accent hover:text-accent-foreground rounded-md transition-colors">
+                <div className="flex items-center gap-2">
+                    <Icon className="h-4 w-4" />
+                    <span>{label}</span>
+                </div>
+                <ChevronDown
+                    className={cn(
+                        "h-4 w-4 transition-transform duration-200",
+                        isOpen && "rotate-180"
+                    )}
+                />
+            </CollapsibleTrigger>
+            <CollapsibleContent className="mt-1">
+                <div className="flex flex-col gap-1 pl-6">
+                    {links.map((item) => (
+                        <Link
+                            key={item.link}
+                            href={item.link}
+                            className={cn(
+                                "px-4 py-2 text-sm rounded-md transition-colors",
+                                pathname === item.link
+                                    ? "bg-accent text-accent-foreground font-medium"
+                                    : "text-muted-foreground hover:bg-accent hover:text-accent-foreground"
+                            )}
+                        >
+                            {item.label}
+                        </Link>
+                    ))}
+                </div>
+            </CollapsibleContent>
+        </Collapsible>
     );
 };
 
-export default SideMenu;
+const PersistentSideMenu = () => {
+    return (
+        <aside className="fixed left-0 top-16 h-[calc(100vh-4rem)] w-64 border-r border-border bg-background p-4 overflow-y-auto">
+            <div className="mb-4 pb-4 border-b border-border">
+                <h2 className="text-lg font-semibold">契約メニュー</h2>
+            </div>
+            <nav className="space-y-2">
+                {contractMenu.map((item) => (
+                    <MenuGroup key={item.label} {...item} />
+                ))}
+            </nav>
+        </aside>
+    );
+};
+
+export default PersistentSideMenu;

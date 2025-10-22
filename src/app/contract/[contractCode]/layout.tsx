@@ -1,17 +1,17 @@
-import React, { ReactNode } from "react";
-import { Card } from "@/components/ui/card";
 import {
     IconArrowLeft,
-    IconFileExport,
     IconCopy,
+    IconFileExport,
     IconSend,
 } from "@tabler/icons-react";
-import ContractStatusStepper from "@/components/common/ContractStatusStepper";
 import Link from "next/link";
+import React, { ReactNode } from "react";
+import ContractDetailActionButtons from "@/components/common/ContractDetailActionButtons";
 import ContractDetailMenuLayout from "@/components/common/ContractDetailMenuLayout";
+import ContractStatusStepper from "@/components/common/ContractStatusStepper";
+import { Card } from "@/components/ui/card";
 import ContractDetailSection from "../_components/ContractDetailSection";
 import { ContractDetailUpdateButton } from "../_components/ContractDetailUpdateButton";
-import ContractDetailActionButtons from "@/components/common/ContractDetailActionButtons";
 
 interface ContractDetailTabProps {
     children: ReactNode;
@@ -48,7 +48,7 @@ const Layout = ({
     return (
         <>
             <div className="min-h-full h-full">
-                <Card className="flex flex-col flex-1 mx-4 min-h-screen w-full bg-gray-50">
+                <Card className="flex flex-col flex-1 min-h-screen w-full">
                     <div className="w-full p-4 md:px-8">
                         <div className="flex flex-col space-y-4">
                             <div className="flex items-center justify-between">
