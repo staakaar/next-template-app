@@ -9,6 +9,16 @@ import {
     CollapsibleContent,
     CollapsibleTrigger,
 } from "@/components/ui/collapsible";
+import {
+    Sidebar,
+    SidebarContent,
+    SidebarGroup,
+    SidebarGroupContent,
+    SidebarGroupLabel,
+    SidebarMenu,
+    SidebarMenuButton,
+    SidebarMenuItem,
+} from "@/components/ui/sidebar";
 import { cn } from "@/lib/utils";
 
 const contractMenu = [
@@ -44,7 +54,12 @@ interface MenuGroupProps {
     links: { label: string; link: string }[];
 }
 
-const MenuGroup = ({ label, icon: Icon, initiallyOpened, links }: MenuGroupProps) => {
+const MenuGroup = ({
+    label,
+    icon: Icon,
+    initiallyOpened,
+    links,
+}: MenuGroupProps) => {
     const [isOpen, setIsOpen] = useState(initiallyOpened);
     const pathname = usePathname();
 
@@ -84,19 +99,35 @@ const MenuGroup = ({ label, icon: Icon, initiallyOpened, links }: MenuGroupProps
     );
 };
 
-const PersistentSideMenu = () => {
+const ContractSideMenu = () => {
     return (
-        <aside className="fixed left-0 top-16 h-[calc(100vh-4rem)] w-64 border-r border-border bg-background p-4 overflow-y-auto">
-            <div className="mb-4 pb-4 border-b border-border">
-                <h2 className="text-lg font-semibold">契約メニュー</h2>
-            </div>
-            <nav className="space-y-2">
-                {contractMenu.map((item) => (
-                    <MenuGroup key={item.label} {...item} />
-                ))}
-            </nav>
-        </aside>
+        // <nav className="space-y-2">
+        //     {contractMenu.map((item) => (
+        //         <MenuGroup key={item.label} {...item} />
+        //     ))}
+        // </nav>
+        <Sidebar>
+            <SidebarContent>
+                <SidebarGroup>
+                    <SidebarGroupLabel>Application</SidebarGroupLabel>
+                    <SidebarGroupContent>
+                        <SidebarMenu>
+                            {contractMenu.map((item) => (
+                                <SidebarMenuItem key={item.title}>
+                                    <SidebarMenuButton asChild>
+                                        <a href={item.url}>
+                                            <item.icon />
+                                            <span>{item.title}</span>
+                                        </a>
+                                    </SidebarMenuButton>
+                                </SidebarMenuItem>
+                            ))}
+                        </SidebarMenu>
+                    </SidebarGroupContent>
+                </SidebarGroup>
+            </SidebarContent>
+        </Sidebar>
     );
 };
 
-export default PersistentSideMenu;
+export default ContractSideMenu;

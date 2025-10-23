@@ -45,15 +45,17 @@ export default async function RootLayout({
             </head>
             <body
                 className={cn(
-                    "min-h-screen bg-background font-sans antialiased",
+                    "min-h-screen bg-background font-sans antialiased flex flex-col",
                     fontSans.variable
                 )}
             >
                 <NextIntlClientProvider messages={messages}>
                     <ThemeProvider>
                         <Header />
-                        <SideMenuWrapper />
-                        <LayoutContent>{children}</LayoutContent>
+                        <div className="flex flex-1 overflow-hidden">
+                            <SideMenuWrapper />
+                            <LayoutContent>{children}</LayoutContent>
+                        </div>
                         <Toaster />
                     </ThemeProvider>
                 </NextIntlClientProvider>

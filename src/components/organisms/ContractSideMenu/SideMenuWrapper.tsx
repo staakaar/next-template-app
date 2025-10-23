@@ -9,7 +9,10 @@ const SideMenuWrapper = () => {
 
     // ルートページ（トップページ）では常時表示型のサイドメニューを表示
     if (pathname === "/contract-all") {
-        return <ContractSideMenu />;
+        return (
+            // <aside className="w-64 border-r border-border bg-background p-4 overflow-y-auto shrink-0">
+            <ContractSideMenu />
+        );
     }
 
     // その他のページではドロワー型のサイドメニューを表示
