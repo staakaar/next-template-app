@@ -7,9 +7,9 @@ import { Inter as FontSans } from "next/font/google";
 import React from "react";
 import SideMenuWrapper from "@/components/organisms/ContractSideMenu/SideMenuWrapper";
 import Header from "@/components/organisms/Header";
+import LayoutContent from "@/components/organisms/LayoutContent";
 import { Toaster } from "@/components/ui/toaster";
 import { cn } from "@/lib/utils";
-import LayoutContent from "@/components/organisms/LayoutContent";
 
 const fontSans = FontSans({
     subsets: ["latin"],

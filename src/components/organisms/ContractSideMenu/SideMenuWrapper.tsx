@@ -11,7 +11,7 @@ const SideMenuWrapper = () => {
     if (pathname === "/contract-all") {
         return (
             // <aside className="w-64 border-r border-border bg-background p-4 overflow-y-auto shrink-0">
-            <ContractSideMenu />
+            <ContractSideMenuDrawer />
         );
     }
 

@@ -46,13 +46,13 @@ const ContractSideMenuDrawer = () => {
         return () => window.removeEventListener("resize", updateWidth);
     }, []);
 
-    // サイドバートリガーエリアの設定（右端でトリガー）
+    // サイドバートリガーエリアの設定（左端でトリガー）
     useEffect(() => {
         const handleMouseMove = (event: MouseEvent) => {
             // デスクトップサイズでのみ有効
             if (width >= 768) {
-                const rightEdgeThreshold = window.innerWidth - 20;
-                if (event.clientX >= rightEdgeThreshold && !drawerOpened) {
+                const leftEdgeThreshold = 12; // 左端から12px以内で開く
+                if (event.clientX <= leftEdgeThreshold && !drawerOpened) {
                     setDrawerOpened(true);
                 }
             }
@@ -62,13 +62,13 @@ const ContractSideMenuDrawer = () => {
         return () => window.removeEventListener("mousemove", handleMouseMove);
     }, [width, drawerOpened]);
 
-    // ドロワーが開いているときのマウス位置監視（左から右に移動で閉じる）
+    // ドロワーが開いているときのマウス位置監視（ドロワー幅より右に移動で閉じる）
     useEffect(() => {
         const handleMouseMove = (event: MouseEvent) => {
             const drawerWidth = 300;
-            const rightEdgeThreshold = window.innerWidth - 20;
-            // マウスがドロワーの外（右端トリガーエリアより左）に出たら閉じる
-            if (drawerOpened && event.clientX < rightEdgeThreshold - drawerWidth) {
+            const buffer = 24; // 多少の余白を持たせる
+            // マウスがドロワーの外（ドロワー幅+余白）より右に出たら閉じる
+            if (drawerOpened && event.clientX > drawerWidth + buffer) {
                 setDrawerOpened(false);
             }
         };
