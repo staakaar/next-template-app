@@ -4,10 +4,11 @@ import dynamic from "next/dynamic";
 import Link from "next/link";
 import { redirect, useRouter } from "next/navigation";
 import ContractNewStepper from "@/components/common/ContractNewStepper";
-import { Divider, Anchor, Card, Box, Title } from "@mantine/core";
 import ContractNewConfirmDialog from "@/components/ContractNewModal";
 import { ErrorBoundary } from "react-error-boundary";
 import Loading from "@/components/common/atoms/Loading";
+import { Card } from "@/components/ui/card";
+import { Separator } from "@/components/ui/separator";
 
 export type ContractStep = {
     title: String;
@@ -140,31 +141,29 @@ const ContractNewPage = () => {
 
     return (
         <>
-            <Card className="flex min-h-screen w-full flex-col bg-muted/40">
+            <div className="flex min-h-screen w-full flex-col bg-muted/40">
                 <div className="flex flex-col sm:gap-4 sm:py-4 sm:pl-8">
                     <main className="grid flex-1 items-start gap-4 p-4 sm:px-6 sm:py-0 md:gap-8">
-                        <Box className="text-sm font-medium flex justify-between">
-                            <Anchor
-                                component={Link}
+                        <div className="text-sm font-medium flex justify-between">
+                            <Link
                                 onClick={handleBackToList}
-                                href={""}
+                                href={"#"}
+                                className="text-primary hover:underline"
                             >
                                 一覧へ戻る
-                            </Anchor>
-                        </Box>
+                            </Link>
+                        </div>
                         <ContractNewStepper
                             activeStep={activeStep}
                             steps={ContractSteps}
                             setActiveStep={() => setActiveStep}
                         />
                         <Card className="px-4">
-                            <Box className="flex items-center justify-between px-4 pb-4">
-                                <Title className="text-md font-bold">
-                                    新規作成画面
-                                </Title>
-                            </Box>
-                            <Divider />
-                            <Box
+                            <div className="flex items-center justify-between px-4 pb-4">
+                                <h2 className="text-md font-bold">新規作成画面</h2>
+                            </div>
+                            <Separator />
+                            <div
                                 className="overflow-auto mx-2"
                                 style={{ maxHeight: "calc(100vh - 200px)" }}
                             >
@@ -173,11 +172,11 @@ const ContractNewPage = () => {
                                         {renderComponent()}
                                     </Suspense>
                                 </ErrorBoundary>
-                            </Box>
+                            </div>
                         </Card>
                     </main>
                 </div>
-            </Card>
+            </div>
             <ContractNewConfirmDialog
                 isOpen={isDialogOpen}
                 onClose={() => setIsDialogOpen(false)}

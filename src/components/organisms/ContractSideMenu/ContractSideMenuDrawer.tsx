@@ -86,12 +86,12 @@ const ContractSideMenuDrawer = () => {
             onOpenChange={setDrawerOpened}
             direction="left"
         >
-            <DrawerContent className="h-full w-[300px] p-0 fixed left-0 top-0 bottom-0 right-auto rounded-none">
-                <nav className="bg-white dark:bg-gray-800 h-full w-full p-4 flex flex-col border-r border-gray-200 dark:border-gray-700">
+            <DrawerContent className="fixed left-0 right-auto top-0 bottom-0 h-[100dvh] w-[280px] md:w-[300px] p-0 rounded-none shadow-lg">
+                <nav className="bg-white dark:bg-gray-800 h-full w-full p-4 pt-[env(safe-area-inset-top)] flex flex-col border-r border-gray-200 dark:border-gray-700">
                     <div className="p-4 -mx-4 -mt-4 mb-0 text-black dark:text-white border-b border-gray-200 dark:border-gray-700">
                         <h1 className="text-xl font-semibold">契約メニュー</h1>
                     </div>
-                    <div className="flex-1 -mx-4 overflow-y-auto">
+                    <div className="flex-1 -mx-4 overflow-y-auto overscroll-contain">
                         <div className="pt-6 pb-6">{links}</div>
                     </div>
                 </nav>
