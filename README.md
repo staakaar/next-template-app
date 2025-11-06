@@ -126,3 +126,23 @@ axios use SWR
 [〇〇]()まで問い合わせください。
 
 ## その他
+
+### Storybook / shadcn UI 運用
+
+- コンポーネントは本体 `src/components`（shadcnは `src/components/ui`）で管理します。
+- Storyは `storybook/src/**/*.stories.tsx` に配置し、`@app` エイリアスで本体を参照します。
+  - 例: `import { Button } from '@app/components/ui/button'`
+- Tailwind/Tokens/テーマは本体設定をStorybookで継承しています。
+
+#### コマンド
+
+```bash
+npm run storybook           # Storybook起動
+npm run build-storybook     # Storybookビルド
+npm run test:storybook      # Storybook Interaction Tests
+```
+
+#### MSW（モック）
+
+- Storybookは `msw-storybook-addon` を使用。`preview.ts`で初期化済み。
+- `parameters.msw.handlers` または 各ストーリーの `handlers` でモックを指定します。

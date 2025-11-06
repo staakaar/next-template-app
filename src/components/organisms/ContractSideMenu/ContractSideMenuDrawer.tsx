@@ -2,7 +2,13 @@
 
 import { Calendar, FileText } from "lucide-react";
 import { useEffect, useState } from "react";
-import { Drawer, DrawerContent, DrawerTitle } from "@/components/ui/drawer";
+import {
+    Drawer,
+    DrawerContent,
+    DrawerHeader,
+    DrawerTitle,
+    DrawerDescription,
+} from "@/components/ui/drawer";
 import { NavigationLinksGroup } from "../NavigationLinksGroup/NavigationLinksGroup";
 
 const contractMenu = [
@@ -87,7 +93,11 @@ const ContractSideMenuDrawer = () => {
             direction="left"
         >
             <DrawerContent className="fixed left-0 right-auto top-0 bottom-0 h-[100dvh] w-[280px] md:w-[300px] p-0 rounded-none shadow-lg">
-                <DrawerTitle className="sr-only">契約メニュー</DrawerTitle>
+                {/* Accessible header following shadcn/ui drawer docs */}
+                <DrawerHeader className="sr-only">
+                    <DrawerTitle>契約メニュー</DrawerTitle>
+                    <DrawerDescription>サイドバーのメニュー</DrawerDescription>
+                </DrawerHeader>
                 <nav className="bg-white dark:bg-gray-800 h-full w-full p-4 pt-[env(safe-area-inset-top)] flex flex-col border-r border-gray-200 dark:border-gray-700">
                     <div className="p-4 -mx-4 -mt-4 mb-0 text-black dark:text-white border-b border-gray-200 dark:border-gray-700">
                         <h1 className="text-xl font-semibold">契約メニュー</h1>
