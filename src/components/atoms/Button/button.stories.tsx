@@ -17,23 +17,23 @@ export default meta;
 
 type Story = StoryObj<typeof Button>;
 
-export const Filled: Story = {
+export const Default: Story = {
     args: {
-        variant: "filled",
+        variant: "default",
         color: "blue",
     },
 };
 
 export const Light: Story = {
     args: {
-        variant: "light",
+        variant: "secondary",
         color: "blue",
     },
 };
 
 export const Subtle: Story = {
     args: {
-        variant: "subtle",
+        variant: "secondary",
     },
 };
 
@@ -46,11 +46,12 @@ export const Outline: Story = {
 export const Sizes: Story = {
     render: () => (
         <div style={{ display: "flex", gap: 12, alignItems: "center" }}>
-            <Button size="xs">XS</Button>
-            <Button size="sm">SM</Button>
-            <Button size="md">MD</Button>
-            <Button size="lg">LG</Button>
-            <Button size="xl">XL</Button>
+            <Button size="sm">Small</Button>
+            <Button>Default</Button>
+            <Button size="lg">Large</Button>
+            <Button size="icon" aria-label="icon button">
+                ⚙️
+            </Button>
         </div>
     ),
 };
@@ -58,7 +59,6 @@ export const Sizes: Story = {
 export const WithIcon: Story = {
     args: {
         children: "With Icon",
-        leftSection: <span>★</span>,
     },
 };
 

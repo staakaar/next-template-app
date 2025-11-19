@@ -47,6 +47,9 @@ const preview: Preview = {
                 date: /Date$/i,
             },
         },
+        nextjs: {
+            appDirectory: true,
+        },
         msw: {
             handlers: [
                 // rest.get("/api/my/profile", async (_, res, ctx) => {
